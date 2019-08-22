@@ -1,0 +1,15 @@
+{% extends "rest_framework/login_base.html" %}
+{% load staticfiles %}
+
+{% block title %}InChI Resolver Login{% endblock %}
+
+{% block bootstrap_theme %}
+  <link href="{% static 'resolver/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'resolver/css/bootstrap-tweaks.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{# Override this template in your own templates directory to customize #}
+
+
+{% block branding %}<p>InChI Resolver Login</p>{% endblock %}

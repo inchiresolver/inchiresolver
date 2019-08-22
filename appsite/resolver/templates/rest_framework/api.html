@@ -1,0 +1,16 @@
+{% extends "rest_framework/base.html" %}
+{% load static %}
+
+{% block title %}InChI Resolver Prototype 0{% endblock %}
+
+{% block bootstrap_theme %}
+  <link href="{% static 'resolver/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'resolver/css/bootstrap-tweaks.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block branding %}
+    <a class='navbar-brand' rel="nofollow" href='/inchi-resolver'>
+        InChI Resolver Prototype 0
+    </a>
+{% endblock %}
+

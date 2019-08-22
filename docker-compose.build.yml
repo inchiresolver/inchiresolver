@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+
+  django:
+    image: chembience/django:${DJANGO_APP_VERSION}
+    build:
+      context: .
+      args:
+        build_tag: ${CHEMBIENCE_VERSION}
+
+
+
+

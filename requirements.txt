@@ -1,0 +1,6 @@
+requests
+django
+djangorestframework<=3.9
+django-rest-swagger==2.2.0
+django-filter
+django-crispy-forms
