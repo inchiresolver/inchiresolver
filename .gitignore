@@ -1,0 +1,9 @@
+tmp/*
+.project/*
+*.pyc
+*~
+.idea/
+/static
+/media
+/backup
+.env
