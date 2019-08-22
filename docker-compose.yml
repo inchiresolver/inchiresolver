@@ -3,7 +3,7 @@ version: '3'
 services:
 
   app:
-    image: inchiresolver/inchiresolver:${DJANGO_APP_VERSION}
+    image: chembience/django:${DJANGO_APP_VERSION}
     container_name: inchiresolver
     volumes:
       - ${DJANGO_APP_HOME}:/home/app
