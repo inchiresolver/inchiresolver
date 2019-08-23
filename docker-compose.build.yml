@@ -3,7 +3,7 @@ version: '3'
 services:
 
   django:
-    image: inchiresolver:${DJANGO_APP_VERSION}
+    image: inchiresolver/inchiresolver:${DJANGO_APP_VERSION}
     build:
       context: .
       args:

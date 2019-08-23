@@ -1,6 +1,7 @@
 tmp/*
 .project/*
 *.pyc
+*.pyo
 *~
 .idea/
 /static

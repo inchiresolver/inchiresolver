@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_filters',
     'crispy_forms',
+    'dbbackup',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 25
 }
+
+BACKUP_ROOT = os.path.join("/home/app", 'backup')
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': BACKUP_ROOT}
