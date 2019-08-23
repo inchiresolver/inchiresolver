@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+docker-compose down &&\
+docker volume rm inchiresolverdb_volume &&\
+rm -rf ./appsite/home/migrations/* &&\
+docker-compose up &
+
+
+
+

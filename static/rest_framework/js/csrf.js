@@ -38,7 +38,7 @@ function sameOrigin(url) {
     !(/^(\/\/|http:|https:).*/.test(url));
 }
 
-var csrftoken = window.drf.csrfToken;
+var csrftoken = getCookie(window.drf.csrfCookieName);
 
 $.ajaxSetup({
   beforeSend: function(xhr, settings) {

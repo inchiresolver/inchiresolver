@@ -71,7 +71,7 @@ class Inchi(models.Model):
 
 class Organization(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True)
     name = models.CharField(unique=True, max_length=32768)
     abbreviation = models.CharField(max_length=32, blank=True, null=True)
     url = models.URLField(max_length=4096, blank=True, null=True)
