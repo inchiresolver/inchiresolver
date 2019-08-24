@@ -1,5 +1,5 @@
 InChI Resolver 
-=======
+==============
 
 .. image:: https://circleci.com/gh/chembience/chembience-inchiresolver/tree/master.svg?style=shield
     :target: https://circleci.com/gh/chembience/chembience-inchiresolver/tree/master
@@ -11,13 +11,92 @@ InChI Resolver
    :target: https://img.shields.io/github/license/inchiresolver/inchiresolver.svg
 
 
-Repository of the InChI Resolver project. This project is only in an early prototype stage.
+Repository of the InChI Resolver project. This project is in an early prototype stage.
 
 
-`InChI Resolver web page <https://inchi-resolver.org/>`_
+History
+-------
+
+The development of InChI Resolver project created `Chembience <https://chembience.com/>`_
+(`GitHub repository <https://github.com/chembience/chembience>`_) as open-source spin-off project. As a Python-based
+platform, Chembience provides all infrastructure-related components (modern software delivery mechanism, web server,
+and database server) for the development of web-based (chemoinformatics) services. Chembience has been first
+released publicly in March 2018 and has since seen more than 10 releases. The InChI Resolver is now based on
+the developments bundled in Chembience.
 
 
-`Test API (Prototype 0.1) <https://prototype0.inchi-resolver.org/openapi/>`_
+Requirements
+------------
+
+Please have at least `Docker CE 17.09 <https://docs.docker.com/engine/installation/>`_ and `Docker Compose 1.17 <https://docs.docker.com/compose/install/>`_ installed on your system.
+
+
+Installation
+------------
+
+Clone the repository::
+
+    git clone https://github.com/inchiresolver/inchiresolver.git inchiresolver
+
+Then, change into the newly created directory ::
+
+    cd inchiresolver/
+
+and run the following command (it is important that you do this from inside the newly created ``inchiresolver`` directory) ::
+
+    ./init
+    ./up
+
+As a first step, this will download all necessary Docker images to your system and may take a while for the
+initial setup (approx 1.5GB of downloads from DockerHub). After a successful download, it will start a InChI resolver
+instance locally.
+
+The already applied ``./up`` commando has start up the InChI Resolver App container and a Postgres Database container
+instance (the initial configuration of the containers is provided in the ``.env`` file and the ``docker-compose.yml``
+file, **NOTE**: the InChI Resolver App container connects to port 8000 of the host system, if this port is already in
+use, it can by reconfigured in ``.env``, see variable ``DJANGO_APP_CONNECTION_PORT``). If everything went fine, you
+should now be able to go to ::
+
+    http://localhost:8011/admin      (you should see Django Admin Login page)
+
+For the initial setup of Django installation underlying the InChI Resolver, still a few steps need to be done. Since
+Django runs inside a Docker container you can not directly access Django's regular ``manage.py`` script to set up things.
+Instead you have to use the ``django-manage-py`` script provided in the current directory which passes any arguments
+to the ``manage.py`` script of the Django instance running inside the InChI Resolver container.
+
+To finalize the initial setup of Django in your container instance, run these commands (except for using ``django-manage-py``
+instead of ``manage.py`` these are the same steps as for any regular Django installation for setting up Django's admin pages) ::
+
+    ./django-manage-py migrate           (creates the initial Django database tables)
+    ./django-manage-py createsuperuser   (will prompt you to create a Django superuser account)
+    ./django-manage-py collectstatic     (adds all media (css, js, templates) for the Django admin application; creates a static/ directory in the django directory)
+
+After running these commands you should be able to go to::
+
+    http://localhost:8011/admin
+
+and login into the Django admin application with the just set up account and password.
+
+In order to stop the InChI Resolver, use the ``down`` script::
+
+    ./down
+
+Anything you have created and stored so far in the database has been persisted. If you are familiar with ``docker-compose``,
+all life-circle commands should work as expected, in fact, ``up`` and  ``down`` are just short cuts for their respective
+``docker-compose`` commands.
+
+Since the InChI Resolver App is based on Chembience's Django Template App, please take also a look at the `Chembience GitHub repository <https://github.com/chembience/chembience>`_ pages.
+
+Links & Resources
+-----------------
+
+InChI Resolver web page: `<https://inchi-resolver.org/>`_
+
+
+InChI Resolver Prototype API: `<https://prototype0.inchi-resolver.org/openapi/>`_
+
+
+Chembience: `<https://chembience.com>`_
 
 
 Markus Sitzmann 2019-08-22
