@@ -1,8 +1,6 @@
 from django.core.exceptions import FieldError
 from django.test import TestCase
-from rdkit import Chem
 
-from inchi.identifier import InChIKey
 from resolver.models import Inchi
 
 
