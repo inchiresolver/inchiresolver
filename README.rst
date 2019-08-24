@@ -11,18 +11,19 @@ InChI Resolver
    :target: https://img.shields.io/github/license/inchiresolver/inchiresolver.svg
 
 
-Repository of the InChI Resolver project. This project is in an early prototype stage.
+Repository of the InChI Resolver project. This project is in an early prototype stage. The Docker images required for
+using the InChI Resolver project are available from `DockerHub <https://cloud.docker.com/u/inchiresolver/repository/list>`__ and automatically build by `CircleCi.com <https://cicle.ci>`_
 
 
 History
 -------
 
 The development of InChI Resolver project created `Chembience <https://chembience.com/>`_
-(`GitHub repository <https://github.com/chembience/chembience>`_) as open-source spin-off project. As a Python-based
+(`GitHub repository <https://github.com/chembience/chembience>`_) as spin-off open-source project. As a Python-based
 platform, Chembience provides all infrastructure-related components (modern software delivery mechanism, web server,
 and database server) for the development of web-based (chemoinformatics) services. Chembience has been first
 released publicly in March 2018 and has since seen more than 10 releases. The InChI Resolver is now based on
-the developments bundled in Chembience.
+the developments which have been bundled in Chembience.
 
 
 Requirements
@@ -51,15 +52,15 @@ As a first step, this will download all necessary Docker images to your system a
 initial setup (approx 1.5GB of downloads from DockerHub). After a successful download, it will start a InChI resolver
 instance locally.
 
-The already applied ``./up`` commando has start up the InChI Resolver App container and a Postgres Database container
+The already applied ``./up`` commando has started up the container-based InChI Resolver App and a Postgres Database
 instance (the initial configuration of the containers is provided in the ``.env`` file and the ``docker-compose.yml``
-file, **NOTE**: the InChI Resolver App container connects to port 8000 of the host system, if this port is already in
+file, **NOTE**: the InChI Resolver App connects to port 8011 of the host system, if this port is already in
 use, it can by reconfigured in ``.env``, see variable ``DJANGO_APP_CONNECTION_PORT``). If everything went fine, you
 should now be able to go to ::
 
     http://localhost:8011/admin      (you should see Django Admin Login page)
 
-For the initial setup of Django installation underlying the InChI Resolver, still a few steps need to be done. Since
+For the initial setup of Django installation underlying the InChI Resolver still a few steps need to be done. Since
 Django runs inside a Docker container you can not directly access Django's regular ``manage.py`` script to set up things.
 Instead you have to use the ``django-manage-py`` script provided in the current directory which passes any arguments
 to the ``manage.py`` script of the Django instance running inside the InChI Resolver container.
@@ -96,7 +97,7 @@ InChI Resolver web page: `<https://inchi-resolver.org/>`_
 InChI Resolver Prototype API: `<https://prototype0.inchi-resolver.org/openapi/>`_
 
 
-Chembience: `<https://chembience.com>`_
+Chembience: `<https://chembience.com>`_; some slides about the concepts in Chembience: `SlideShare Link <https://www.slideshare.net/sitzmann/chembience>`_
 
 
 Markus Sitzmann 2019-08-22
