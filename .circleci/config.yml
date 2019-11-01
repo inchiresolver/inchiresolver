@@ -4,7 +4,7 @@ jobs:
   prepare:
     machine:
       image: circleci/classic:201711-01
-      docker_layer_caching: true
+      docker_layer_caching: false
     steps:
       - checkout
       - run:
@@ -13,11 +13,10 @@ jobs:
           command: |
             docker system prune -f --volumes
             ./env-prepare
-
   app:
     machine:
       image: circleci/classic:201711-01
-      docker_layer_caching: true
+      docker_layer_caching: false
     steps:
       - checkout
       - run:
