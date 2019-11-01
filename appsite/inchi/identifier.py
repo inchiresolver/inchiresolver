@@ -15,7 +15,7 @@ class InChI:
             raise InChIError('string is not resolvable')
         [setattr(self, k, v) for k, v in self.element.items()]
 
-    def _validate(self, string, pattern_string):
+    def _validate(self, string: str, pattern_string: str) -> bool:
         pattern = re.compile(pattern_string)
         match = pattern.search(string)
         if match:

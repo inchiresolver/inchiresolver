@@ -20,7 +20,6 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
         return inchi
         
 
-        
 class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
 
     _self = serializers.HyperlinkedIdentityField(view_name='organization-detail', format='html')
