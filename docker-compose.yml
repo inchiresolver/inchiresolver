@@ -2,7 +2,7 @@ version: '3'
 
 services:
 
-  app:
+  inchiresolver:
     image: inchiresolver/inchiresolver:${DJANGO_APP_VERSION}
     container_name: inchiresolver
     volumes:

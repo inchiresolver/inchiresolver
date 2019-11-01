@@ -3,6 +3,7 @@ import uuid
 
 
 class InChI:
+
     DEFAULT_VERSION = '1'
     DEFAULT_PREFIX = "InChI="
     PATTERN_STRING = '^(?P<version>.{1,2})/(?P<layers>.+$)'
@@ -43,9 +44,8 @@ class InChI:
         return self.element['well_formatted']
 
 
-
-
 class InChIKey:
+
     DEFAULT_PREFIX = "InChIKey="
     PATTERN_STRING = '(?P<block1>[A-Z]{14})-(?P<block2>[A-Z]{8}(S|N)[A-Z]{1})-(?P<block3>[A-Z]{1}$)'
     PATTERN_STRING_WITH_PREFIX = '(?P<prefix>^%s)(?P<block1>[A-Z]{14})-(?P<block2>[A-Z]{8}(S|N)[A-Z]{1})-(?P<block3>[A-Z]{1}$)' % DEFAULT_PREFIX
