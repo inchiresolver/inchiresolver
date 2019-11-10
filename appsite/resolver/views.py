@@ -1,5 +1,6 @@
 from rest_framework import mixins
 from rest_framework import viewsets, permissions
+from rest_framework.decorators import api_view
 from rest_framework.viewsets import GenericViewSet
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -7,6 +8,21 @@ from django_filters.rest_framework import DjangoFilterBackend
 from resolver.models import Inchi, Organization, Publisher, UrlEntryPoint, UriEndPoint
 from resolver.serializers import InchiSerializer, OrganizationSerializer, PublisherSerializer, \
     UrlEntryPointSerializer, UriEndPointSerializer
+
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'inchis': reverse('inchi-list', request=request, format=format),
+        'organizations': reverse('organization-list', request=request, format=format),
+        'publishers': reverse('publisher-list', request=request, format=format),
+        'entrypoints': reverse('urlentrypoint-list', request=request, format=format),
+        'endpoints': reverse('uriendpoint-list', request=request, format=format),
+
+    })
 
 
 class InchiViewSet(

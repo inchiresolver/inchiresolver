@@ -11,9 +11,9 @@ router.register('organizations', views.OrganizationViewSet)
 router.register('publishers', views.PublisherViewSet)
 router.register('entrypoints', views.UrlEntryPointViewSet)
 router.register('endpoints', views.UriEndPointViewSet)
-urlpatterns = router.urls
+urlpatterns = router.urls \
 
-#urlpatterns += path('', views.api_root)
+urlpatterns = urlpatterns + [path('', views.api_root),]
 
 
 # The API URLs are now determined automatically by the router.
