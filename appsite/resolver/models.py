@@ -13,13 +13,13 @@ from inchi.identifier import InChIKey, InChI
 
 class Inchi(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
-    version = models.IntegerField(blank=True, null=True)
-    is_standard = models.BooleanField(default=False)
-    block1 = models.CharField(max_length=14)
-    block2 = models.CharField(max_length=10)
-    block3 = models.CharField(max_length=1)
+    version = models.IntegerField(db_index=True, default=1)
+    block1 = models.CharField(db_index=True, max_length=14)
+    block2 = models.CharField(db_index=True, max_length=10)
+    block3 = models.CharField(db_index=True, max_length=1)
     key = models.CharField(max_length=27, blank=True, null=True)
     string = models.CharField(max_length=32768, blank=True, null=True)
+    is_standard = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('block1', 'block2', 'block3', 'version')
@@ -100,6 +100,9 @@ class Publisher(models.Model):
 
     class Meta:
         unique_together = ('parent', 'organization', 'name', 'group', 'contact')
+
+    class JSONAPIMeta:
+        resource_name = "inchi"
 
     @classmethod
     def create(cls, *args, **kwargs):

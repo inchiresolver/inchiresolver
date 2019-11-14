@@ -3,8 +3,6 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 
-from rest_framework_swagger.views import get_swagger_view
-
 import resolver.urls
 
 # openapi_urlpatterns = [
