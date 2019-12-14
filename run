@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+docker-compose exec inchiresolver python $1
+
+

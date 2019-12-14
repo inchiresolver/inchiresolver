@@ -73,7 +73,7 @@ class Organization(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True)
     name = models.CharField(unique=True, max_length=32768)
     abbreviation = models.CharField(max_length=32, blank=True, null=True)
-    url = models.URLField(max_length=4096, blank=True, null=True)
+    website = models.URLField(max_length=4096, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified= models.DateTimeField(auto_now=True)
 
@@ -94,15 +94,12 @@ class Publisher(models.Model):
     name = models.CharField(max_length=32768)
     group = models.CharField(max_length=32768, blank=True, null=True)
     contact = models.CharField(max_length=32768, blank=True, null=True)
-    url = models.URLField(max_length=4096, blank=True, null=True)
+    website = models.URLField(max_length=4096, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('parent', 'organization', 'name', 'group', 'contact')
-
-    class JSONAPIMeta:
-        resource_name = "inchi"
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -120,16 +117,21 @@ class Publisher(models.Model):
         return "%s[%s, %s]" % (self.name, self.group, self.contact)
 
 
-class UrlEntryPoint(models.Model):
+class EntryPoint(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None)
+    type = models.CharField(max_length = 16, choices=(
+        ("website", "website"),
+        ("service", "service"),
+        ("inchiresolver", "inchiresolver")
+    ), default="website")
     publisher = models.ForeignKey('Publisher', on_delete=models.CASCADE, default=None)
-    url = models.URLField(max_length=4096)
+    uri = models.URLField(max_length=4096)
+    name = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(max_length=32768, blank=True, null=True)
-    is_inchi_resolver = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ('parent', 'publisher', 'url', 'is_inchi_resolver')
+        unique_together = ('parent', 'publisher', 'uri', 'type')
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -137,18 +139,18 @@ class UrlEntryPoint(models.Model):
         entrypoint.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('parent', None)),
             str(kwargs.get('publisher')),
-            kwargs.get('url'),
-            str(kwargs.get('is_inchi_resolver', False))
+            kwargs.get('uri'),
+            str(kwargs.get('type'))
         ]))
         return entrypoint
 
     def __str__(self):
-        return "%s[%s]" % (self.publisher, self.url)
+        return "%s[%s]" % (self.publisher, self.uri)
 
 
-class UriEndPoint(models.Model):
+class EndPoint(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
-    entrypoint = models.ForeignKey('UrlEntryPoint', on_delete=models.CASCADE, default=None)
+    entrypoint = models.ForeignKey('EntryPoint', on_delete=models.CASCADE, default=None)
     uri = models.CharField(max_length=32768)
     description = models.TextField(max_length=32768, blank=True, null=True)
     media_type = models.CharField(max_length=1024, blank=True, null=True)

@@ -10,8 +10,8 @@ router.register('inchis', views.InchiViewSet)
 #router.register('inchikeys', views.InchiKeyViewSet)
 router.register('organizations', views.OrganizationViewSet)
 router.register('publishers', views.PublisherViewSet)
-router.register('entrypoints', views.UrlEntryPointViewSet)
-router.register('endpoints', views.UriEndPointViewSet)
+router.register('entrypoints', views.EntryPointViewSet)
+router.register('endpoints', views.EndPointViewSet)
 urlpatterns = router.urls
 
 #urlpatterns = urlpatterns + [path('', views.api_root),]

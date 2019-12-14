@@ -25,6 +25,9 @@ services:
       - LETSENCRYPT_HOST
       - LETSENCRYPT_EMAIL
       - LETSENCRYPT_TEST
+      - INCHI_RESOLVER_HOST
+      - INCHI_RESOLVER_USER
+      - INCHI_RESOLVER_PASSWD
     depends_on:
       - inchiresolverdb
     entrypoint: ["/home/app/docker-entrypoint.sh"]

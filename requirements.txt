@@ -9,3 +9,4 @@ djangorestframework-jsonapi[django-filter]
 djangorestframework-jsonapi[django-polymorphic]
 pyyaml
 uritemplate
+jsonapi-client
