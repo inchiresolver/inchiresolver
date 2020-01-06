@@ -12,3 +12,4 @@ tmp/*
 /client/out.html
 /out.html
 /.python_history
+/.env.back

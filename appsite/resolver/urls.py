@@ -5,7 +5,8 @@ from rest_framework.routers import DefaultRouter
 from resolver import views
 
 
-router = DefaultRouter()
+
+router = DefaultRouter(trailing_slash=False)
 router.register('inchis', views.InchiViewSet)
 #router.register('inchikeys', views.InchiKeyViewSet)
 router.register('organizations', views.OrganizationViewSet)

@@ -23,9 +23,9 @@ class InchiViewSet(
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('key', 'string', 'block1', 'block2', 'block3', 'is_standard')
 
-    resource_name = 'inchi'
+    resource_name = 'inchis'
     serializer_class = InchiSerializer
-    allowed_methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+    #allowed_methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     #permission_classes = (permissions.IsAuthenticated,)
 
 
