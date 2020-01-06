@@ -20,9 +20,13 @@ class Inchi(models.Model):
     key = models.CharField(max_length=27, blank=True, null=True)
     string = models.CharField(max_length=32768, blank=True, null=True)
     is_standard = models.BooleanField(default=False)
+    safeopt = models.CharField(db_index=True, max_length=2, default=None, null=True)
+    entrypoints = models.ManyToManyField('EntryPoint')
+    added = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('block1', 'block2', 'block3', 'version')
+        unique_together = ('block1', 'block2', 'block3', 'version', 'safeopt')
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -120,40 +124,48 @@ class Publisher(models.Model):
 class EntryPoint(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None)
-    type = models.CharField(max_length = 16, choices=(
-        ("website", "website"),
+    category = models.CharField(max_length = 16, choices=(
+        ("site", "site"),
         ("service", "service"),
-        ("inchiresolver", "inchiresolver")
+        ("resolver", "resolver")
     ), default="website")
     publisher = models.ForeignKey('Publisher', on_delete=models.CASCADE, default=None)
-    uri = models.URLField(max_length=4096)
+    href = models.URLField(max_length=4096)
     name = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(max_length=32768, blank=True, null=True)
+    added = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('parent', 'publisher', 'uri', 'type')
+        unique_together = ('parent', 'publisher', 'href', 'category')
 
     @classmethod
     def create(cls, *args, **kwargs):
         entrypoint = cls(*args, **kwargs)
         entrypoint.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('parent', None)),
+            str(kwargs.get('category')),
             str(kwargs.get('publisher')),
-            kwargs.get('uri'),
-            str(kwargs.get('type'))
+            kwargs.get('href'),
         ]))
         return entrypoint
 
     def __str__(self):
-        return "%s[%s]" % (self.publisher, self.uri)
+        return "%s[%s]" % (self.publisher, self.href)
 
 
 class EndPoint(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
     entrypoint = models.ForeignKey('EntryPoint', on_delete=models.CASCADE, default=None)
+    category = models.CharField(max_length=16, choices=(
+        ("schema", "schema"),
+        ("uripattern", "uripattern")
+    ), default="uripattern")
     uri = models.CharField(max_length=32768)
     description = models.TextField(max_length=32768, blank=True, null=True)
     media_type = models.CharField(max_length=1024, blank=True, null=True)
+    added = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('entrypoint', 'uri')
@@ -163,10 +175,11 @@ class EndPoint(models.Model):
         endpoint = cls(*args, **kwargs)
         endpoint.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('entrypoint')),
+            str(kwargs.get('category')),
+            kwargs.get('media_type', None),
             kwargs.get('uri'),
-            kwargs.get('media_type', None)
         ]))
         return endpoint
 
     def __str__(self):
-        return "%s[%s]" % (self.uri, self.entrypoint)
+        return "%s[%s]" % (self.entrypoint, self.uri)

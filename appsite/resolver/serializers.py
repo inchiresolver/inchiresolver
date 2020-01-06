@@ -9,8 +9,8 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Inchi
-        fields = ('url', 'string', 'key', 'version', 'is_standard')
-        read_only_fields = ('version', 'is_standard')
+        fields = ('url', 'string', 'key', 'version', 'is_standard', 'safeopt', 'entrypoints', 'added', 'modified')
+        read_only_fields = ('key', 'version', 'is_standard', 'added', 'modified')
 
     def create(self, validated_data):
         inchi = Inchi.create(**validated_data)
@@ -23,6 +23,7 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Organization
         fields = ('url', 'parent', 'name', 'abbreviation', 'website', 'added', 'modified')
+        read_only_fields = ('added', 'modified')
 
     def create(self, validated_data):
         organization = Organization.create(**validated_data)
@@ -37,6 +38,7 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Publisher
         fields = ('url', 'parent', 'organization', 'name', 'group', 'contact', 'url', 'added', 'modified')
+        read_only_fields = ('added', 'modified')
 
     def create(self, validated_data):
         publisher = Publisher.create(**validated_data)
@@ -50,7 +52,8 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = EntryPoint
-        fields = ('url', 'publisher', 'uri', 'type', 'name', 'description')
+        fields = ('url', 'publisher', 'name', 'description', 'category', 'href')
+        read_only_fields = ('added', 'modified')
 
     def create(self, validated_data):
         entrypoint = EntryPoint.create(**validated_data)
@@ -66,7 +69,8 @@ class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = EndPoint
-        fields = ('url', 'entrypoint', 'uri', 'description', 'media_type')
+        fields = ('url', 'entrypoint', 'description', 'category', 'uri',  'media_type')
+        read_only_fields = ('added', 'modified')
 
     def create(self, validated_data):
         endpoint = EndPoint.create(**validated_data)

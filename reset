@@ -2,7 +2,7 @@
 set -e
 
 docker-compose down &&\
-docker volume rm inchiresolverdb_volume &&\
+docker volume rm chembience_inchiresolverdb_volume &&\
 rm -rf ./appsite/resolver/migrations/* &&\
 docker-compose up &
 
