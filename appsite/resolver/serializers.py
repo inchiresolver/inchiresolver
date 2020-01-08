@@ -1,7 +1,7 @@
 from rest_framework_json_api import serializers
 #from rest_framework.response import Response
 #from rest_framework.reverse import reverse
-
+from rest_framework_json_api.relations import ResourceRelatedField
 
 from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
 
@@ -22,7 +22,7 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Organization
-        fields = ('url', 'parent', 'name', 'abbreviation', 'website', 'added', 'modified')
+        fields = ('url', 'parent', 'name', 'abbreviation', 'href', 'added', 'modified')
         read_only_fields = ('added', 'modified')
 
     def create(self, validated_data):
@@ -33,11 +33,16 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
 
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
-    organization = serializers.HyperlinkedRelatedField(queryset=Organization.objects.all(), view_name='organization-detail',)
+    #organization = serializers.HyperlinkedRelatedField(queryset=Organization.objects.all(), view_name='organization-detail',)
+
+    # organization = ResourceRelatedField(
+    #     queryset=Organization.objects  # queryset argument is required
+    # )  # except when read_only=True
+
 
     class Meta:
         model = Publisher
-        fields = ('url', 'parent', 'organization', 'name', 'group', 'contact', 'url', 'added', 'modified')
+        fields = ('url', 'parent', 'organization', 'name', 'group', 'contact', 'href', 'added', 'modified')
         read_only_fields = ('added', 'modified')
 
     def create(self, validated_data):
@@ -48,7 +53,7 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
 class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
 
-    publisher = serializers.HyperlinkedRelatedField(queryset=Publisher.objects.all(), view_name='publisher-detail',)
+    #publisher = serializers.HyperlinkedRelatedField(queryset=Publisher.objects.all(), view_name='publisher-detail',)
 
     class Meta:
         model = EntryPoint
@@ -63,9 +68,7 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
 
 class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 
-    #self = serializers.HyperlinkedIdentityField(view_name='uriendpoint-detail', format='html', )
-    #uid = serializers.UUIDField(source='uid', read_only=True)
-    entrypoint = serializers.HyperlinkedRelatedField(queryset=EntryPoint.objects.all(), view_name='urlentrypoint-detail')
+    #entrypoint = serializers.HyperlinkedRelatedField(queryset=EntryPoint.objects.all(), view_name='urlentrypoint-detail')
 
     class Meta:
         model = EndPoint
