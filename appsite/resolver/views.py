@@ -24,7 +24,7 @@ class InchiViewSet(
     #filter_fields = ('key', 'string', 'block1', 'block2', 'block3', 'is_standard')
 
     resource_name = 'inchis'
-    #serializer_class = InchiSerializer
+    serializer_class = InchiSerializer
     #allowed_methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     #permission_classes = (permissions.IsAuthenticated,)
 
@@ -36,8 +36,7 @@ class OrganizationViewSet(viewsets.ModelViewSet):
     serializer_class = OrganizationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('name', 'abbreviation',)
-
-    resource_name = "organizations"
+    
     
 class PublisherViewSet(viewsets.ModelViewSet):
     """
@@ -46,8 +45,6 @@ class PublisherViewSet(viewsets.ModelViewSet):
     serializer_class = PublisherSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('organization', 'name', 'group', 'contact',)
-
-    resource_name = "publishers"
 
 
 class EntryPointViewSet(viewsets.ModelViewSet):
@@ -58,8 +55,6 @@ class EntryPointViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('parent', 'publisher', 'is_inchi_resolver',)
 
-    resource_name = "entrypoints"
-
 
 class EndPointViewSet(viewsets.ModelViewSet):
     """
@@ -68,5 +63,3 @@ class EndPointViewSet(viewsets.ModelViewSet):
     serializer_class = EndPointSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('entrypoint', 'media_type',)
-
-    resource_name = "endpoints"
