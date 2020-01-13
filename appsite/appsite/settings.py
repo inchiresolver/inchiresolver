@@ -33,7 +33,6 @@ ALLOWED_HOSTS = os.environ['APP_VIRTUAL_HOSTNAME'].split(",")
 INSTALLED_APPS = [
     'resolver',
     'inchi',
-    'sandbox',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
