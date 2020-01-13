@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 
 import resolver.urls
+import sandbox.urls
 
 # openapi_urlpatterns = [
 #     path('', include(resolver.urls))
@@ -26,7 +27,7 @@ urlpatterns = [
     ), name='swagger-ui'),
     path('admin', admin.site.urls),
     re_path('^api-auth', include('rest_framework.urls', namespace='rest_framework')),
-    path('', include(resolver.urls)),
+    path('', include(sandbox.urls)),
 ]
 
 
