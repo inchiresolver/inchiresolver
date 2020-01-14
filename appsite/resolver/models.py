@@ -21,12 +21,15 @@ class Inchi(models.Model):
     string = models.CharField(max_length=32768, blank=True, null=True)
     is_standard = models.BooleanField(default=False)
     safeopt = models.CharField(db_index=True, max_length=2, default=None, null=True)
-    entrypoints = models.ManyToManyField('EntryPoint')
+    entrypoints = models.ManyToManyField("EntryPoint", default=None, related_name="inchis")
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    class JSONAPIMeta:
+        resource_name = "inchis"
+
     class Meta:
-        unique_together = ('block1', 'block2', 'block3', 'version', 'safeopt')
+        unique_together = ("block1", "block2", "block3", "version", "safeopt")
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -77,9 +80,12 @@ class Organization(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True)
     name = models.CharField(unique=True, max_length=32768)
     abbreviation = models.CharField(max_length=32, blank=True, null=True)
-    website = models.URLField(max_length=4096, blank=True, null=True)
+    href = models.URLField(max_length=4096, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified= models.DateTimeField(auto_now=True)
+
+    class JSONAPIMeta:
+        resource_name = "organizations"
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -94,7 +100,7 @@ class Organization(models.Model):
 class Publisher(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True)
-    organization = models.ForeignKey('Organization', related_name="publishers", on_delete=models.CASCADE, default=None, null=True)
+    organization = models.ForeignKey("Organization", related_name="publishers", on_delete=models.CASCADE, default=None, null=True)
     name = models.CharField(max_length=32768)
     group = models.CharField(max_length=32768, blank=True, null=True)
     contact = models.CharField(max_length=32768, blank=True, null=True)
@@ -102,8 +108,11 @@ class Publisher(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    class JSONAPIMeta:
+        resource_name = "publishers"
+
     class Meta:
-        unique_together = ('parent', 'organization', 'name', 'group', 'contact')
+        unique_together = ("parent", "organization", "name", "group", "contact")
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -123,18 +132,21 @@ class Publisher(models.Model):
 
 class EntryPoint(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, default=None, null=True)
     category = models.CharField(max_length = 16, choices=(
         ("site", "site"),
         ("service", "service"),
         ("resolver", "resolver")
     ), default="website")
-    publisher = models.ForeignKey('Publisher', on_delete=models.CASCADE, default=None)
+    publisher = models.ForeignKey("Publisher", on_delete=models.CASCADE, default=None)
     href = models.URLField(max_length=4096)
     name = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(max_length=32768, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    class JSONAPIMeta:
+        resource_name = "entrypoints"
 
     class Meta:
         unique_together = ('parent', 'publisher', 'href', 'category')
@@ -166,6 +178,9 @@ class EndPoint(models.Model):
     media_type = models.CharField(max_length=1024, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
+
+    class JSONAPIMeta:
+        resource_name = "endpoint"
 
     class Meta:
         unique_together = ('entrypoint', 'uri')

@@ -1,10 +1,10 @@
+from django.conf.urls import url
 from django.urls import include, path
 
 from rest_framework.routers import DefaultRouter
 
 from resolver import views
-
-
+#from views import InchiRelationshipView
 
 router = DefaultRouter(trailing_slash=False)
 router.register('inchis', views.InchiViewSet)
@@ -15,6 +15,13 @@ router.register('entrypoints', views.EntryPointViewSet)
 router.register('endpoints', views.EndPointViewSet)
 urlpatterns = router.urls
 
+urlpatterns = urlpatterns + [
+    url(
+        regex=r'^inchis/(?P<pk>[^/.]+)/relationships/(?P<related_field>[^/.]+)$',
+        view=views.InchiRelationshipView.as_view(),
+        name='inchi-relationships'
+    )
+]
 #urlpatterns = urlpatterns + [path('', views.api_root),]
 
 

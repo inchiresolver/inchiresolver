@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, action
 from rest_framework.viewsets import GenericViewSet
 
 #from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework_json_api.views import RelationshipView
 
 from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
 from resolver.serializers import InchiSerializer, OrganizationSerializer, PublisherSerializer, \
@@ -18,15 +19,22 @@ class InchiViewSet(
         GenericViewSet):
     """
     """
+
+    #resource_name = 'inchis'
     queryset = Inchi.objects.all()
     serializer_class = InchiSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('key', 'string', 'block1', 'block2', 'block3', 'is_standard')
 
-    resource_name = 'inchis'
     #serializer_class = InchiSerializer
     #allowed_methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     #permission_classes = (permissions.IsAuthenticated,)
+
+
+class InchiRelationshipView(RelationshipView):
+    queryset = Inchi.objects
+
+
 
 
 class OrganizationViewSet(viewsets.ModelViewSet):
@@ -37,7 +45,7 @@ class OrganizationViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('name', 'abbreviation',)
 
-    resource_name = "organizations"
+    #resource_name = "organizations"
     
 class PublisherViewSet(viewsets.ModelViewSet):
     """
@@ -47,7 +55,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('organization', 'name', 'group', 'contact',)
 
-    resource_name = "publishers"
+    #resource_name = "publishers"
 
 
 class EntryPointViewSet(viewsets.ModelViewSet):
@@ -58,7 +66,7 @@ class EntryPointViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('parent', 'publisher', 'is_inchi_resolver',)
 
-    resource_name = "entrypoints"
+    #resource_name = "entrypoints"
 
 
 class EndPointViewSet(viewsets.ModelViewSet):
@@ -69,4 +77,4 @@ class EndPointViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     #filter_fields = ('entrypoint', 'media_type',)
 
-    resource_name = "endpoints"
+    #resource_name = "endpoints"

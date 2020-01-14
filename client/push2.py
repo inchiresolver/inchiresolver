@@ -24,6 +24,7 @@ schema = {
     "inchis": {
         "properties": {
             "string": {"type": "string"},
+            "safeopt": {"type": ["null", "string"]},
             "key": {"type": ["null", "string"]},
             "version": {"type": ["null", "number"]},
             "isStandard": {"type": ["null", "boolean"]}
@@ -41,13 +42,10 @@ i = session.create('inchis')
 i.string = "InChI=1S/C19H16O4/c1-12(20)11-15(13-7-3-2-4-8-13)17-18(21)14-9-5-6-10-16(14)23-19(17)22/h2-10,15,22H,11H2,1H3"
 
 
-print(session.is_dirty)
-
 r = i.commit()
 print(r)
 
 
-print(session.is_dirty)
 
 
 

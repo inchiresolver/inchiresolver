@@ -12,6 +12,18 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'string', 'key', 'version', 'is_standard', 'safeopt', 'entrypoints', 'added', 'modified')
         read_only_fields = ('key', 'version', 'is_standard', 'added', 'modified')
 
+    entrypoints = ResourceRelatedField(
+        model=EntryPoint,
+        many=True,
+        read_only=False,
+        allow_null=True,
+        required=False,
+        queryset=EntryPoint.objects,
+        #related_link_view_name='inchi-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='inchi-relationships'
+    )
+
     def create(self, validated_data):
         inchi = Inchi.create(**validated_data)
         inchi.save()
