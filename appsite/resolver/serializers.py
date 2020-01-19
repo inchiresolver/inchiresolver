@@ -5,6 +5,7 @@ from rest_framework_json_api.relations import ResourceRelatedField
 
 from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
 
+
 class InchiSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
@@ -12,25 +13,28 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'string', 'key', 'version', 'is_standard', 'safeopt', 'entrypoints', 'added', 'modified')
         read_only_fields = ('key', 'version', 'is_standard', 'added', 'modified')
 
-    entrypoints = ResourceRelatedField(
-        model=EntryPoint,
-        many=True,
-        read_only=False,
-        allow_null=True,
-        required=False,
-        queryset=EntryPoint.objects,
-        #related_link_view_name='inchi-related',
-        related_link_url_kwarg='pk',
-        self_link_view_name='inchi-relationships'
-    )
-
     def create(self, validated_data):
         inchi = Inchi.create(**validated_data)
         inchi.save()
         return inchi
 
+    entrypoints = ResourceRelatedField(
+        queryset=EntryPoint.objects,
+        many=True,
+        read_only=False,
+        allow_null=True,
+        required=False,
+        related_link_view_name='inchi-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='inchi-relationships'
+    )
 
-class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
+    related_serializers = {
+         'entrypoints': 'resolver.serializers.EntryPointSerializer',
+    }
+
+
+class OrganizationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Organization
@@ -43,7 +47,7 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
         return organization
 
 
-class PublisherSerializer(serializers.HyperlinkedModelSerializer):
+class PublisherSerializer(serializers.ModelSerializer):
 
     #organization = serializers.HyperlinkedRelatedField(queryset=Organization.objects.all(), view_name='organization-detail',)
 
@@ -63,7 +67,7 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
         return publisher
 
 
-class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
+class EntryPointSerializer(serializers.ModelSerializer):
 
     #publisher = serializers.HyperlinkedRelatedField(queryset=Publisher.objects.all(), view_name='publisher-detail',)
 
@@ -78,7 +82,7 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
         return entrypoint
 
 
-class EndPointSerializer(serializers.HyperlinkedModelSerializer):
+class EndPointSerializer(serializers.ModelSerializer):
 
     #entrypoint = serializers.HyperlinkedRelatedField(queryset=EntryPoint.objects.all(), view_name='urlentrypoint-detail')
 

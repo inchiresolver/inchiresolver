@@ -21,7 +21,7 @@ class Inchi(models.Model):
     string = models.CharField(max_length=32768, blank=True, null=True)
     is_standard = models.BooleanField(default=False)
     safeopt = models.CharField(db_index=True, max_length=2, default=None, null=True)
-    entrypoints = models.ManyToManyField("EntryPoint", default=None, related_name="inchis")
+    entrypoints = models.ManyToManyField('EntryPoint', related_name='inchis')
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 

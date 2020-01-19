@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from rest_framework.routers import DefaultRouter
 
@@ -13,14 +13,18 @@ router.register('organizations', views.OrganizationViewSet)
 router.register('publishers', views.PublisherViewSet)
 router.register('entrypoints', views.EntryPointViewSet)
 router.register('endpoints', views.EndPointViewSet)
-urlpatterns = router.urls
+#urlpatterns = router.urls
 
-urlpatterns = urlpatterns + [
-    url(
-        regex=r'^inchis/(?P<pk>[^/.]+)/relationships/(?P<related_field>[^/.]+)$',
+urlpatterns =  [
+    re_path(r'^', include(router.urls)),
+    re_path(r'^inchis/(?P<pk>[^/.]+)/relationships/(?P<related_field>[^/.]+)$',
         view=views.InchiRelationshipView.as_view(),
         name='inchi-relationships'
-    )
+    ),
+    path('inchis/<pk>/<related_field>',
+        view=views.InchiViewSet.as_view({'get': 'retrieve_related'}),
+        name='inchi-related'),
+
 ]
 #urlpatterns = urlpatterns + [path('', views.api_root),]
 
