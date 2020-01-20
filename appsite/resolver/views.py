@@ -1,18 +1,14 @@
-from rest_framework import mixins
-from rest_framework import viewsets, permissions
-from rest_framework.decorators import api_view, action
-from rest_framework.viewsets import GenericViewSet
-
-from django.shortcuts import get_object_or_404
-
-from rest_framework.response import Response
-
-#from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions
 from rest_framework_json_api.views import RelationshipView, ModelViewSet
 
 from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
-from resolver.serializers import InchiSerializer, OrganizationSerializer, PublisherSerializer, \
-    EntryPointSerializer, EndPointSerializer
+from resolver.serializers import (
+    InchiSerializer,
+    OrganizationSerializer,
+    PublisherSerializer,
+    EntryPointSerializer,
+    EndPointSerializer
+)
 
 
 class InchiViewSet(ModelViewSet):
@@ -26,6 +22,7 @@ class InchiViewSet(ModelViewSet):
 class InchiRelationshipView(RelationshipView):
     queryset = Inchi.objects
     self_link_view_name = 'inchi-relationships'
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class OrganizationViewSet(ModelViewSet):
@@ -36,11 +33,27 @@ class OrganizationViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
+class OrganizationRelationshipView(RelationshipView):
+    """
+    """
+    queryset = Organization.objects
+    self_link_view_name = 'organization-relationships'
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
 class PublisherViewSet(ModelViewSet):
     """
     """
     queryset = Publisher.objects.all()
     serializer_class = PublisherSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
+class PublisherRelationshipView(RelationshipView):
+    """
+    """
+    queryset = Publisher.objects
+    self_link_view_name = 'publisher-relationships'
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 

@@ -138,7 +138,7 @@ class EntryPoint(models.Model):
         ("service", "service"),
         ("resolver", "resolver")
     ), default="website")
-    publisher = models.ForeignKey("Publisher", on_delete=models.CASCADE, default=None)
+    publisher = models.ForeignKey("Publisher", related_name="entrypoints", on_delete=models.CASCADE, default=None)
     href = models.URLField(max_length=4096)
     name = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(max_length=32768, blank=True, null=True)

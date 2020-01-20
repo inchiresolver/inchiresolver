@@ -1,12 +1,24 @@
 from rest_framework_json_api import serializers
-#from rest_framework.response import Response
-#from rest_framework.reverse import reverse
-from rest_framework_json_api.relations import ResourceRelatedField
+from rest_framework_json_api import relations
 
 from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
 
 
 class InchiSerializer(serializers.HyperlinkedModelSerializer):
+
+    entrypoints = relations.HyperlinkedRelatedField(
+        # queryset=EntryPoint.objects,
+        many=True,
+        read_only=True,
+        required=False,
+        related_link_view_name='inchi-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='inchi-relationships',
+    )
+
+    related_serializers = {
+        'entrypoints': 'resolver.serializers.EntryPointSerializer',
+    }
 
     class Meta:
         model = Inchi
@@ -18,23 +30,24 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
         inchi.save()
         return inchi
 
-    entrypoints = ResourceRelatedField(
-        queryset=EntryPoint.objects,
-        many=True,
-        read_only=False,
-        allow_null=True,
+
+class OrganizationSerializer(serializers.ModelSerializer):
+
+    parent = relations.HyperlinkedRelatedField(
+        # queryset=EntryPoint.objects,
+        many=False,
+        read_only=True,
         required=False,
-        related_link_view_name='inchi-related',
+        related_link_view_name='organization-related',
         related_link_url_kwarg='pk',
-        self_link_view_name='inchi-relationships'
+        self_link_view_name='organization-relationships',
     )
 
     related_serializers = {
-         'entrypoints': 'resolver.serializers.EntryPointSerializer',
+        'parent': 'resolver.serializers.OrganizationSerializer',
     }
 
 
-class OrganizationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Organization
@@ -49,16 +62,32 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
 class PublisherSerializer(serializers.ModelSerializer):
 
-    #organization = serializers.HyperlinkedRelatedField(queryset=Organization.objects.all(), view_name='organization-detail',)
+    organization = relations.HyperlinkedRelatedField(
+        # queryset=EntryPoint.objects,
+        many=False,
+        read_only=True,
+        related_link_view_name='publisher-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='publisher-relationships',
+    )
 
-    # organization = ResourceRelatedField(
-    #     queryset=Organization.objects  # queryset argument is required
-    # )  # except when read_only=True
+    entrypoints = relations.HyperlinkedRelatedField(
+        # queryset=EntryPoint.objects,
+        many=True,
+        read_only=True,
+        related_link_view_name='publisher-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='publisher-relationships',
+    )
 
+    related_serializers = {
+        'organization': 'resolver.serializers.OrganizationSerializer',
+        'entrypoints': 'resolver.serializers.EntryPointSerializer',
+    }
 
     class Meta:
         model = Publisher
-        fields = ('url', 'parent', 'organization', 'name', 'group', 'contact', 'href', 'added', 'modified')
+        fields = ('url', 'parent', 'organization', 'entrypoints', 'name', 'group', 'contact', 'href', 'added', 'modified')
         read_only_fields = ('added', 'modified')
 
     def create(self, validated_data):
@@ -69,7 +98,18 @@ class PublisherSerializer(serializers.ModelSerializer):
 
 class EntryPointSerializer(serializers.ModelSerializer):
 
-    #publisher = serializers.HyperlinkedRelatedField(queryset=Publisher.objects.all(), view_name='publisher-detail',)
+    publisher = relations.HyperlinkedRelatedField(
+        # queryset=EntryPoint.objects,
+        many=False,
+        read_only=True,
+        related_link_view_name='entrypoint-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='entrypoint-relationships',
+    )
+
+    related_serializers = {
+        'publisher': 'resolver.serializers.PublisherSerializer',
+    }
 
     class Meta:
         model = EntryPoint
