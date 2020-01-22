@@ -89,3 +89,50 @@ def run():
     )
     i3.save()
     i3.entrypoints.add(e1)
+
+
+    x1 = EndPoint.create(
+        entrypoint=e1,
+        category="uripattern",
+        uri="{stdinchi|stdinchikey}/smiles",
+        description="Standard InChI to SMILES conversion",
+        media_type="text/plain",
+    )
+    x1.save()
+
+    x2 = EndPoint.create(
+        entrypoint=e1,
+        category="uripattern",
+        uri="{+stdinchi,+stdinchikey}/iupac_name",
+        description="Standard InChI to IUPAC name conversion",
+        media_type="text/plain",
+    )
+    x2.save()
+
+    x3 = EndPoint.create(
+        entrypoint=e1,
+        category="uripattern",
+        uri="{+stdinchi,+stdinchikey}/image",
+        description="InChI to SMILES conversion",
+        media_type="image/gif"
+    )
+    x3.save()
+
+    x4 = EndPoint.create(
+        entrypoint=e1,
+        category="uripattern",
+        uri="{+smiles}/stdinchi",
+        description="SMILES to stdinchi conversion",
+        media_type="text/plain",
+    )
+    x4.save()
+
+    x5 = EndPoint.create(
+        entrypoint=e1,
+        category="uripattern",
+        uri="{+smiles}/stdinchikey",
+        description="SMILES to stdinchikey conversion",
+        media_type="text/plain",
+    )
+    x5.save()
+

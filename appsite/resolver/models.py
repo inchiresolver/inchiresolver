@@ -168,7 +168,7 @@ class EntryPoint(models.Model):
 
 class EndPoint(models.Model):
     uid = models.UUIDField(primary_key=True, editable=False)
-    entrypoint = models.ForeignKey('EntryPoint', on_delete=models.CASCADE, default=None)
+    entrypoint = models.ForeignKey('EntryPoint', related_name="endpoints", on_delete=models.CASCADE, default=None)
     category = models.CharField(max_length=16, choices=(
         ("schema", "schema"),
         ("uripattern", "uripattern")

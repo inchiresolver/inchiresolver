@@ -107,13 +107,23 @@ class EntryPointSerializer(serializers.ModelSerializer):
         self_link_view_name='entrypoint-relationships',
     )
 
+    endpoints = relations.HyperlinkedRelatedField(
+        # queryset=EntryPoint.objects,
+        many=True,
+        read_only=True,
+        related_link_view_name='entrypoint-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='entrypoint-relationships',
+    )
+
     related_serializers = {
         'publisher': 'resolver.serializers.PublisherSerializer',
+        'endpoints': 'resolver.serializers.EndPointSerializer'
     }
 
     class Meta:
         model = EntryPoint
-        fields = ('url', 'publisher', 'name', 'description', 'category', 'href')
+        fields = ('url', 'publisher', 'name', 'description', 'category', 'href', 'endpoints')
         read_only_fields = ('added', 'modified')
 
     def create(self, validated_data):
@@ -124,7 +134,18 @@ class EntryPointSerializer(serializers.ModelSerializer):
 
 class EndPointSerializer(serializers.ModelSerializer):
 
-    #entrypoint = serializers.HyperlinkedRelatedField(queryset=EntryPoint.objects.all(), view_name='urlentrypoint-detail')
+    entrypoint = relations.HyperlinkedRelatedField(
+        # queryset=EntryPoint.objects,
+        many=False,
+        read_only=True,
+        related_link_view_name='endpoint-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='endpoint-relationships',
+    )
+
+    related_serializers = {
+        'entrypoint': 'resolver.serializers.EntryPointSerializer',
+    }
 
     class Meta:
         model = EndPoint

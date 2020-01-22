@@ -78,3 +78,11 @@ class EndPointViewSet(ModelViewSet):
     queryset = EndPoint.objects.all()
     serializer_class = EndPointSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
+class EndPointRelationshipView(RelationshipView):
+    """
+    """
+    queryset = EndPoint.objects
+    self_link_view_name = 'endpoint-relationships'
+

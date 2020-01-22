@@ -11,10 +11,10 @@ router.register('publishers', views.PublisherViewSet)
 router.register('entrypoints', views.EntryPointViewSet)
 router.register('endpoints', views.EndPointViewSet)
 
-urlpatterns =  [
+urlpatterns = [
     re_path(r'^', include(router.urls)),
 
-    re_path(r'^inchis/(?P<pk>[^/.]+)/relationships/(?P<related_field>[^/.]+)$',
+    path('inchis/<pk>/relationships/<related_field>',
         view=views.InchiRelationshipView.as_view(),
         name='inchi-relationships'
     ),
@@ -22,7 +22,7 @@ urlpatterns =  [
         view=views.InchiViewSet.as_view({'get': 'retrieve_related'}),
         name='inchi-related'),
 
-    re_path(r'^publishers/(?P<pk>[^/.]+)/relationships/(?P<related_field>[^/.]+)$',
+    path('publishers/<pk>/relationships/<related_field>',
         view=views.PublisherRelationshipView.as_view(),
         name='publisher-relationships'
     ),
@@ -31,7 +31,7 @@ urlpatterns =  [
         name='publisher-related'),
 
 
-    re_path(r'^entrypoints/(?P<pk>[^/.]+)/relationships/(?P<related_field>[^/.]+)$',
+    path('entrypoints/<pk>/relationships/<related_field>',
         view=views.EntryPointRelationshipView.as_view(),
         name='entrypoint-relationships'
     ),
@@ -40,13 +40,22 @@ urlpatterns =  [
         name='entrypoint-related'),
 
 
-    re_path(r'^organizations/(?P<pk>[^/.]+)/relationships/(?P<related_field>[^/.]+)$',
+    path('organizations/<pk>/relationships/<related_field>',
         view=views.OrganizationRelationshipView.as_view(),
         name='organization-relationships'
     ),
     path('organizations/<pk>/<related_field>',
         view=views.OrganizationViewSet.as_view({'get': 'retrieve_related'}),
         name='organization-related'),
+
+
+    path('endpoints/<pk>/relationships/<related_field>',
+        view=views.EndPointRelationshipView.as_view(),
+        name='endpoint-relationships'
+    ),
+    path('endpoints/<pk>/<related_field>',
+        view=views.EndPointViewSet.as_view({'get': 'retrieve_related'}),
+        name='endpoint-related'),
 
 
 ]
