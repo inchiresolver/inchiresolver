@@ -180,7 +180,7 @@ class EndPoint(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     class JSONAPIMeta:
-        resource_name = "endpoint"
+        resource_name = "endpoints"
 
     class Meta:
         unique_together = ('entrypoint', 'uri')

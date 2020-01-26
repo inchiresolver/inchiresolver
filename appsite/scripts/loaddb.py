@@ -55,7 +55,7 @@ def run():
         name="Chemical Identifier Resolver",
         description="The Resolver",
         category="service",
-        href="http://cactus.nci.nih.gov",
+        href="http://cactus.nci.nih.gov/chemical/structure",
         publisher=p1
     )
     e1.save()
@@ -94,7 +94,7 @@ def run():
     x1 = EndPoint.create(
         entrypoint=e1,
         category="uripattern",
-        uri="{stdinchi|stdinchikey}/smiles",
+        uri="{+stdinchi|+stdinchikey}/smiles",
         description="Standard InChI to SMILES conversion",
         media_type="text/plain",
     )

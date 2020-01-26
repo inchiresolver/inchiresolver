@@ -34,10 +34,19 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
 class OrganizationSerializer(serializers.ModelSerializer):
 
     parent = relations.HyperlinkedRelatedField(
-        # queryset=EntryPoint.objects,
+        queryset=Organization.objects,
         many=False,
-        read_only=True,
+        read_only=False,
         required=False,
+        related_link_view_name='organization-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='organization-relationships',
+    )
+
+    publishers = relations.HyperlinkedRelatedField(
+        queryset=Publisher.objects,
+        many=True,
+        read_only=False,
         related_link_view_name='organization-related',
         related_link_url_kwarg='pk',
         self_link_view_name='organization-relationships',
@@ -45,13 +54,12 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
     related_serializers = {
         'parent': 'resolver.serializers.OrganizationSerializer',
+        'publishers': 'resolver.serializers.PublisherSerializer',
     }
-
-
 
     class Meta:
         model = Organization
-        fields = ('url', 'parent', 'name', 'abbreviation', 'href', 'added', 'modified')
+        fields = ('url', 'parent', 'name', 'abbreviation', 'href', 'publishers', 'added', 'modified')
         read_only_fields = ('added', 'modified')
 
     def create(self, validated_data):
@@ -63,9 +71,9 @@ class OrganizationSerializer(serializers.ModelSerializer):
 class PublisherSerializer(serializers.ModelSerializer):
 
     organization = relations.HyperlinkedRelatedField(
-        # queryset=EntryPoint.objects,
+        queryset=Organization.objects,
         many=False,
-        read_only=True,
+        read_only=False,
         related_link_view_name='publisher-related',
         related_link_url_kwarg='pk',
         self_link_view_name='publisher-relationships',
