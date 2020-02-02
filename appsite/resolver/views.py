@@ -10,6 +10,7 @@ from resolver.serializers import (
     EndPointSerializer
 )
 
+### INCHI ###
 
 class InchiViewSet(ModelViewSet):
     """
@@ -20,10 +21,12 @@ class InchiViewSet(ModelViewSet):
 
 
 class InchiRelationshipView(RelationshipView):
-    queryset = Inchi.objects
+    queryset = Inchi.objects.all()
     self_link_view_name = 'inchi-relationships'
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+
+### ORGANZATION ###
 
 class OrganizationViewSet(ModelViewSet):
     """
@@ -36,10 +39,12 @@ class OrganizationViewSet(ModelViewSet):
 class OrganizationRelationshipView(RelationshipView):
     """
     """
-    queryset = Organization.objects
+    queryset = Organization.objects.all()
     self_link_view_name = 'organization-relationships'
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+
+### PUBLISHER ###
 
 class PublisherViewSet(ModelViewSet):
     """
@@ -52,10 +57,12 @@ class PublisherViewSet(ModelViewSet):
 class PublisherRelationshipView(RelationshipView):
     """
     """
-    queryset = Publisher.objects
+    queryset = Publisher.objects.all()
     self_link_view_name = 'publisher-relationships'
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+
+### ENTRYPOINT ###
 
 class EntryPointViewSet(ModelViewSet):
     """
@@ -68,9 +75,11 @@ class EntryPointViewSet(ModelViewSet):
 class EntryPointRelationshipView(RelationshipView):
     """
     """
-    queryset = EntryPoint.objects
+    queryset = EntryPoint.objects.all()
     self_link_view_name = 'entrypoint-relationships'
 
+
+### ENDPOINT ###
 
 class EndPointViewSet(ModelViewSet):
     """
@@ -83,6 +92,6 @@ class EndPointViewSet(ModelViewSet):
 class EndPointRelationshipView(RelationshipView):
     """
     """
-    queryset = EndPoint.objects
+    queryset = EndPoint.objects.all()
     self_link_view_name = 'endpoint-relationships'
 

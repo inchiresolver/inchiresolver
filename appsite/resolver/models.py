@@ -12,7 +12,7 @@ from inchi.identifier import InChIKey, InChI
 
 
 class Inchi(models.Model):
-    uid = models.UUIDField(primary_key=True, editable=False)
+    id = models.UUIDField(primary_key=True, editable=False)
     version = models.IntegerField(db_index=True, default=1)
     block1 = models.CharField(db_index=True, max_length=14)
     block2 = models.CharField(db_index=True, max_length=10)
@@ -65,9 +65,9 @@ class Inchi(models.Model):
         if s:
             inchi.string = s.element['well_formatted']
         if url_prefix:
-            inchi.uid = uuid.uuid5(uuid.NAMESPACE_URL, urljoin(url_prefix, inchi.key))
+            inchi.id = uuid.uuid5(uuid.NAMESPACE_URL, urljoin(url_prefix, inchi.key))
         else:
-            inchi.uid = uuid.uuid5(uuid.NAMESPACE_URL, inchi.key)
+            inchi.id = uuid.uuid5(uuid.NAMESPACE_URL, inchi.key)
 
         return inchi
 
@@ -76,8 +76,8 @@ class Inchi(models.Model):
 
 
 class Organization(models.Model):
-    uid = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True)
+    id = models.UUIDField(primary_key=True, editable=False)
+    parent = models.ForeignKey('self', related_name="minor", on_delete=models.CASCADE, null=True)
     name = models.CharField(unique=True, max_length=32768)
     abbreviation = models.CharField(max_length=32, blank=True, null=True)
     href = models.URLField(max_length=4096, blank=True, null=True)
@@ -90,7 +90,7 @@ class Organization(models.Model):
     @classmethod
     def create(cls, *args, **kwargs):
         organization = cls(*args, **kwargs)
-        organization.uid = uuid.uuid5(uuid.NAMESPACE_URL, kwargs.get('name'))
+        organization.id = uuid.uuid5(uuid.NAMESPACE_URL, kwargs.get('name'))
         return organization
 
     def __str__(self):
@@ -98,9 +98,9 @@ class Organization(models.Model):
 
 
 class Publisher(models.Model):
-    uid = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True)
-    organization = models.ForeignKey("Organization", related_name="publishers", on_delete=models.CASCADE, default=None, null=True)
+    id = models.UUIDField(primary_key=True, editable=False)
+    parent = models.ForeignKey('self', related_name="minor", on_delete=models.CASCADE, null=True)
+    organization = models.ForeignKey("Organization", related_name="publishers", on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=32768)
     group = models.CharField(max_length=32768, blank=True, null=True)
     contact = models.CharField(max_length=32768, blank=True, null=True)
@@ -117,7 +117,7 @@ class Publisher(models.Model):
     @classmethod
     def create(cls, *args, **kwargs):
         publisher = cls(*args, **kwargs)
-        publisher.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
+        publisher.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             kwargs.get('name'),
             str(kwargs.get('organization', None)),
             str(kwargs.get('parent', None)),
@@ -131,14 +131,14 @@ class Publisher(models.Model):
 
 
 class EntryPoint(models.Model):
-    uid = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey("self", on_delete=models.CASCADE, default=None, null=True)
-    category = models.CharField(max_length = 16, choices=(
+    id = models.UUIDField(primary_key=True, editable=False)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
+    category = models.CharField(max_length=16, choices=(
         ("site", "site"),
         ("service", "service"),
         ("resolver", "resolver")
     ), default="website")
-    publisher = models.ForeignKey("Publisher", related_name="entrypoints", on_delete=models.CASCADE, default=None)
+    publisher = models.ForeignKey("Publisher", related_name="entrypoints", on_delete=models.CASCADE, null=True)
     href = models.URLField(max_length=4096)
     name = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(max_length=32768, blank=True, null=True)
@@ -154,7 +154,7 @@ class EntryPoint(models.Model):
     @classmethod
     def create(cls, *args, **kwargs):
         entrypoint = cls(*args, **kwargs)
-        entrypoint.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
+        entrypoint.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('parent', None)),
             str(kwargs.get('category')),
             str(kwargs.get('publisher')),
@@ -167,8 +167,8 @@ class EntryPoint(models.Model):
 
 
 class EndPoint(models.Model):
-    uid = models.UUIDField(primary_key=True, editable=False)
-    entrypoint = models.ForeignKey('EntryPoint', related_name="endpoints", on_delete=models.CASCADE, default=None)
+    id = models.UUIDField(primary_key=True, editable=False)
+    entrypoint = models.ForeignKey('EntryPoint', related_name="endpoints", on_delete=models.CASCADE, null=True)
     category = models.CharField(max_length=16, choices=(
         ("schema", "schema"),
         ("uripattern", "uripattern")
@@ -188,7 +188,7 @@ class EndPoint(models.Model):
     @classmethod
     def create(cls, *args, **kwargs):
         endpoint = cls(*args, **kwargs)
-        endpoint.uid = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
+        endpoint.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('entrypoint')),
             str(kwargs.get('category')),
             kwargs.get('media_type', None),

@@ -2,25 +2,25 @@ from os import sys, path, environ
 
 from resolver.models import *
 
-
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 sys.path.append('/home/app')
 
-
+from client.lib.pubchem_client import PubchemClient
 
 def run():
-
 
     Organization.objects.all().delete()
     Inchi.objects.all().delete()
     Publisher.objects.all().delete()
     EntryPoint.objects.all().delete()
 
+    client = PubchemClient()
 
     o1 = Organization.create(
         name="Root-Organization",
         abbreviation="ROOT",
         href="http://root.com",
+        parent=None
     )
     o1.save()
 
@@ -31,7 +31,6 @@ def run():
         parent=o1
     )
     o2.save()
-
 
     p1 = Publisher.create(
         name="Markus Sitzmann",
@@ -69,26 +68,36 @@ def run():
     )
     e2.save()
 
+    for j in range(1, 100):
 
+        ilist = client.fetch_inchi_for_pubchem_cid(range(j * 10, j * 10 + 10))
 
-    i1 = Inchi.create(
-        string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3"
-    )
-    i1.save()
-    i1.entrypoints.add(e1)
+        for cid, i in ilist:
+            print("Loading: %s" % (i,))
+            inchi = Inchi.create(
+                string=i
+            )
+            inchi.save()
+            inchi.entrypoints.add(e1)
 
-    i2 = Inchi.create(
-        string="InChI=1S/C6H8O6/c7-1-2(8)5-3(9)4(10)6(11)12-5/h2,5,7-10H,1H2/t2-,5+/m0/s1"
-    )
-    i2.save()
-    i2.entrypoints.add(e1)
-    i2.entrypoints.add(e2)
-
-    i3 = Inchi.create(
-        string="InChI=1S/C17H19NO3/c1-18-7-6-17-10-3-5-13(20)16(17)21-15-12(19)4-2-9(14(15)17)8-11(10)18/h2-5,10-11,13,16,19-20H,6-8H2,1H3/t10-,11+,13-,16-,17-/m0/s1 "
-    )
-    i3.save()
-    i3.entrypoints.add(e1)
+    # i1 = Inchi.create(
+    #     string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3"
+    # )
+    # i1.save()
+    # i1.entrypoints.add(e1)
+    #
+    # i2 = Inchi.create(
+    #     string="InChI=1S/C6H8O6/c7-1-2(8)5-3(9)4(10)6(11)12-5/h2,5,7-10H,1H2/t2-,5+/m0/s1"
+    # )
+    # i2.save()
+    # i2.entrypoints.add(e1)
+    # i2.entrypoints.add(e2)
+    #
+    # i3 = Inchi.create(
+    #     string="InChI=1S/C17H19NO3/c1-18-7-6-17-10-3-5-13(20)16(17)21-15-12(19)4-2-9(14(15)17)8-11(10)18/h2-5,10-11,13,16,19-20H,6-8H2,1H3/t10-,11+,13-,16-,17-/m0/s1 "
+    # )
+    # i3.save()
+    # i3.entrypoints.add(e1)
 
 
     x1 = EndPoint.create(
