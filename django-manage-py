@@ -3,4 +3,4 @@ set -e
 
 echo "Running $@"
 
-docker-compose exec inchiresolver bash -ci "gosu app bash -c 'cd /home/app/appsite && ./manage.py $*'"
+docker-compose exec cactus-inchiresolver bash -ci "gosu app bash -c 'cd /home/app/appsite && ./manage.py $*'"

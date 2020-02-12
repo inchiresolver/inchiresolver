@@ -2,9 +2,9 @@ version: '3'
 
 services:
 
-  inchiresolver:
+  cactus-inchiresolver:
     image: inchiresolver/inchiresolver:${DJANGO_APP_VERSION}
-    container_name: inchiresolver
+    container_name: cactus-inchiresolver
     volumes:
       - ${DJANGO_APP_HOME}:/home/app
       - ${CHEMBIENCE_SPHERE}:/home/sphere
@@ -12,7 +12,7 @@ services:
     ports:
        - ${DJANGO_APP_CONNECTION_PORT}:80
     networks:
-      - sphere
+      - cactus
     environment:
       - CHEMBIENCE_UID
       - CHEMBIENCE_GID
@@ -29,18 +29,18 @@ services:
       - INCHI_RESOLVER_USER
       - INCHI_RESOLVER_PASSWD
     depends_on:
-      - inchiresolverdb
+      - cactus-inchiresolverdb
     entrypoint: ["/home/app/docker-entrypoint.sh"]
     command: ["/home/nginx/run.sh"]
 
 
-  inchiresolverdb:
+  cactus-inchiresolverdb:
     image: chembience/db:${CHEMBIENCE_VERSION}
-    container_name: inchiresolverdb
+    container_name: cactus-inchiresolverdb
     volumes:
-      - inchiresolverdb_volume:/var/lib/postgresql
+      - cactus_inchiresolverdb_volume:/var/lib/postgresql
     networks:
-      - sphere
+      - cactus
     environment:
       - DEBUG=false
       - CHEMBIENCE_UID
@@ -56,7 +56,7 @@ services:
       - REPLICATION_SSLMODE=
 
 volumes:
-  inchiresolverdb_volume:
+  cactus_inchiresolverdb_volume:
 
 networks:
-  sphere:
+  cactus:

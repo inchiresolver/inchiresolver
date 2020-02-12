@@ -8,7 +8,7 @@ services:
     volumes:
       - ${CHEMBIENCE_SPHERE}:/home/sphere
     networks:
-      - sphere
+      - cactus
     environment:
       - CHEMBIENCE_VERSION
       - CHEMBIENCE_UID
@@ -17,7 +17,7 @@ services:
     command: bash
 
 networks:
-  sphere:
+  cactus:
 
 
 
