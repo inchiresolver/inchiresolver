@@ -5,7 +5,8 @@ from resolver.models import *
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 sys.path.append('/home/app')
 
-from client.lib.pubchem_client import PubchemClient
+#from client.lib.pubchem_client import PubchemClient
+from client.lib.cactus_client import CactusClient
 
 def run():
 
@@ -14,7 +15,7 @@ def run():
     Publisher.objects.all().delete()
     EntryPoint.objects.all().delete()
 
-    client = PubchemClient()
+    client = CactusClient()
 
     o1 = Organization.create(
         name="Root-Organization",
@@ -113,17 +114,21 @@ def run():
     )
     x5.save()
 
-    for j in range(1, 20):
+    for j in range(1, 30):
 
-        ilist = client.fetch_inchi_for_pubchem_cid(range(j * 10, j * 10 + 10))
+        ilist = client.fetch_inchi(range(j * 10, j * 10 + 10))
 
         for cid, i in ilist:
             print("Loading: %s" % (i,))
-            inchi = Inchi.create(
-                string=i
-            )
-            inchi.save()
-            inchi.entrypoints.add(e1)
+            try:
+                inchi = Inchi.create(
+                    string=i
+                )
+                print('{} {}'.format(inchi, inchi.added))
+                inchi.save()
+                inchi.entrypoints.add(e1)
+            except Exception as e:
+                print(e)
 
     # i1 = Inchi.create(
     #     string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3"
