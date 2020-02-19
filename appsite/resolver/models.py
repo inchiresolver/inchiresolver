@@ -1,5 +1,3 @@
-#from __future__ import unicode_literals
-
 import uuid
 from urllib.parse import urljoin
 
@@ -11,7 +9,7 @@ from django.db import models
 from inchi.identifier import InChIKey, InChI
 
 
-class Inchi(models.Model):
+class InChI(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     version = models.IntegerField(db_index=True, default=1)
     block1 = models.CharField(db_index=True, max_length=14)
@@ -20,16 +18,17 @@ class Inchi(models.Model):
     key = models.CharField(max_length=27, blank=True, null=True)
     string = models.CharField(max_length=32768, blank=True, null=True)
     is_standard = models.BooleanField(default=False)
-    safeopt = models.CharField(db_index=True, max_length=2, default=None, null=True)
+    safe_options = models.CharField(db_index=True, max_length=2, default=None, null=True)
     entrypoints = models.ManyToManyField('EntryPoint', related_name='inchis')
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class JSONAPIMeta:
-        resource_name = "inchis"
+        resource_name = 'inchis'
 
     class Meta:
-        unique_together = ("block1", "block2", "block3", "version", "safeopt")
+        unique_together = ('block1', 'block2', 'block3', 'version', 'safe_options')
+        verbose_name = "InChI"
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -77,15 +76,15 @@ class Inchi(models.Model):
 
 class Organization(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', related_name="minor", on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', related_name='minor', on_delete=models.CASCADE, null=True)
     name = models.CharField(unique=True, max_length=32768)
     abbreviation = models.CharField(max_length=32, blank=True, null=True)
     href = models.URLField(max_length=4096, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
-    modified= models.DateTimeField(auto_now=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class JSONAPIMeta:
-        resource_name = "organizations"
+        resource_name = 'organizations'
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -99,20 +98,21 @@ class Organization(models.Model):
 
 class Publisher(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', related_name="minor", on_delete=models.CASCADE, null=True)
-    organization = models.ForeignKey("Organization", related_name="publishers", on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', related_name='minor', on_delete=models.CASCADE, null=True)
+    organization = models.ForeignKey('Organization', related_name='publishers', on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=32768)
     group = models.CharField(max_length=32768, blank=True, null=True)
     contact = models.CharField(max_length=32768, blank=True, null=True)
+    email = models.EmailField(max_length=254, blank=True, null=True)
     href = models.URLField(max_length=4096, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class JSONAPIMeta:
-        resource_name = "publishers"
+        resource_name = 'publishers'
 
     class Meta:
-        unique_together = ("parent", "organization", "name", "group", "contact")
+        unique_together = ('parent', 'organization', 'name', 'group', 'contact')
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -132,12 +132,12 @@ class Publisher(models.Model):
 
 class EntryPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     category = models.CharField(max_length=16, choices=(
-        ("site", "site"),
-        ("service", "service"),
-        ("resolver", "resolver")
-    ), default="website")
+        ('site', 'site'),
+        ('service', 'service'),
+        ('resolver', 'resolver')
+    ), default='website')
     publisher = models.ForeignKey("Publisher", related_name="entrypoints", on_delete=models.CASCADE, null=True)
     href = models.URLField(max_length=4096)
     name = models.CharField(max_length=255, blank=True, null=True)
@@ -146,7 +146,7 @@ class EntryPoint(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     class JSONAPIMeta:
-        resource_name = "entrypoints"
+        resource_name = 'entrypoints'
 
     class Meta:
         unique_together = ('parent', 'publisher', 'href', 'category')
@@ -168,19 +168,19 @@ class EntryPoint(models.Model):
 
 class EndPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    entrypoint = models.ForeignKey('EntryPoint', related_name="endpoints", on_delete=models.CASCADE, null=True)
+    entrypoint = models.ForeignKey('EntryPoint', related_name='endpoints', on_delete=models.CASCADE, null=True)
     category = models.CharField(max_length=16, choices=(
-        ("schema", "schema"),
-        ("uripattern", "uripattern")
-    ), default="uripattern")
+        ('schema', 'schema'),
+        ('uripattern', 'uripattern')
+    ), default='uripattern')
     uri = models.CharField(max_length=32768)
     description = models.TextField(max_length=32768, blank=True, null=True)
-    media_type = models.CharField(max_length=1024, blank=True, null=True)
+    content_media_type = models.CharField(max_length=1024, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class JSONAPIMeta:
-        resource_name = "endpoints"
+        resource_name = 'endpoints'
 
     class Meta:
         unique_together = ('entrypoint', 'uri')
@@ -191,7 +191,7 @@ class EndPoint(models.Model):
         endpoint.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('entrypoint')),
             str(kwargs.get('category')),
-            kwargs.get('media_type', None),
+            kwargs.get('content_media_type', None),
             kwargs.get('uri'),
         ]))
         return endpoint

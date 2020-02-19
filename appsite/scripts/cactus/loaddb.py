@@ -5,8 +5,7 @@ from resolver.models import *
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 sys.path.append('/home/app')
 
-#from client.lib.pubchem_client import PubchemClient
-#from client.lib.cactus_client import CactusClient
+from client.lib.cactus_client import CactusClient
 
 def run():
 
@@ -15,59 +14,41 @@ def run():
     Publisher.objects.all().delete()
     EntryPoint.objects.all().delete()
 
-    #client = CactusClient()
+    client = CactusClient()
 
     o1 = Organization.create(
-        name="InChI Trust",
-        abbreviation="",
-        href="http://root.com",
+        name="National Institutes of Health",
+        abbreviation="NIH",
+        href="https://www.nih.gov",
         parent=None
     )
     o1.save()
 
     o2 = Organization.create(
-        name="Child-Organization",
-        abbreviation="CHILD",
-        href="http://child.com",
+        name="National Cancer Institute",
+        abbreviation="NCI",
+        href="https://www.cancer.gov",
         parent=o1
     )
     o2.save()
 
     p1 = Publisher.create(
-        name="Markus Sitzmann",
-        group="Sitzmann Group",
-        contact="Markus Sitzmann",
-        href="http://sitzmann.de",
+        name="Marc Nicklaus",
+        group="NCI/CADD group",
+        contact="marc.nicklaus@email.com",
+        href="https://ccr2.cancer.gov/resources/CBL/Scientists/Nicklaus.aspx",
         organization=o2
     )
     p1.save()
 
-    p2 = Publisher.create(
-        name="Test",
-        group="Test Group",
-        contact="John Doe",
-        href="http://test.de",
-        organization=o2
-    )
-    p2.save()
-
     e1 = EntryPoint.create(
         name="Chemical Identifier Resolver",
-        description="The Resolver",
+        description="This service works as a resolver for different chemical structure identifiers and allows the conversion of a given structure identifier into another representation or structure identifier. It can be used via a web form or a simple URL API.",
         category="service",
         href="http://cactus.nci.nih.gov/chemical/structure",
         publisher=p1
     )
     e1.save()
-
-    e2 = EntryPoint.create(
-        name="Next",
-        description="Next Resolver",
-        category="service",
-        href="http://cactus.nci.nih.gov/next",
-        publisher=p1
-    )
-    e2.save()
 
     x1 = EndPoint.create(
         entrypoint=e1,
@@ -129,7 +110,3 @@ def run():
                 inchi.entrypoints.add(e1)
             except Exception as e:
                 print(e)
-
-
-
-

@@ -1,7 +1,7 @@
 from django.core.exceptions import FieldError
 from django.test import TestCase
 
-from resolver.models import Inchi
+from resolver.models import InChI
 
 
 class IdentifierTest(TestCase):
@@ -10,10 +10,10 @@ class IdentifierTest(TestCase):
         pass
 
     def test_save_and_retrieve(self):
-        inchi = Inchi.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N", string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3")
+        inchi = InChI.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N", string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3")
         inchi.save()
 
-        i = Inchi.objects.first()
+        i = InChI.objects.first()
         print(i)
         print(i.uid)
         print(i.string)
@@ -27,10 +27,10 @@ class IdentifierTest(TestCase):
         self.assertTrue(str(i.block3) == 'N')
 
     def test_url_prefix_save_and_retrieve(self):
-        inchi = Inchi.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N", string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3", url_prefix="http://prototype0.inchi-resolver.org/inchis")
+        inchi = InChI.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N", string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3", url_prefix="http://prototype0.inchi-resolver.org/inchis")
         inchi.save()
 
-        i = Inchi.objects.first()
+        i = InChI.objects.first()
         print(i)
         print(i.uid)
         print(i.string)
@@ -45,10 +45,10 @@ class IdentifierTest(TestCase):
 
 
     def test_only_inchi(self):
-        inchi = Inchi.create(string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3", url_prefix="http://prototype0.inchi-resolver.org/inchis")
+        inchi = InChI.create(string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3", url_prefix="http://prototype0.inchi-resolver.org/inchis")
         inchi.save()
 
-        i = Inchi.objects.first()
+        i = InChI.objects.first()
         print(i)
         print(i.uid)
         print(i.string)
@@ -63,10 +63,10 @@ class IdentifierTest(TestCase):
 
 
     def test_only_inchikey(self):
-        inchi = Inchi.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N", url_prefix="http://prototype0.inchi-resolver.org/inchis")
+        inchi = InChI.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N", url_prefix="http://prototype0.inchi-resolver.org/inchis")
         inchi.save()
 
-        i = Inchi.objects.first()
+        i = InChI.objects.first()
         print(i)
         print(i.uid)
         print(i.string)
@@ -82,18 +82,18 @@ class IdentifierTest(TestCase):
 
     def test_save_multiple(self):
 
-        inchi = Inchi.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N")
+        inchi = InChI.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N")
         inchi.save()
 
-        inchi2 = Inchi.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N")
+        inchi2 = InChI.create(key="LFQSCWFLJHTTHZ-UHFFFAOYSA-N")
         inchi2.save()
 
-        inchi3 = Inchi.create(string='InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3')
+        inchi3 = InChI.create(string='InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3')
         inchi3.save()
 
-        self.assertTrue(Inchi.objects.count(), 1)
+        self.assertTrue(InChI.objects.count(), 1)
 
 
     def test5(self):
         with self.assertRaises(FieldError):
-            Inchi.create(key="LFQSCWFLJHTTZZ-UHFFFAOYSA-N", string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3")
+            InChI.create(key="LFQSCWFLJHTTZZ-UHFFFAOYSA-N", string="InChI=1S/C2H6O/c1-2-3/h3H,2H2,1H3")

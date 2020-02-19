@@ -1,6 +1,7 @@
 from django.urls import include, path, re_path
 
 from rest_framework.routers import DefaultRouter
+from rest_framework.settings import api_settings
 
 from resolver import views
 
@@ -15,12 +16,12 @@ urlpatterns = [
     re_path(r'^', include(router.urls)),
 
     path('inchis/<pk>/relationships/<related_field>',
-        view=views.InchiRelationshipView.as_view(),
-        name='inchi-relationships'
-    ),
+         view=views.InChIRelationshipView.as_view(),
+         name='inchi-relationships'
+         ),
     path('inchis/<pk>/<related_field>',
-        view=views.InchiViewSet.as_view({'get': 'retrieve_related'}),
-        name='inchi-related'),
+         view=views.InchiViewSet.as_view({'get': 'retrieve_related'}),
+         name='inchi-related'),
 
     path('publishers/<pk>/relationships/<related_field>',
         view=views.PublisherRelationshipView.as_view(),

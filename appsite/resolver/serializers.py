@@ -1,11 +1,10 @@
 from rest_framework_json_api import serializers
 from rest_framework_json_api import relations
-from rest_framework_json_api import renderers
 
-from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
+from resolver.models import InChI, Organization, Publisher, EntryPoint, EndPoint
 
 
-class InchiSerializer(serializers.HyperlinkedModelSerializer):
+class InChISerializer(serializers.HyperlinkedModelSerializer):
 
     entrypoints = relations.ResourceRelatedField(
         queryset=EntryPoint.objects,
@@ -17,35 +16,18 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
         self_link_view_name='inchi-relationships',
     )
 
-    # entrypoints = relations.HyperlinkedRelatedField(
-    #     queryset=EntryPoint.objects,
-    #     many=True,
-    #     read_only=False,
-    #     required=False,
-    #     related_link_view_name='inchi-related',
-    #     related_link_url_kwarg='pk',
-    #     self_link_view_name='inchi-relationships',
-    #     #source='entrypoints'
-    # )
-
-    # related_serializers = {
-    #     'entrypoints': 'resolver.serializers.EntryPointSerializer',
-    # }
-
     included_serializers = {
         'entrypoints': 'resolver.serializers.EntryPointSerializer',
     }
 
     class Meta:
-        model = Inchi
-        fields = ('url', 'string', 'key', 'version', 'is_standard', 'safeopt',  'entrypoints',  'added', 'modified')
-        read_only_fields = ('key', 'version', 'is_standard', 'added', 'modified')
-
-    # class JSONAPIMeta:
-    #     included_resources = ['entrypoints']
+        model = InChI
+        fields = ('url', 'string', 'key', 'version', 'is_standard', 'safe_options',  'entrypoints', 'added', 'modified')
+        read_only_fields = ('key', 'version', 'is_standard')
+        meta_fields = ('added', 'modified')
 
     def create(self, validated_data):
-        inchi = Inchi.create(**validated_data)
+        inchi = InChI.create(**validated_data)
         inchi.save()
         return inchi
 
@@ -66,25 +48,6 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
         self_link_view_name = 'organization-relationships',
     )
 
-    # parent = relations.HyperlinkedRelatedField(
-    #     queryset=Organization.objects,
-    #     many=False,
-    #     read_only=False,
-    #     required=False,
-    #     related_link_view_name='organization-related',
-    #     #related_link_url_kwarg='pk',
-    #     self_link_view_name='organization-relationships',
-    # )
-    #
-    # publishers = relations.HyperlinkedRelatedField(
-    #     queryset=Publisher.objects,
-    #     many=True,
-    #     read_only=False,
-    #     related_link_view_name='organization-related',
-    #     #related_link_url_kwarg='pk',
-    #     self_link_view_name='organization-relationships',
-    # )
-
     included_serializers = {
         'parent': 'resolver.serializers.OrganizationSerializer',
         'publishers': 'resolver.serializers.PublisherSerializer',
@@ -94,6 +57,7 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
         model = Organization
         fields = ('url', 'parent', 'name', 'abbreviation', 'href', 'publishers', 'added', 'modified')
         read_only_fields = ('added', 'modified')
+        meta_fields = ('added', 'modified')
 
     def create(self, validated_data):
         organization = Organization.create(**validated_data)
@@ -117,25 +81,6 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
         self_link_view_name = 'publisher-relationships',
     )
 
-
-    # organization = relations.HyperlinkedRelatedField(
-    #     queryset=Organization.objects,
-    #     many=False,
-    #     read_only=False,
-    #     related_link_view_name='publisher-related',
-    #     related_link_url_kwarg='pk',
-    #     self_link_view_name='publisher-relationships',
-    # )
-    #
-    # entrypoints = relations.HyperlinkedRelatedField(
-    #     queryset=EntryPoint.objects,
-    #     many=True,
-    #     read_only=False,
-    #     related_link_view_name='publisher-related',
-    #     related_link_url_kwarg='pk',
-    #     self_link_view_name='publisher-relationships',
-    # )
-
     included_serializers = {
         'organization': 'resolver.serializers.OrganizationSerializer',
         'entrypoints': 'resolver.serializers.EntryPointSerializer',
@@ -143,8 +88,9 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Publisher
-        fields = ('url', 'parent', 'organization', 'entrypoints', 'name', 'group', 'contact', 'href', 'added', 'modified')
+        fields = ('url', 'parent', 'organization', 'entrypoints', 'name', 'group', 'contact',  'email', 'href', 'added', 'modified')
         read_only_fields = ('added', 'modified')
+        meta_fields = ('added', 'modified')
 
     def create(self, validated_data):
         publisher = Publisher.create(**validated_data)
@@ -161,13 +107,6 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
         self_link_view_name='entrypoint-relationships',
     )
 
-    # inchis = relations.ResourceRelatedField(
-    #     queryset=Inchi.objects, many=True, read_only=False, required=False,
-    #     related_link_view_name='entrypoint-related',
-    #     related_link_url_kwarg='pk',
-    #     self_link_view_name='entrypoint-relationships',
-    # )
-
     endpoints = relations.ResourceRelatedField(
         queryset=EndPoint.objects, many=True, read_only=False, required=False,
         related_link_view_name = 'entrypoint-related',
@@ -178,16 +117,13 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
     included_serializers = {
         'publisher': 'resolver.serializers.PublisherSerializer',
         'endpoints': 'resolver.serializers.EndPointSerializer',
-        # 'inchis': 'resolver.serializers.InchiSerializer'
     }
 
     class Meta:
         model = EntryPoint
-        fields = ('url', 'publisher', 'name', 'description', 'category', 'href',  'endpoints')
+        fields = ('url', 'publisher', 'name', 'description', 'category', 'href',  'endpoints', 'added', 'modified')
         read_only_fields = ('added', 'modified')
-
-    # class JSONAPIMeta:
-    #      included_resources = ['inchis']
+        meta_fields = ('added', 'modified')
 
     def create(self, validated_data):
         entrypoint = EntryPoint.create(**validated_data)
@@ -212,10 +148,12 @@ class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = EndPoint
-        fields = ('url', 'entrypoint', 'description', 'category', 'uri',  'media_type')
+        fields = ('url', 'entrypoint', 'description', 'category', 'uri',  'content_media_type', 'added', 'modified')
         read_only_fields = ('added', 'modified')
+        meta_fields = ('added', 'modified')
 
     def create(self, validated_data):
         endpoint = EndPoint.create(**validated_data)
         endpoint.save()
         return endpoint
+
