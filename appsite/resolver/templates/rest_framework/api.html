@@ -1,7 +1,7 @@
 {% extends "rest_framework/base.html" %}
 {% load static %}
 
-{% block title %}InChI Resolver Prototype 0{% endblock %}
+{% block title %}InChI Resolver{% endblock %}
 
 {% block bootstrap_theme %}
   <link href="{% static 'resolver/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -10,7 +10,10 @@
 
 {% block branding %}
     <a class='navbar-brand' rel="nofollow" href='/'>
-        InChI Resolver
+        InChI Resolver {{ resolver_name }}
     </a>
 {% endblock %}
 
+{% block bootstrap_navbar_variant %}
+cactus navbar-inverse
+{% endblock %}

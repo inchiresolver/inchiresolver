@@ -56,14 +56,16 @@ def get_view_name(view):
 
 class InchiViewSet(ModelViewSet):
     """
-    API endpoint that provides a browsable index of available InChIs at this InChI Resolver instance
+        Resolver API InChI entrypoint: may provide a browsable index of all InChI structure identifiers available at
+        the underlying service API entrypoints described by this InChI resolver instance. Optionally, all available
+        service API entrypoints might be linked to each InChI.
     """
     def __init__(self, *args, **kwargs):
         self.name = "InChI " + kwargs['suffix']
-        self.description = """
-        Resolver API InChI entrypoint: may provide a browsable index of all InChI structure identifiers available at 
-        the underlying service API entrypoints described by this InChI resolver instance. Optionally, all available
-        service API entrypoints might be linked to each InChI.""" + str(kwargs)
+        # self.description = """
+        # Resolver API InChI entrypoint: may provide a browsable index of all InChI structure identifiers available at
+        # the underlying service API entrypoints described by this InChI resolver instance. Optionally, all available
+        # service API entrypoints might be linked to each InChI.""" + str(kwargs)
         super().__init__(*args, **kwargs)
 
 
