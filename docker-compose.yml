@@ -28,6 +28,8 @@ services:
       - INCHI_RESOLVER_HOST
       - INCHI_RESOLVER_USER
       - INCHI_RESOLVER_PASSWD
+      - INCHI_RESOLVER_NAVBAR_TITLE
+      - INCHI_RESOLVER_NAVBAR_COLOR
     depends_on:
       - cactus-inchiresolverdb
     entrypoint: ["/home/app/docker-entrypoint.sh"]
