@@ -14,7 +14,7 @@ def run():
     Publisher.objects.all().delete()
     EntryPoint.objects.all().delete()
 
-    #client = CactusClient()
+    client = CactusClient()
 
     o1 = Organization.create(
         name="National Institutes of Health",
@@ -110,7 +110,3 @@ def run():
                 inchi.entrypoints.add(e1)
             except Exception as e:
                 print(e)
-
-
-
-

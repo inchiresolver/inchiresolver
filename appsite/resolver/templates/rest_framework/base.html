@@ -95,11 +95,13 @@
             </form>
           {% endif %}
 
-          {% if options_form %}
+          {% comment %}
+            {% if options_form %}
             <form class="button-form" action="{{ request.get_full_path }}" data-method="OPTIONS">
               <button class="btn btn-primary js-tooltip" title="Make an OPTIONS request on the {{ name }} resource">OPTIONS</button>
             </form>
           {% endif %}
+          {% endcomment %}
 
           {% if delete_form %}
             <button class="btn btn-danger button-form js-tooltip" title="Make a DELETE request on the {{ name }} resource" data-toggle="modal" data-target="#deleteModal">DELETE</button>
@@ -122,12 +124,14 @@
             </div>
           {% endif %}
 
-          {% if filter_form %}
+          {% comment %}
+            {% if filter_form %}
             <button style="float: right; margin-right: 10px" data-toggle="modal" data-target="#filtersModal" class="btn btn-default">
               <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
               {% trans "Filters" %}
             </button>
           {% endif %}
+            {% endcomment %}
 
             <div class="content-main">
               <div class="page-header">

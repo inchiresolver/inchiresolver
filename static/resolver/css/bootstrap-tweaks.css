@@ -36,12 +36,21 @@ a single block in the template.
   left: 0;
   top: 0;
   z-index: 3;
-}
-
-.navbar {
   background: #f5793e;
   color: white;
   border: none;
+}
+
+.cactus {
+  background: #A50021;;
+}
+
+.trust {
+  background: #00612c;
+}
+
+.pubchem {
+  background: #205493;
 }
 
 .navbar .nav li, .navbar .nav li a, .navbar .brand:hover {
