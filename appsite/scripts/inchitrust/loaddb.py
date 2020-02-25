@@ -16,7 +16,7 @@ def run():
     o1 = Organization.create(
         name="InChI Trust",
         abbreviation="",
-        href="http://root.com",
+        href="https://www.inchi-trust.org/",
         parent=None
     )
     o1.save()
@@ -39,14 +39,14 @@ def run():
     )
     e2.save()
 
-    e2 = EntryPoint.create(
-        name="PubChem InChI Resolver",
-        description="InChI Resolver of PubChem group at NLM/NCBI",
-        category="inchiresolver",
-        href="http://pubchem.inchi-resolver.org",
-        publisher=None
-    )
-    e2.save()
+    # e2 = EntryPoint.create(
+    #     name="PubChem InChI Resolver",
+    #     description="InChI Resolver of PubChem group at NLM/NCBI",
+    #     category="inchiresolver",
+    #     href="http://pubchem.inchi-resolver.org",
+    #     publisher=None
+    # )
+    # e2.save()
 
 
 
