@@ -10,10 +10,10 @@
 
 {% block branding %}
     <a class='navbar-brand' rel="nofollow" href='/'>
-        InChI Resolver {{ resolver_name }}
+        {{ navbar_title|safe}}
     </a>
 {% endblock %}
 
 {% block bootstrap_navbar_variant %}
-cactus navbar-inverse
+{{ navbar_color|safe }} navbar-inverse
 {% endblock %}
