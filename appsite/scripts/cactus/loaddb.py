@@ -55,7 +55,7 @@ def run():
         category="uripattern",
         uri="{+stdinchi|+stdinchikey}/smiles",
         description="Standard InChI to SMILES conversion",
-        media_type="text/plain",
+        content_media_type="text/plain",
     )
     x1.save()
 
@@ -64,7 +64,7 @@ def run():
         category="uripattern",
         uri="{+stdinchi,+stdinchikey}/iupac_name",
         description="Standard InChI to IUPAC name conversion",
-        media_type="text/plain",
+        content_media_type="text/plain",
     )
     x2.save()
 
@@ -73,7 +73,7 @@ def run():
         category="uripattern",
         uri="{+stdinchi,+stdinchikey}/image",
         description="InChI to SMILES conversion",
-        media_type="image/gif"
+        content_media_type="image/gif"
     )
     x3.save()
 
@@ -82,7 +82,7 @@ def run():
         category="uripattern",
         uri="{+smiles}/stdinchi",
         description="SMILES to stdinchi conversion",
-        media_type="text/plain",
+        content_media_type="text/plain",
     )
     x4.save()
 
@@ -91,7 +91,7 @@ def run():
         category="uripattern",
         uri="{+smiles}/stdinchikey",
         description="SMILES to stdinchikey conversion",
-        media_type="text/plain",
+        content_media_type="text/plain",
     )
     x5.save()
 
