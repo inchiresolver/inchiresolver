@@ -1,10 +1,10 @@
 from rest_framework_json_api import serializers
 from rest_framework_json_api import relations
 
-from resolver.models import InChI, Organization, Publisher, EntryPoint, EndPoint
+from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
 
 
-class InChISerializer(serializers.HyperlinkedModelSerializer):
+class InchiSerializer(serializers.HyperlinkedModelSerializer):
 
     entrypoints = relations.ResourceRelatedField(
         queryset=EntryPoint.objects,
@@ -21,13 +21,13 @@ class InChISerializer(serializers.HyperlinkedModelSerializer):
     }
 
     class Meta:
-        model = InChI
+        model = Inchi
         fields = ('url', 'string', 'key', 'version', 'is_standard', 'safe_options',  'entrypoints', 'added', 'modified')
         read_only_fields = ('key', 'version', 'is_standard')
         meta_fields = ('added', 'modified')
 
     def create(self, validated_data):
-        inchi = InChI.create(**validated_data)
+        inchi = Inchi.create(**validated_data)
         inchi.save()
         return inchi
 

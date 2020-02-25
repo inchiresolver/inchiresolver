@@ -10,7 +10,7 @@ from client.lib.cactus_client import CactusClient
 def run():
 
     Organization.objects.all().delete()
-    InChI.objects.all().delete()
+    Inchi.objects.all().delete()
     Publisher.objects.all().delete()
     EntryPoint.objects.all().delete()
 
@@ -102,7 +102,7 @@ def run():
         for cid, i in ilist:
             print("Loading: %s" % (i,))
             try:
-                inchi = InChI.create(
+                inchi = Inchi.create(
                     string=i
                 )
                 print('{} {}'.format(inchi, inchi.added))

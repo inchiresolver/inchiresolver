@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import InChI, Organization
+from .models import Inchi, Organization
 
 # Register your models here.
 
 
 
-@admin.register(InChI)
+@admin.register(Inchi)
 class InchiAdmin(admin.ModelAdmin):
     pass
 

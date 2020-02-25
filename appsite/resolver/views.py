@@ -3,9 +3,9 @@ from rest_framework import permissions, routers
 from rest_framework.utils import formatting
 from rest_framework_json_api.views import RelationshipView, ModelViewSet
 
-from resolver.models import InChI, Organization, Publisher, EntryPoint, EndPoint
+from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
 from resolver.serializers import (
-    InChISerializer,
+    InchiSerializer,
     OrganizationSerializer,
     PublisherSerializer,
     EntryPointSerializer,
@@ -69,13 +69,13 @@ class InchiViewSet(ModelViewSet):
         super().__init__(*args, **kwargs)
 
 
-    queryset = InChI.objects.all()
-    serializer_class = InChISerializer
+    queryset = Inchi.objects.all()
+    serializer_class = InchiSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class InChIRelationshipView(RelationshipView):
-    queryset = InChI.objects.all()
+    queryset = Inchi.objects.all()
     self_link_view_name = 'inchi-relationships'
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 

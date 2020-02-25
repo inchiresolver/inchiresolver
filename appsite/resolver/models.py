@@ -9,7 +9,7 @@ from django.db import models
 from inchi.identifier import InChIKey, InChI
 
 
-class InChI(models.Model):
+class Inchi(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     version = models.IntegerField(db_index=True, default=1)
     block1 = models.CharField(db_index=True, max_length=14)
@@ -47,7 +47,7 @@ class InChI(models.Model):
             k = InChIKey(kwargs['key'])
 
         if 'string' in kwargs and kwargs['string']:
-            s = InChI(kwargs['string'])
+            s = Inchi(kwargs['string'])
             _k = InChIKey(Chem.InchiToInchiKey(kwargs['string']))
             if k:
                 if not k.element['well_formatted'] == _k.element['well_formatted']:
