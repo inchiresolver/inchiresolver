@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'j=-c$eq!j$(rl)(2-s16dqcrco#52pp=nu0u*vn)973i-m^aai'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = os.environ['APP_VIRTUAL_HOSTNAME'].split(",")
 
