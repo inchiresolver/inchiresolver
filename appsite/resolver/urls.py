@@ -16,7 +16,7 @@ urlpatterns = [
     re_path(r'^', include(router.urls)),
 
     path('inchis/<pk>/relationships/<related_field>',
-         view=views.InChIRelationshipView.as_view(),
+         view=views.InchiRelationshipView.as_view(),
          name='inchi-relationships'
          ),
     path('inchis/<pk>/<related_field>',

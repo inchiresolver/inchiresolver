@@ -47,7 +47,7 @@ class Inchi(models.Model):
             k = InChIKey(kwargs['key'])
 
         if 'string' in kwargs and kwargs['string']:
-            s = Inchi(kwargs['string'])
+            s = InChI(kwargs['string'])
             _k = InChIKey(Chem.InchiToInchiKey(kwargs['string']))
             if k:
                 if not k.element['well_formatted'] == _k.element['well_formatted']:

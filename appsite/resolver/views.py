@@ -74,7 +74,7 @@ class InchiViewSet(ModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
-class InChIRelationshipView(RelationshipView):
+class InchiRelationshipView(RelationshipView):
     queryset = Inchi.objects.all()
     self_link_view_name = 'inchi-relationships'
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
