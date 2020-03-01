@@ -1,3 +1,5 @@
+import os
+
 from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 from rest_framework import permissions, routers, generics
@@ -16,55 +18,21 @@ from resolver.serializers import (
 
 class ResolverApiView(routers.APIRootView):
     """
-    This appears where the docstring goes!
+    Wrapper class for setting API root view name and description
     """
     def get_view_name(self) -> str:
         return "Resolver API Root"
 
     def get_view_description(self, html=False) -> str:
-        text = "Root entrypoint of the InChI Resolver"
+        if os.environ['INCHI_RESOLVER_TITLE'] == '':
+            title = 'InChI Resolver'
+        else:
+            title = os.environ.get('INCHI_RESOLVER_TITLE', 'InChI Resolver')
+        text = "Root entrypoint of the " + title
         if html:
             return mark_safe(f"<p>{text}</p>")
         else:
             return text
-
-
-
-# def api_root_view_name(self):
-#     return "Resolver API Root"
-#
-#
-# def api_root_view_description(self, html):
-#     description_string = "Root resource of this InChI Resolver instance"
-#     description = formatting.dedent(smart_str(description_string))
-#     if html:
-#         return formatting.markup_description(description)
-#     return description
-
-
-# def get_view_name(view):
-#     """
-#     Given a view instance, return a textual name to represent the view.
-#     This name is used in the browsable API, and in OPTIONS responses.
-#
-#     This function is the default for the `VIEW_NAME_FUNCTION` setting.
-#     """
-#     # Name may be set by some Views, such as a ViewSet.
-#     name = getattr(view, 'name', None)
-#     if name is not None:
-#         return name
-#
-#     name = view.__class__.__name__
-#     name = formatting.remove_trailing_string(name, 'View')
-#     name = formatting.remove_trailing_string(name, 'ViewSet')
-#     name = formatting.camelcase_to_spaces(name)
-#
-#     # Suffix may be set by some Views, such as a ViewSet.
-#     suffix = getattr(view, 'suffix', None)
-#     if suffix:
-#         name += ' ' + suffix
-#
-#     return name
 
 
 ### INCHI ###
