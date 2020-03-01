@@ -4,8 +4,9 @@ from rest_framework.routers import DefaultRouter
 from rest_framework.settings import api_settings
 
 from resolver import views
+from resolver import routers
 
-router = DefaultRouter(trailing_slash=False)
+router = routers.ResolverApiRouter(trailing_slash=False)
 router.register('inchis', views.InchiViewSet)
 router.register('organizations', views.OrganizationViewSet)
 router.register('publishers', views.PublisherViewSet)

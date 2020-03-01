@@ -136,12 +136,6 @@ STATIC_ROOT = os.path.join("/home/app", "static/")
 MEDIA_ROOT = os.path.join("/home/app", "media/")
 MEDIA_URL = "/media/"
 
-#REST_FRAMEWORK = {
-#    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
-#    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-#    'PAGE_SIZE': 25
-#}
-
 BACKUP_ROOT = os.path.join("/home/app", 'backup')
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
@@ -155,8 +149,8 @@ REST_FRAMEWORK = {
         'rest_framework_json_api.pagination.JsonApiPageNumberPagination',
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework_json_api.parsers.JSONParser',
-        #'rest_framework.parsers.FormParser',
-        #'rest_framework.parsers.MultiPartParser'
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework_json_api.renderers.JSONRenderer',
@@ -174,8 +168,6 @@ REST_FRAMEWORK = {
         'rest_framework_json_api.renderers.JSONRenderer',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'vnd.api+json',
-    #'VIEW_NAME_FUNCTION': 'resolver.views.api_root_view_name',
-    #'VIEW_DESCRIPTION_FUNCTION': 'resolver.views.api_root_view_description'
 }
 
 

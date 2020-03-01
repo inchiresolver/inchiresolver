@@ -28,8 +28,8 @@ services:
       - INCHI_RESOLVER_HOST
       - INCHI_RESOLVER_USER
       - INCHI_RESOLVER_PASSWD
-      - INCHI_RESOLVER_NAVBAR_TITLE
-      - INCHI_RESOLVER_NAVBAR_COLOR
+      - INCHI_RESOLVER_TITLE
+      - INCHI_RESOLVER_COLOR_SCHEME
     depends_on:
       - inchiresolverdb
     entrypoint: ["/home/app/docker-entrypoint.sh"]

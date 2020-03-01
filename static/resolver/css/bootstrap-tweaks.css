@@ -41,8 +41,12 @@ a single block in the template.
   border: none;
 }
 
+.inchi-resolver-default-color-scheme {
+  background: #111111;
+}
+
 .cactus {
-  background: #A50021;;
+  background: #A50021;
 }
 
 .trust {
