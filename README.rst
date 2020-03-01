@@ -91,10 +91,10 @@ Since the InChI Resolver App is based on Chembience's Django Template App, pleas
 Links & Resources
 -----------------
 
-InChI Resolver web page: `<https://inchi-resolver.org/>`_
+InChI Resolver web page: `<https://inchi-resolver.org>`_
 
 
-InChI Resolver Prototype API: `<https://prototype0.inchi-resolver.org/openapi/>`_
+InChI Resolver Prototype API: `<https://prototype0.inchi-resolver.org/openapi>`_
 
 
 Chembience: `<https://chembience.com>`_; some slides about the concepts in Chembience: `SlideShare Link <https://www.slideshare.net/sitzmann/chembience>`_
