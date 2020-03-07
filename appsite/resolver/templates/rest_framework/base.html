@@ -55,7 +55,7 @@
       {% endblock %}
 
       <div class="container">
-        {% block breadcrumbs %}
+        {% comment %}{% block breadcrumbs %}
           <ul class="breadcrumb">
             {% for breadcrumb_name, breadcrumb_url in breadcrumblist %}
               {% if forloop.last %}
@@ -65,7 +65,7 @@
               {% endif %}
             {% endfor %}
           </ul>
-        {% endblock %}
+        {% endblock %}{% endcomment %}
 
         <!-- Content -->
         <div id="content">

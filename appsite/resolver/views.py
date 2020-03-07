@@ -1,9 +1,7 @@
 import os
 
-from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 from rest_framework import permissions, routers, generics
-from rest_framework.utils import formatting
 from rest_framework_json_api.views import RelationshipView, ModelViewSet
 
 from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
@@ -20,15 +18,15 @@ class ResolverApiView(routers.APIRootView):
     """
     Wrapper class for setting API root view name and description
     """
-    def get_view_name(self) -> str:
+    def get_view_name(self):
         return "Resolver API Root"
 
-    def get_view_description(self, html=False) -> str:
+    def get_view_description(self, html=False):
         if os.environ['INCHI_RESOLVER_TITLE'] == '':
             title = 'InChI Resolver'
         else:
             title = os.environ.get('INCHI_RESOLVER_TITLE', 'InChI Resolver')
-        text = "Root entrypoint of the " + title
+        text = "API Root entrypoint of the " + title
         if html:
             return mark_safe(f"<p>{text}</p>")
         else:
@@ -39,8 +37,8 @@ class ResolverApiView(routers.APIRootView):
 
 class InchiViewSet(ModelViewSet):
     """
-        The Resolver API InChI entrypoint may provide a browsable index of all InChI structure identifiers available at
-        this InChI resolver instance and its underlying service API entrypoints. Each InChI may provide links
+        The InChI entrypoint of the Resolver API may provide a browsable index of all InChI structure identifiers available at
+        this InChI resolver instance and its underlying service API entrypoints. Each InChI instance may provide links
         (relationships) to the service API entrypoints where it is available.
     """
     def __init__(self, *args, **kwargs):
@@ -48,6 +46,17 @@ class InchiViewSet(ModelViewSet):
         if 'suffix' in kwargs:
             self.name += ' ' + kwargs['suffix']
         super().__init__(*args, **kwargs)
+
+    def get_view_description(self, html=False, *args, **kwargs):
+        text = "InchiD " + str(self.kwargs) + " x " + str(kwargs)
+        if html:
+            return mark_safe(f"<p>{text}</p>")
+        else:
+            return text
+
+    def get_view_name(self, *args, **kwargs):
+        text = "InchiN " + str(kwargs) + "x"
+        return text
 
     queryset = Inchi.objects.all()
     serializer_class = InchiSerializer
@@ -60,7 +69,39 @@ class InchiViewSet(ModelViewSet):
     search_fields = ('string', 'key',)
 
 
+class InchiRelatedViewSet(ModelViewSet):
+    """
+       List of type instances related to this InChI instance.
+    """
+    def __init__(self, *args, **kwargs):
+        self.name = "InChI Related Type Instances"
+        if 'suffix' in kwargs:
+            self.name += ' ' + kwargs['suffix']
+        super().__init__(*args, **kwargs)
+
+    def get_view_description(self, html=False):
+        text = "ZZZ " + str(self.kwargs) + "x"
+        if html:
+            return mark_safe(f"<p>{text}</p>")
+        else:
+            return text
+
+
+    queryset = Inchi.objects.all()
+    serializer_class = InchiSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
 class InchiRelationshipView(RelationshipView):
+    """
+        Bla
+    """
+    def __init__(self, *args, **kwargs):
+        self.name = "InChI"
+        if 'suffix' in kwargs:
+            self.name += ' ' + kwargs['suffix']
+        super().__init__(*args, **kwargs)
+
     queryset = Inchi.objects.all()
     self_link_view_name = 'inchi-relationships'
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

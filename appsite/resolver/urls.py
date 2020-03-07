@@ -22,7 +22,8 @@ urlpatterns = [
          ),
     path('inchis/<pk>/<related_field>',
          view=views.InchiViewSet.as_view({'get': 'retrieve_related'}),
-         name='inchi-related'),
+         name='inchi-related'
+    ),
 
     path('publishers/<pk>/relationships/<related_field>',
         view=views.PublisherRelationshipView.as_view(),
