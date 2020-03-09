@@ -74,9 +74,9 @@ class ResourceRelationshipView(RelationshipView):
 
 class InchiViewSet(ResourceModelViewSet):
     """
-        This resource of the Resolver API provides a browsable index of all InChI structure identifiers available at
-        this InChI resolver instance and its underlying service API entrypoints. Each InChI instance may provide links
-        (relationships) to the service API entrypoints where it is available.
+        This resource of the InChI Resolver API may provide a browsable index of all InChI structure identifiers
+        available at this InChI resolver instance. For each InChI instance a related resource link to a service API
+        entrypoint resource may be given linking  service API entrypoints at where the InChI instance is available.
     """
     def __init__(self, *args, **kwargs):
         self.name = "InChI"
@@ -108,6 +108,9 @@ class InchiRelationshipView(ResourceRelationshipView):
 
 class OrganizationViewSet(ResourceModelViewSet):
     """
+        This resource of the InChI Resolver API provides access to all organizations that publish either InChI resolver
+        or service API entrypoints known by this InChI resolver instance. For each organization related resource links
+        either to a parent organization resources or publisher resources at this InChI resolver instance are given."
     """
     def __init__(self, *args, **kwargs):
         self.name = "Organisation"
@@ -135,6 +138,10 @@ class OrganizationRelationshipView(ResourceRelationshipView):
 
 class PublisherViewSet(ResourceModelViewSet):
     """
+        This resource of the InChI Resolver API provides access to all publishers/groups that make InChI related service
+        API entrypoints available and are known by this InChI Resolver instance. For each publisher/group related
+        resource links to a parent publisher resource, the organization they belong to, and the entrypoints published
+        by the specific publisher/group are given.
     """
     def __init__(self, *args, **kwargs):
         self.name = "Publisher"
@@ -161,6 +168,16 @@ class PublisherRelationshipView(ResourceRelationshipView):
 
 class EntryPointViewSet(ResourceModelViewSet):
     """
+        This resource of the InChI Resolver API provides access to all entrypoint resources known by this InChI resolver
+        instance. Each entrypoint specifies an URL (attribute 'href') linking to a Web resource which is external to
+        the current InChI resolver instance and makes information/data available based on/indexed by InChI.
+        There are three entrypoint categories available which classify what type of external resource is to be expected
+        at the specified URL: (1) 'site': a general HTML web page, usually accessed by a HTTP GET request,
+        (2) 'service': a Web API, commonly allowing access by the HTTP verbs GET, POST, etc. and returning data using
+        a specific media type (see 'endpoint' resource), and (3) 'resolver' which links to another (external) InChI
+        resolver instance adhering to the same InChI resolver protocol like the current InChI resolver instance. For
+        each entrypoint related resource links to the publisher resoure of the entrypoint and the available endpoint
+        resources are given."
     """
     def __init__(self, *args, **kwargs):
         self.name = "Entrypoint"
