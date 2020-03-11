@@ -43,12 +43,23 @@ def run():
 
     e1 = EntryPoint.create(
         name="Chemical Identifier Resolver",
-        description="This service works as a resolver for different chemical structure identifiers and allows the conversion of a given structure identifier into another representation or structure identifier. It can be used via a web form or a simple URL API.",
+        description="This service works as a resolver for different chemical structure identifiers and allows "
+                    "the conversion of a given structure identifier into another representation or structure "
+                    "identifier. It can be used via a web form or a simple URL API.",
         category="service",
         href="http://cactus.nci.nih.gov/chemical/structure",
         publisher=p1
     )
     e1.save()
+
+    e2 = EntryPoint.create(
+        name="InChI Trust Root Resolver",
+        description="Root InChI Resolver at InChI Trust",
+        category="resolver",
+        href="http://root.inchi-resolver.org",
+        publisher=p1
+    )
+    e2.save()
 
     x1 = EndPoint.create(
         entrypoint=e1,

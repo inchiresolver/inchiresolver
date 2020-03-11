@@ -169,12 +169,16 @@ class PublisherRelationshipView(ResourceRelationshipView):
 class EntryPointViewSet(ResourceModelViewSet):
     """
         This resource of the InChI Resolver API provides access to all entrypoint resources known by this InChI resolver
-        instance. Each entrypoint specifies an URL (attribute 'href') linking to a Web resource which is external to
-        the current InChI resolver instance and makes information/data available based on/indexed by InChI.
+        instance. Each entrypoint resource specifies an URL (attribute 'href') linking to a Web resource which
+        is external to the current InChI resolver instance and makes information/data available based on/indexed by
+        InChI.
+
         There are three entrypoint categories available which classify what type of external resource is to be expected
-        at the specified URL: (1) 'site': a general HTML web page, usually accessed by a HTTP GET request,
+        at the specified URL:
+        (1) 'site': a general HTML web page, usually accessed by a HTTP GET request,
         (2) 'service': a Web API, commonly allowing access by the HTTP verbs GET, POST, etc. and returning data using
-        a specific media type (see 'endpoint' resource), and (3) 'resolver' which links to another (external) InChI
+        a specific media type (see 'endpoint' resource), and
+        (3) 'resolver' which links to another (external) InChI
         resolver instance adhering to the same InChI resolver protocol like the current InChI resolver instance. For
         each entrypoint related resource links to the publisher resoure of the entrypoint and the available endpoint
         resources are given."
@@ -203,6 +207,9 @@ class EntryPointRelationshipView(ResourceRelationshipView):
 
 class EndPointViewSet(ResourceModelViewSet):
     """
+        This resource of the InChI Resolver API provides access to all endpoint resources known by this InChI resolver
+        instance. Each endpoint resource specifies an URL (attribute 'href') linking to a Web resource which is external to
+        the current InChI resolver instance and makes information/data available based on/indexed by InChI.
     """
     def __init__(self, *args, **kwargs):
         self.name = "Endpoint"
