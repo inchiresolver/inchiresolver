@@ -136,8 +136,8 @@ class EntryPoint(models.Model):
     category = models.CharField(max_length=16, choices=(
         ('site', 'site'),
         ('service', 'service'),
-        ('resolver', 'resolver')
-    ), default='website')
+        ('resolver', 'resolver'),
+    ), default='site')
     publisher = models.ForeignKey("Publisher", related_name="entrypoints", on_delete=models.CASCADE, null=True)
     href = models.URLField(max_length=4096)
     name = models.CharField(max_length=255, blank=True, null=True)

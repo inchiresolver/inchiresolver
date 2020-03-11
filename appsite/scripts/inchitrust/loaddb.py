@@ -23,30 +23,32 @@ def run():
 
     p1 = Publisher.create(
         name="Markus Sitzmann",
-        group="",
+        group="InChI Resolver Group",
         contact="markus.sitzmann@gmail.com",
         href="http://inchi-resolver.org",
         organization=o1
     )
     p1.save()
 
-    e2 = EntryPoint.create(
+    e1 = EntryPoint.create(
         name="NCI/CADD InChI Resolver",
-        description="InChI Resolver of CADD group at NCI",
+        description="Demonstration InChI Resolver of the NCI/CADD group",
         category="inchiresolver",
         href="http://cactus.inchi-resolver.org",
         publisher=None
     )
+    e1.save()
+
+    e2 = EntryPoint.create(
+        name="PubChem InChI Resolver",
+        description="Demonstration InChI Resolver for PubChem",
+        category="inchiresolver",
+        href="http://pubchem.inchi-resolver.org",
+        publisher=None
+    )
     e2.save()
 
-    # e2 = EntryPoint.create(
-    #     name="PubChem InChI Resolver",
-    #     description="InChI Resolver of PubChem group at NLM/NCBI",
-    #     category="inchiresolver",
-    #     href="http://pubchem.inchi-resolver.org",
-    #     publisher=None
-    # )
-    # e2.save()
+
 
 
 
