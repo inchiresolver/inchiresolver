@@ -36,7 +36,7 @@ Currently there are three Prototype InChI Resolver APIs in development which sho
 
 The development of the InChI Resolver project created `Chembience <https://chembience.com/>`_
 (`GitHub repository <https://github.com/chembience/chembience>`_) as spin-off open-source project. As a Python-based
-platform integrating RDKit (<http://rdkit.org/>`_), Chembience provides all infrastructure-related components (modern software delivery mechanism, web server, and database server) for the development of web-based cheminformatics services. Chembience has been first
+platform integrating RDKit (`<http://rdkit.org/>`_), Chembience provides all infrastructure-related components (modern software delivery mechanism, web server, and database server) for the development of web-based cheminformatics services. Chembience has been first
 released publicly in March 2018 and has since seen more than ten releases. The InChI Resolver prototypes have been implemented on basis of Chembience: `<https://chembience.com>`_; some slides about the concepts in Chembience: `SlideShare Link <https://www.slideshare.net/sitzmann/chembience>`_
 
 
