@@ -11,7 +11,9 @@ InChI Resolver
    :target: https://img.shields.io/github/license/inchiresolver/inchiresolver.svg
 
 
-Repository of the InChI Resolver project. The goal of this project is to provide the implementation of an InChI resolver prototype as well as the the specifiation of a common InChI Resolver API protocol which allows a client communicating with any InChI Resolver instance. The Docker images required for running the InChI Resolver prototype are available from `DockerHub <https://cloud.docker.com/u/inchiresolver/repository/list>`_.
+Repository of the InChI Resolver project. The goal of this project is to provide the implementation of an InChI resolver prototype as well as the the specifiation of a common InChI Resolver API protocol which allows a client communicating with any InChI Resolver instance in a well-defined manner.
+
+The Docker images required for running the InChI Resolver prototype are available from `DockerHub <https://cloud.docker.com/u/inchiresolver/repository/list>`_.
 
 InChI Resolver Protocol
 -----------------------
