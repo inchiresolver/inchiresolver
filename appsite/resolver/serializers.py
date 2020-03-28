@@ -41,21 +41,29 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
         self_link_view_name='organization-relationships',
     )
 
+    children = relations.ResourceRelatedField(
+        queryset=Organization.objects, many=True, read_only=False, required=False,
+        related_link_view_name='organization-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='organization-relationships',
+    )
+
     publishers = relations.ResourceRelatedField(
         queryset=Publisher.objects, many=True, read_only=False, required=False,
-        related_link_view_name = 'organization-related',
-        related_link_url_kwarg = 'pk',
-        self_link_view_name = 'organization-relationships',
+        related_link_view_name='organization-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='organization-relationships',
     )
 
     included_serializers = {
         'parent': 'resolver.serializers.OrganizationSerializer',
+        'children': 'resolver.serializers.OrganizationSerializer',
         'publishers': 'resolver.serializers.PublisherSerializer',
     }
 
     class Meta:
         model = Organization
-        fields = ('url', 'parent', 'name', 'abbreviation', 'href', 'publishers', 'added', 'modified')
+        fields = ('url', 'parent', 'children', 'name', 'abbreviation', 'href', 'publishers', 'added', 'modified')
         read_only_fields = ('added', 'modified')
         meta_fields = ('added', 'modified')
 
@@ -67,6 +75,20 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
 
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
+    parent = relations.ResourceRelatedField(
+        queryset=Publisher.objects, many=False, read_only=False, required=False,
+        related_link_view_name='publisher-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='publisher-relationships',
+    )
+
+    children = relations.ResourceRelatedField(
+        queryset=Publisher.objects, many=True, read_only=False, required=False,
+        related_link_view_name='publisher-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='publisher-relationships',
+    )
+
     organization = relations.ResourceRelatedField(
         queryset=Organization.objects, many=False, read_only=False, required=False,
         related_link_view_name='publisher-related',
@@ -76,19 +98,22 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
     entrypoints = relations.ResourceRelatedField(
         queryset=EntryPoint.objects, many=True, read_only=False, required=False,
-        related_link_view_name = 'publisher-related',
-        related_link_url_kwarg = 'pk',
-        self_link_view_name = 'publisher-relationships',
+        related_link_view_name='publisher-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='publisher-relationships',
     )
 
     included_serializers = {
+        'parent': 'resolver.serializers.PublisherSerializer',
+        'children': 'resolver.serializers.PublisherSerializer',
         'organization': 'resolver.serializers.OrganizationSerializer',
         'entrypoints': 'resolver.serializers.EntryPointSerializer',
     }
 
     class Meta:
         model = Publisher
-        fields = ('url', 'parent', 'organization', 'entrypoints', 'name', 'group', 'contact',  'email', 'href', 'added', 'modified')
+        fields = ('url', 'parent', 'children', 'organization', 'entrypoints', 'name', 'category', 'email',
+                  'address', 'href', 'orcid', 'added', 'modified')
         read_only_fields = ('added', 'modified')
         meta_fields = ('added', 'modified')
 
@@ -99,6 +124,20 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
+
+    parent = relations.ResourceRelatedField(
+        queryset=EntryPoint.objects, many=False, read_only=False, required=False,
+        related_link_view_name='entrypoint-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='entrypoint-relationships',
+    )
+
+    children = relations.ResourceRelatedField(
+        queryset=EntryPoint.objects, many=True, read_only=False, required=False,
+        related_link_view_name='entrypoint-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='entrypoint-relationships',
+    )
 
     publisher = relations.ResourceRelatedField(
         queryset=Publisher.objects, many=False, read_only=False, required=False,
@@ -115,13 +154,16 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     included_serializers = {
+        'parent': 'resolver.serializers.EntryPointSerializer',
+        'children': 'resolver.serializers.EntryPointSerializer',
         'publisher': 'resolver.serializers.PublisherSerializer',
         'endpoints': 'resolver.serializers.EndPointSerializer',
     }
 
     class Meta:
         model = EntryPoint
-        fields = ('url', 'publisher', 'name', 'description', 'category', 'href',  'endpoints', 'added', 'modified')
+        fields = ('url', 'parent', 'children', 'publisher', 'name', 'description',
+                  'category', 'href',  'endpoints', 'added', 'modified')
         read_only_fields = ('added', 'modified')
         meta_fields = ('added', 'modified')
 
@@ -134,9 +176,7 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
 class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 
     entrypoint = relations.ResourceRelatedField(
-        queryset=EntryPoint.objects,
-        many=False,
-        read_only=False,
+        queryset=EntryPoint.objects, many=False, read_only=False,
         related_link_view_name='endpoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='endpoint-relationships',

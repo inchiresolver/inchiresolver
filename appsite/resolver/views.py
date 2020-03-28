@@ -87,8 +87,8 @@ class InchiViewSet(ResourceModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     filterset_fields = {
-        'key': ('icontains', 'iexact', 'contains'),
-        'string': ('icontains', 'iexact', 'contains'),
+        'key': ('icontains', 'iexact', 'contains', 'exact'),
+        'string': ('icontains', 'iexact', 'contains', 'exact'),
     }
     search_fields = ('string', 'key',)
 

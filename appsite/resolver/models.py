@@ -76,15 +76,31 @@ class Inchi(models.Model):
 
 class Organization(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', related_name='minor', on_delete=models.CASCADE, null=True)
-    name = models.CharField(unique=True, max_length=32768)
+    parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=32768)
     abbreviation = models.CharField(max_length=32, blank=True, null=True)
+    category = models.CharField(max_length=16, choices=(
+        ('regulatory', 'Regulatory'),
+        ('government', 'Government'),
+        ('academia', 'Academia'),
+        ('company', 'Company'),
+        ('vendor', 'Vendor'),
+        ('research', 'Research'),
+        ('publishing', 'Publishing'),
+        ('provider', 'Provider'),
+        ('public', 'Public'),
+        ('other', 'Other'),
+        ('none', 'None'),
+    ), default='none')
     href = models.URLField(max_length=4096, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class JSONAPIMeta:
         resource_name = 'organizations'
+
+    class Meta:
+        unique_together = ('parent', 'name')
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -98,13 +114,23 @@ class Organization(models.Model):
 
 class Publisher(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', related_name='minor', on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, null=True)
     organization = models.ForeignKey('Organization', related_name='publishers', on_delete=models.CASCADE, null=True)
-    name = models.CharField(max_length=32768)
-    group = models.CharField(max_length=32768, blank=True, null=True)
-    contact = models.CharField(max_length=32768, blank=True, null=True)
+    category = models.CharField(max_length=16, choices=(
+        ('entity', 'Entity'),
+        ('service', 'Service'),
+        ('network', 'Network'),
+        ('division', 'Division'),
+        ('group', 'Group'),
+        ('person', 'Person'),
+        ('other', 'Other'),
+        ('none', 'None'),
+    ), default='none')
+    name = models.CharField(max_length=1024)
     email = models.EmailField(max_length=254, blank=True, null=True)
+    address = models.CharField(max_length=8192, blank=True, null=True)
     href = models.URLField(max_length=4096, blank=True, null=True)
+    orcid = models.URLField(max_length=4096, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -112,31 +138,32 @@ class Publisher(models.Model):
         resource_name = 'publishers'
 
     class Meta:
-        unique_together = ('parent', 'organization', 'name', 'group', 'contact')
+        unique_together = ('organization', 'category', 'name', 'href', 'orcid')
 
     @classmethod
     def create(cls, *args, **kwargs):
         publisher = cls(*args, **kwargs)
         publisher.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
-            kwargs.get('name'),
             str(kwargs.get('organization', None)),
             str(kwargs.get('parent', None)),
-            kwargs.get('group', None),
-            kwargs.get('contact', None)
+            str(kwargs.get('href', None)),
+            str(kwargs.get('orcid', None)),
+            kwargs.get('name')
         ]))
         return publisher
 
     def __str__(self):
-        return "%s[%s, %s]" % (self.name, self.group, self.contact)
+        return "%s [%s]" % (self.name, self.category)
 
 
 class EntryPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='children', null=True)
     category = models.CharField(max_length=16, choices=(
-        ('site', 'site'),
-        ('service', 'service'),
-        ('resolver', 'resolver'),
+        ('self', 'Self'),
+        ('site', 'Site'),
+        ('api', 'API'),
+        ('resolver', 'Resolver'),
     ), default='site')
     publisher = models.ForeignKey("Publisher", related_name="entrypoints", on_delete=models.CASCADE, null=True)
     href = models.URLField(max_length=4096)
@@ -163,16 +190,16 @@ class EntryPoint(models.Model):
         return entrypoint
 
     def __str__(self):
-        return "%s[%s]" % (self.publisher, self.href)
+        return "%s [%s]" % (self.publisher, self.href)
 
 
 class EndPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     entrypoint = models.ForeignKey('EntryPoint', related_name='endpoints', on_delete=models.CASCADE, null=True)
     category = models.CharField(max_length=16, choices=(
-        ('schema', 'schema'),
-        ('uripattern', 'uripattern')
-    ), default='uripattern')
+        ('schema', 'Schema'),
+        ('uritemplate', 'URI Template (RFC6570)')
+    ), default='uritemplate')
     uri = models.CharField(max_length=32768)
     description = models.TextField(max_length=32768, blank=True, null=True)
     content_media_type = models.CharField(max_length=1024, blank=True, null=True)
@@ -191,7 +218,7 @@ class EndPoint(models.Model):
         endpoint.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('entrypoint')),
             str(kwargs.get('category')),
-            kwargs.get('content_media_type', None),
+            str(kwargs.get('content_media_type', None)),
             kwargs.get('uri'),
         ]))
         return endpoint
