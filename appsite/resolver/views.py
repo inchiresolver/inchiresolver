@@ -87,8 +87,11 @@ class InchiViewSet(ResourceModelViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     filterset_fields = {
+        'id': ('exact', 'in'),
         'key': ('icontains', 'iexact', 'contains', 'exact'),
         'string': ('icontains', 'iexact', 'contains', 'exact'),
+        'version': ('exact', 'in', 'gt', 'gte', 'lt', 'lte',),
+        'safe_options': ('icontains', 'iexact', 'contains', 'exact'),
     }
     search_fields = ('string', 'key',)
 
@@ -113,12 +116,27 @@ class OrganizationViewSet(ResourceModelViewSet):
         either to a parent organization resources or publisher resources at this InChI resolver instance are given."
     """
     def __init__(self, *args, **kwargs):
-        self.name = "Organisation"
+        self.name = "Organization"
         super().__init__(*args, **kwargs)
 
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    filterset_fields = {
+        'id': ('exact', 'in'),
+        'name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'abbreviation': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'category': ('exact', 'in'),
+        'href': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'parent': ('exact', 'in'),
+        'parent__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'parent__abbreviation': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'children': ('exact', 'in'),
+        'children__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'children__abbreviation': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+    }
+    search_fields = ('name', 'abbreviation', 'category', 'href')
 
 
 class OrganizationRelationshipView(ResourceRelationshipView):
@@ -150,6 +168,29 @@ class PublisherViewSet(ResourceModelViewSet):
     queryset = Publisher.objects.all()
     serializer_class = PublisherSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    filterset_fields = {
+        'id': ('exact', 'in'),
+        'name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'category': ('exact', 'in'),
+        'email': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'address': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'href': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'orcid': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'parent__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'parent__category': ('exact', 'in'),
+        'parent__email': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'parent__address': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'parent__href': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'parent__orcid': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'children__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'children__category': ('exact', 'in'),
+        'children__email': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'children__address': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'children__href': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'children__orcid': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+    }
+    search_fields = ('name', 'category', 'email', 'address', 'href', 'orcid')
 
 
 class PublisherRelationshipView(ResourceRelationshipView):
@@ -191,6 +232,25 @@ class EntryPointViewSet(ResourceModelViewSet):
     serializer_class = EntryPointSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+    filterset_fields = {
+        'id': ('exact', 'in'),
+        'category': ('exact', 'in'),
+        'href': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'publisher__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'publisher__category': ('exact', 'in'),
+        'publisher__email': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'publisher__address': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'publisher__href': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'publisher__orcid': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'endpoints__description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'endpoints__category': ('exact', 'in'),
+        'endpoints__uri': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'endpoints__content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+    }
+    search_fields = ('category', 'href', 'name', 'description')
+
 
 class EntryPointRelationshipView(ResourceRelationshipView):
     """
@@ -218,6 +278,15 @@ class EndPointViewSet(ResourceModelViewSet):
     queryset = EndPoint.objects.all()
     serializer_class = EndPointSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    filterset_fields = {
+        'id': ('exact', 'in'),
+        'description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'category': ('exact', 'in'),
+        'uri': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+    }
+    search_fields = ('category', 'uri', 'description', 'content_media_type')
 
 
 class EndPointRelationshipView(ResourceRelationshipView):
