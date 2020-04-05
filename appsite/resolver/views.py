@@ -1,7 +1,11 @@
 import os
 
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
+from rest_framework.response import Response
 from rest_framework import permissions, routers, generics
+from rest_framework.decorators import action
 from rest_framework_json_api.views import RelationshipView, ModelViewSet
 
 from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
@@ -231,6 +235,13 @@ class EntryPointViewSet(ResourceModelViewSet):
     queryset = EntryPoint.objects.all()
     serializer_class = EntryPointSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    @action(detail=False)
+    def get_self_entrypoint(self, request, pk=None):
+        queryset = EntryPoint.objects.filter(category='self').get()
+        serializer = self.get_serializer(queryset, many=False)
+        return Response(serializer.data)
+
 
     filterset_fields = {
         'id': ('exact', 'in'),

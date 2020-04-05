@@ -163,7 +163,7 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = EntryPoint
         fields = ('url', 'parent', 'children', 'publisher', 'name', 'description',
-                  'category', 'href',  'endpoints', 'added', 'modified')
+                  'category', 'href', 'eref', 'endpoints', 'added', 'modified')
         read_only_fields = ('added', 'modified')
         meta_fields = ('added', 'modified')
 

@@ -17,6 +17,10 @@ urlpatterns = [
 
     re_path(r'^', include(router.urls)),
 
+    path('_self',
+        view=views.EntryPointViewSet.as_view({'get': 'get_self_entrypoint'}),
+        name='entrypoint-self'),
+
     path('inchis/<pk>/relationships/<related_field>',
          views.InchiRelationshipView.as_view(), {'source': 'relationships'},
          name='inchi-relationships'),
@@ -54,6 +58,5 @@ urlpatterns = [
     path('endpoints/<pk>/<related_field>',
         view=views.EndPointViewSet.as_view({'get': 'retrieve_related'}),
         name='endpoint-related'),
-
 
 ]

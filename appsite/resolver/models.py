@@ -89,6 +89,8 @@ class Organization(models.Model):
         ('publishing', 'Publishing'),
         ('provider', 'Provider'),
         ('public', 'Public'),
+        ('society', "Society"),
+        ('charity', "Charity"),
         ('other', 'Other'),
         ('none', 'None'),
     ), default='none')
@@ -167,6 +169,7 @@ class EntryPoint(models.Model):
     ), default='site')
     publisher = models.ForeignKey("Publisher", related_name="entrypoints", on_delete=models.CASCADE, null=True)
     href = models.URLField(max_length=4096)
+    entrypoint_href = models.URLField(max_length=4096, blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(max_length=32768, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
