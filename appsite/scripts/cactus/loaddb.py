@@ -68,6 +68,7 @@ def run():
         description="Demonstration InChI Resolver of the NCI/CADD group",
         category="self",
         href="https://cactus.inchi-resolver.org",
+        entrypoint_href="https://cactus.inchi-resolver.org/_self",
         publisher=p1
     )
     e0.save()
@@ -98,6 +99,7 @@ def run():
         uri="{+stdinchi|+stdinchikey}/smiles",
         description="Standard InChI to SMILES conversion",
         content_media_type="text/plain",
+        request_methods=['GET','POST']
     )
     x1.save()
 
@@ -107,6 +109,7 @@ def run():
         uri="{+stdinchi,+stdinchikey}/iupac_name",
         description="Standard InChI to IUPAC name conversion",
         content_media_type="text/plain",
+        request_methods=['GET']
     )
     x2.save()
 
@@ -115,7 +118,8 @@ def run():
         category="uritemplate",
         uri="{+stdinchi,+stdinchikey}/image",
         description="InChI to SMILES conversion",
-        content_media_type="image/gif"
+        content_media_type="image/gif",
+        request_methods=['POST', 'GET']
     )
     x3.save()
 

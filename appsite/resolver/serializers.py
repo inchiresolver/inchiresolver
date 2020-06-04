@@ -1,3 +1,4 @@
+from rest_framework.fields import MultipleChoiceField
 from rest_framework_json_api import serializers
 from rest_framework_json_api import relations
 
@@ -163,7 +164,7 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = EntryPoint
         fields = ('url', 'parent', 'children', 'publisher', 'name', 'description',
-                  'category', 'href', 'eref', 'endpoints', 'added', 'modified')
+                  'category', 'href', 'entrypoint_href', 'endpoints', 'added', 'modified')
         read_only_fields = ('added', 'modified')
         meta_fields = ('added', 'modified')
 
@@ -186,9 +187,14 @@ class EndPointSerializer(serializers.HyperlinkedModelSerializer):
         'entrypoint': 'resolver.serializers.EntryPointSerializer',
     }
 
+    request_methods = MultipleChoiceField(choices=(
+        ('GET', 'GET'),
+        ('POST', 'POST'),
+    ), default=['GET'])
+
     class Meta:
         model = EndPoint
-        fields = ('url', 'entrypoint', 'description', 'category', 'uri',  'content_media_type', 'added', 'modified')
+        fields = ('url', 'entrypoint', 'description', 'category', 'uri', 'request_methods', 'content_media_type', 'added', 'modified')
         read_only_fields = ('added', 'modified')
         meta_fields = ('added', 'modified')
 

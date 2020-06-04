@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_filters',
     'crispy_forms',
+    'multiselectfield',
     'dbbackup',
 ]
 

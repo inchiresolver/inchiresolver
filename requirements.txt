@@ -7,6 +7,7 @@ django-dbbackup>=3.2.0
 djangorestframework-jsonapi
 djangorestframework-jsonapi[django-filter]
 djangorestframework-jsonapi[django-polymorphic]
+django-multiselectfield
 pyyaml
 uritemplate
 jsonapi-client

@@ -2,6 +2,7 @@ import uuid
 from urllib.parse import urljoin
 
 from django.core.exceptions import FieldError
+from multiselectfield import MultiSelectField
 from rdkit import Chem
 
 from django.db import models
@@ -204,6 +205,10 @@ class EndPoint(models.Model):
         ('uritemplate', 'URI Template (RFC6570)')
     ), default='uritemplate')
     uri = models.CharField(max_length=32768)
+    request_methods = MultiSelectField(choices=(
+        ('GET', 'GET'),
+        ('POST', 'POST'),
+    ), default=['GET'])
     description = models.TextField(max_length=32768, blank=True, null=True)
     content_media_type = models.CharField(max_length=1024, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
