@@ -36,21 +36,21 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
 class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
 
     parent = relations.ResourceRelatedField(
-        queryset=Organization.objects, many=False, read_only=False, required=False,
+        queryset=Organization.objects, many=False, read_only=False, required=False, default=None,
         related_link_view_name='organization-related',
         related_link_url_kwarg='pk',
         self_link_view_name='organization-relationships',
     )
 
     children = relations.ResourceRelatedField(
-        queryset=Organization.objects, many=True, read_only=False, required=False,
+        queryset=Organization.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='organization-related',
         related_link_url_kwarg='pk',
         self_link_view_name='organization-relationships',
     )
 
     publishers = relations.ResourceRelatedField(
-        queryset=Publisher.objects, many=True, read_only=False, required=False,
+        queryset=Publisher.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='organization-related',
         related_link_url_kwarg='pk',
         self_link_view_name='organization-relationships',
@@ -64,13 +64,27 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Organization
-        fields = ('url', 'parent', 'children', 'name', 'abbreviation', 'href', 'publishers', 'added', 'modified')
-        read_only_fields = ('added', 'modified')
+        fields = ('url', 'parent', 'children', 'name', 'abbreviation', 'category', 'href', 'publishers', 'added', 'modified')
+        read_only_fields = ('children', 'publishers', 'added', 'modified')
         meta_fields = ('added', 'modified')
 
     def create(self, validated_data):
-        organization = Organization.create(**validated_data)
-        organization.save()
+
+        children = validated_data.pop('children', None)
+        publishers = validated_data.pop('publishers', None)
+
+        is_valid = self.is_valid()
+
+        try:
+            organization = Organization.objects.get(**validated_data)
+        except Organization.DoesNotExist:
+            organization = Organization.create(**validated_data)
+            organization.save()
+            if children:
+                for child in children:
+                    organization.children.add(child)
+
+
         return organization
 
 

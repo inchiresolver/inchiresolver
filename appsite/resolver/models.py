@@ -77,7 +77,7 @@ class Inchi(models.Model):
 
 class Organization(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=32768)
     abbreviation = models.CharField(max_length=32, blank=True, null=True)
     category = models.CharField(max_length=16, choices=(

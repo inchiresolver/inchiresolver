@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+./django-manage-py.dev makemigrations resolver &&\
+./django-manage-py.dev migrate &&\
+./django-manage-py.dev createsuperuser
+
+
+
