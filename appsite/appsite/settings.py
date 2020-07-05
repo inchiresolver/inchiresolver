@@ -90,7 +90,8 @@ DATABASES = {
             'USER':  os.environ['CHEMBIENCE_DB_USER'],
             'PASSWORD': os.environ['CHEMBIENCE_DB_PASSWORD'],
             'HOST': os.environ['CHEMBIENCE_DB_HOST'],
-            'PORT': os.environ['CHEMBIENCE_DB_PORT']
+            'PORT': os.environ['CHEMBIENCE_DB_PORT'],
+            'ATOMIC_REQUESTS': True
     }
 }
 

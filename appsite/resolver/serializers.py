@@ -1,7 +1,12 @@
+from django.db import IntegrityError
+from rest_framework import status
+from rest_framework.exceptions import bad_request, ValidationError
 from rest_framework.fields import MultipleChoiceField
 from rest_framework_json_api import serializers
 from rest_framework_json_api import relations
+from typing import Dict
 
+from exceptions import ResourceExistsError
 from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
 
 
@@ -68,24 +73,50 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
         read_only_fields = ('children', 'publishers', 'added', 'modified')
         meta_fields = ('added', 'modified')
 
-    def create(self, validated_data):
+    def create(self, validated_data: Dict):
 
         children = validated_data.pop('children', None)
         publishers = validated_data.pop('publishers', None)
 
-        is_valid = self.is_valid()
+        self.is_valid(raise_exception=True)
 
         try:
             organization = Organization.objects.get(**validated_data)
         except Organization.DoesNotExist:
             organization = Organization.create(**validated_data)
-            organization.save()
+            try:
+                organization.save()
+            except IntegrityError as e:
+                raise ResourceExistsError("organization resource already exists", code=409)
             if children:
-                for child in children:
-                    organization.children.add(child)
-
+                organization.children.add(*children, bulk=True)
+            if publishers:
+                organization.publishers.add(*publishers, bulk=True)
 
         return organization
+
+    def update(self, instance: Organization, validated_data: Dict):
+
+        children = validated_data.pop('children', None)
+        publishers = validated_data.pop('publishers', None)
+
+        instance.abbreviation = validated_data.get('abbreviation', instance.abbreviation)
+        instance.category = validated_data.get('category', instance.category)
+        instance.href = validated_data.get('href', instance.href)
+        instance.save()
+
+        if children:
+            instance.children.bulk_update(children, bulk=True, clear=True)
+        else:
+            instance.children.clear(bulk=True)
+        if publishers:
+            instance.publishers.bulk_update(publishers, bulk=True, clear=True)
+        else:
+            instance.publishers.clear(bulk=True)
+
+
+
+        return instance
 
 
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):
