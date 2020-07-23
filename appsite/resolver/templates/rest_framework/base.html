@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 {% load i18n %}
 {% load rest_framework %}
 
@@ -32,11 +32,12 @@
 
     <div class="wrapper">
       {% block navbar %}
-        <div class="navbar navbar-static-top {% block bootstrap_navbar_variant %}navbar-inverse{% endblock %}">
+        <div class="navbar navbar-static-top {% block bootstrap_navbar_variant %}navbar-inverse{% endblock %}"
+             role="navigation" aria-label="{% trans "navbar" %}">
           <div class="container">
             <span>
               {% block branding %}
-                <a class='navbar-brand' rel="nofollow" href='http://www.django-rest-framework.org'>
+                <a class='navbar-brand' rel="nofollow" href='https://www.django-rest-framework.org/'>
                     Django REST framework
                 </a>
               {% endblock %}
@@ -68,7 +69,11 @@
         {% endblock %}{% endcomment %}
 
         <!-- Content -->
-        <div id="content">
+        <div id="content" role="main" aria-label="{% trans "content" %}">
+          {% block content %}
+
+          <div class="region"  aria-label="{% trans "request form" %}">
+          {% block request_forms %}
 
           {% if 'GET' in allowed_methods %}
             <form id="get-form" class="pull-right">
@@ -133,7 +138,10 @@
           {% endif %}
             {% endcomment %}
 
-            <div class="content-main">
+          {% endblock request_forms %}
+          </div>
+
+            <div class="content-main" role="main"  aria-label="{% trans "main content" %}">
               <div class="page-header">
                 <h1>{{ name }}</h1>
               </div>
@@ -149,15 +157,15 @@
                 </nav>
               {% endif %}
 
-              <div class="request-info" style="clear: both" >
+              <div class="request-info" style="clear: both" aria-label="{% trans "request info" %}">
                 <pre class="prettyprint"><b>{{ request.method }}</b> {{ request.get_full_path }}</pre>
               </div>
 
-              <div class="response-info">
-                <pre class="prettyprint"><span class="meta nocode"><b>HTTP {{ response.status_code }} {{ response.status_text }}</b>{% autoescape off %}{% for key, val in response_headers.items %}
+              <div class="response-info" aria-label="{% trans "response info" %}">
+                <pre class="prettyprint"><span class="meta nocode"><b>HTTP {{ response.status_code }} {{ response.status_text }}</b>{% for key, val in response_headers|items %}
 <b>{{ key }}:</b> <span class="lit">{{ val|break_long_headers|urlize_quoted_links }}</span>{% endfor %}
 
-</span>{{ content|urlize_quoted_links }}</pre>{% endautoescape %}
+</span>{{ content|urlize_quoted_links }}</pre>
               </div>
             </div>
 
@@ -184,7 +192,7 @@
                               {% csrf_token %}
                               {{ post_form }}
                               <div class="form-actions">
-                                <button class="btn btn-primary" title="Make a POST request on the {{ name }} resource">POST</button>
+                                <button class="btn btn-primary js-tooltip" title="Make a POST request on the {{ name }} resource">POST</button>
                               </div>
                             </fieldset>
                           </form>
@@ -198,7 +206,7 @@
                           <fieldset>
                             {% include "rest_framework/raw_data_form.html" %}
                             <div class="form-actions">
-                              <button class="btn btn-primary" title="Make a POST request on the {{ name }} resource">POST</button>
+                              <button class="btn btn-primary js-tooltip" title="Make a POST request on the {{ name }} resource">POST</button>
                             </div>
                           </fieldset>
                         </form>
@@ -256,6 +264,7 @@
                 </div>
               {% endif %}
             {% endif %}
+          {% endblock content %}
         </div><!-- /.content -->
       </div><!-- /.container -->
     </div><!-- ./wrapper -->
@@ -268,7 +277,7 @@
       <script>
         window.drf = {
           csrfHeaderName: "{{ csrf_header_name|default:'X-CSRFToken' }}",
-          csrfCookieName: "{{ csrf_cookie_name|default:'csrftoken' }}"
+          csrfToken: "{% if request %}{{ csrf_token }}{% endif %}"
         };
       </script>
       <script src="{% static "rest_framework/js/jquery-3.4.1.min.js" %}"></script>

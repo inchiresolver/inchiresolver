@@ -8,13 +8,13 @@ from rest_framework import permissions, routers, generics
 from rest_framework.decorators import action
 from rest_framework_json_api.views import RelationshipView, ModelViewSet
 
-from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint
+from resolver.models import Inchi, Organization, Publisher, EntryPoint, EndPoint, MediaType
 from resolver.serializers import (
     InchiSerializer,
     OrganizationSerializer,
     PublisherSerializer,
     EntryPointSerializer,
-    EndPointSerializer
+    EndPointSerializer, MediaTypeSerializer
 )
 
 
@@ -258,7 +258,7 @@ class EntryPointViewSet(ResourceModelViewSet):
         'endpoints__description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
         'endpoints__category': ('exact', 'in'),
         'endpoints__uri': ('icontains', 'iexact', 'contains', 'exact', 'in'),
-        'endpoints__content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        #'endpoints__content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
     }
     search_fields = ('category', 'href', 'name', 'description')
 
@@ -295,9 +295,9 @@ class EndPointViewSet(ResourceModelViewSet):
         'description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
         'category': ('exact', 'in'),
         'uri': ('icontains', 'iexact', 'contains', 'exact', 'in'),
-        'content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        #'content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
     }
-    search_fields = ('category', 'uri', 'description', 'content_media_type')
+    search_fields = ('category', 'uri', 'description',)
 
 
 class EndPointRelationshipView(ResourceRelationshipView):
@@ -309,4 +309,39 @@ class EndPointRelationshipView(ResourceRelationshipView):
 
     queryset = EndPoint.objects.all()
     self_link_view_name = 'endpoint-relationships'
+
+
+#/////
+
+### MEDIA  tYPE ###
+
+class MediaTypeViewSet(ResourceModelViewSet):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        self.name = "Mediatype"
+        super().__init__(*args, **kwargs)
+
+    queryset = MediaType.objects.all()
+    serializer_class = MediaTypeSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    filterset_fields = {
+        'id': ('exact', 'in'),
+        'name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        #'content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+    }
+    search_fields = ('name', 'description',)
+
+
+class MediaTypeRelationshipView(ResourceRelationshipView):
+    """
+    """
+    def __init__(self, *args, **kwargs):
+        self.name = "Mediatype"
+        super().__init__(*args, **kwargs)
+
+    queryset = MediaType.objects.all()
+    self_link_view_name = 'mediatype-relationships'
 

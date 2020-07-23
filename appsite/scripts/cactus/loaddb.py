@@ -13,8 +13,22 @@ def run():
     Inchi.objects.all().delete()
     Publisher.objects.all().delete()
     EntryPoint.objects.all().delete()
+    MediaType.objects.all().delete()
 
     client = CactusClient()
+
+    m1 = MediaType.create(
+        name="text/plain",
+        description="plain text media type"
+    )
+    m1.save()
+
+    m2 = MediaType.create(
+        name="image/gif",
+        description = "GIF image",
+    )
+    m2.save()
+
 
     o1 = Organization.create(
         name="National Institutes of Health",
@@ -98,50 +112,63 @@ def run():
         category="uritemplate",
         uri="{+stdinchi|+stdinchikey}/smiles",
         description="Standard InChI to SMILES conversion",
-        content_media_type="text/plain",
+        #content_media_type="text/plain",
         request_methods=['GET','POST']
     )
     x1.save()
+    x1.consumers.add(m1)
+    x1.producers.add(m1)
 
     x2 = EndPoint.create(
         entrypoint=e1,
         category="uritemplate",
         uri="{+stdinchi,+stdinchikey}/iupac_name",
         description="Standard InChI to IUPAC name conversion",
-        content_media_type="text/plain",
+        #content_media_type="text/plain",
         request_methods=['GET']
     )
     x2.save()
+    x2.accepted_mediatypes.add(m1)
+    x2.content_mediatypes.add(m1)
 
     x3 = EndPoint.create(
         entrypoint=e1,
         category="uritemplate",
         uri="{+stdinchi,+stdinchikey}/image",
         description="InChI to SMILES conversion",
-        content_media_type="image/gif",
+        #content_media_type="image/gif",
         request_methods=['POST', 'GET']
     )
     x3.save()
+    x3.accepted_mediatypes.add(m1)
+    x3.content_mediatypes.add(m1,m2)
 
     x4 = EndPoint.create(
         entrypoint=e1,
         category="uritemplate",
         uri="{+smiles}/stdinchi",
         description="SMILES to stdinchi conversion",
-        content_media_type="text/plain",
+        #content_media_type="text/plain",
     )
     x4.save()
+    x4.accepted_mediatypes.add(m1)
+    x4.content_mediatypes.add(m1)
 
     x5 = EndPoint.create(
         entrypoint=e1,
         category="uritemplate",
         uri="{+smiles}/stdinchikey",
         description="SMILES to stdinchikey conversion",
-        content_media_type="text/plain",
+        #content_media_type="text/plain",
     )
     x5.save()
+    x5.accepted_mediatypes.add(m1)
+    x5.content_mediatypes.add(m1)
 
-    for j in range(1, 30):
+
+
+
+    for j in range(1, 10):
 
         ilist = client.fetch_inchi(range(j * 10, j * 10 + 10))
 

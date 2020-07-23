@@ -12,6 +12,8 @@ router.register('organizations', views.OrganizationViewSet)
 router.register('publishers', views.PublisherViewSet)
 router.register('entrypoints', views.EntryPointViewSet)
 router.register('endpoints', views.EndPointViewSet)
+router.register('mediatypes', views.MediaTypeViewSet)
+
 
 urlpatterns = [
 
@@ -58,5 +60,13 @@ urlpatterns = [
     path('endpoints/<pk>/<related_field>',
         view=views.EndPointViewSet.as_view({'get': 'retrieve_related'}),
         name='endpoint-related'),
+
+
+    path('mediatypes/<pk>/relationships/<related_field>',
+        view=views.MediaTypeRelationshipView.as_view(),
+        name='mediatype-relationships'),
+    path('mediatypes/<pk>/<related_field>',
+        view=views.MediaTypeViewSet.as_view({'get': 'retrieve_related'}),
+        name='mediatype-related'),
 
 ]

@@ -7,6 +7,7 @@ from rdkit import Chem
 
 from django.db import models
 
+from resolver import defaults
 from inchi.identifier import InChIKey, InChI
 
 
@@ -77,7 +78,7 @@ class Inchi(models.Model):
 
 class Organization(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, blank=True, null=True)
+    parent = models.ForeignKey('self', related_name='children', on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=32768)
     abbreviation = models.CharField(max_length=32, blank=True, null=True)
     category = models.CharField(max_length=16, choices=(
@@ -156,7 +157,7 @@ class Publisher(models.Model):
         return publisher
 
     def __str__(self):
-        return "%s [%s]" % (self.name, self.category)
+        return "%s[%s]" % (self.name, self.category)
 
 
 class EntryPoint(models.Model):
@@ -200,17 +201,15 @@ class EntryPoint(models.Model):
 class EndPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     entrypoint = models.ForeignKey('EntryPoint', related_name='endpoints', on_delete=models.CASCADE, null=True)
+    consumer = models.ManyToManyField('MediaType', related_name='consumer')
+    producer = models.ManyToManyField('MediaType', related_name='producer')
     category = models.CharField(max_length=16, choices=(
         ('schema', 'Schema'),
         ('uritemplate', 'URI Template (RFC6570)')
     ), default='uritemplate')
     uri = models.CharField(max_length=32768)
-    request_methods = MultiSelectField(choices=(
-        ('GET', 'GET'),
-        ('POST', 'POST'),
-    ), default=['GET'])
+    request_methods = MultiSelectField(choices=defaults.http_verbs, default=['GET'])
     description = models.TextField(max_length=32768, blank=True, null=True)
-    content_media_type = models.CharField(max_length=1024, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -226,10 +225,31 @@ class EndPoint(models.Model):
         endpoint.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('entrypoint')),
             str(kwargs.get('category')),
-            str(kwargs.get('content_media_type', None)),
             kwargs.get('uri'),
         ]))
         return endpoint
 
     def __str__(self):
         return "%s[%s]" % (self.entrypoint, self.uri)
+
+
+class MediaType(models.Model):
+    id = models.UUIDField(primary_key=True, editable=False)
+    name = models.CharField(max_length=1024, blank=False, null=False, unique=True)
+    description = models.TextField(max_length=32768, blank=True, null=True)
+    added = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class JSONAPIMeta:
+        resource_name = 'mediatypes'
+
+    @classmethod
+    def create(cls, *args, **kwargs):
+        mediatype = cls(*args, **kwargs)
+        mediatype.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
+            str(kwargs.get('name'))
+        ]))
+        return mediatype
+
+    def __str__(self):
+        return "%s" % self.name
