@@ -116,8 +116,8 @@ def run():
         request_methods=['GET','POST']
     )
     x1.save()
-    x1.consumers.add(m1)
-    x1.producers.add(m1)
+    x1.accept_header_mediatypes.add(m1)
+    x1.content_mediatypes.add(m1)
 
     x2 = EndPoint.create(
         entrypoint=e1,
@@ -128,7 +128,7 @@ def run():
         request_methods=['GET']
     )
     x2.save()
-    x2.accepted_mediatypes.add(m1)
+    x2.accept_header_mediatypes.add(m1)
     x2.content_mediatypes.add(m1)
 
     x3 = EndPoint.create(
@@ -140,7 +140,7 @@ def run():
         request_methods=['POST', 'GET']
     )
     x3.save()
-    x3.accepted_mediatypes.add(m1)
+    x3.accept_header_mediatypes.add(m1)
     x3.content_mediatypes.add(m1,m2)
 
     x4 = EndPoint.create(
@@ -151,7 +151,7 @@ def run():
         #content_media_type="text/plain",
     )
     x4.save()
-    x4.accepted_mediatypes.add(m1)
+    x4.accept_header_mediatypes.add(m1)
     x4.content_mediatypes.add(m1)
 
     x5 = EndPoint.create(
@@ -162,7 +162,7 @@ def run():
         #content_media_type="text/plain",
     )
     x5.save()
-    x5.accepted_mediatypes.add(m1)
+    x5.accept_header_mediatypes.add(m1)
     x5.content_mediatypes.add(m1)
 
 

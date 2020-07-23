@@ -201,8 +201,8 @@ class EntryPoint(models.Model):
 class EndPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     entrypoint = models.ForeignKey('EntryPoint', related_name='endpoints', on_delete=models.CASCADE, null=True)
-    consumer = models.ManyToManyField('MediaType', related_name='consumer')
-    producer = models.ManyToManyField('MediaType', related_name='producer')
+    accept_header_mediatypes = models.ManyToManyField('MediaType', related_name='accepting_endpoints')
+    content_mediatypes = models.ManyToManyField('MediaType', related_name='delivering_endpoints')
     category = models.CharField(max_length=16, choices=(
         ('schema', 'Schema'),
         ('uritemplate', 'URI Template (RFC6570)')

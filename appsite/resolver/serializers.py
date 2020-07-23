@@ -276,14 +276,14 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
 
 class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 
-    consumer = relations.ResourceRelatedField(
+    accept_header_mediatypes = relations.ResourceRelatedField(
         queryset=MediaType.objects, many=True, read_only=False,
         related_link_view_name='endpoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='endpoint-relationships',
     )
 
-    producer = relations.ResourceRelatedField(
+    content_mediatypes = relations.ResourceRelatedField(
         queryset=MediaType.objects, many=True, read_only=False,
         related_link_view_name='endpoint-related',
         related_link_url_kwarg='pk',
@@ -292,15 +292,15 @@ class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 
     included_serializers = {
         'entrypoint': 'resolver.serializers.EntryPointSerializer',
-        'consumer': 'resolver.serializers.MediaTypeSerializer',
-        'producer': 'resolver.serializers.MediaTypeSerializer',
+        'accept_header_mediatypes': 'resolver.serializers.MediaTypeSerializer',
+        'content_mediatypes': 'resolver.serializers.MediaTypeSerializer',
     }
 
     request_methods = MultipleChoiceField(choices=defaults.http_verbs, default=['GET'])
 
     class Meta:
         model = EndPoint
-        fields = ('url', 'entrypoint', 'description', 'category', 'uri', 'request_methods', 'consumer', 'producer', 'added', 'modified')
+        fields = ('url', 'entrypoint', 'description', 'category', 'uri', 'request_methods', 'accept_header_mediatypes', 'content_mediatypes', 'added', 'modified')
         read_only_fields = ('added', 'modified')
         meta_fields = ('added', 'modified')
 
@@ -312,14 +312,14 @@ class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 
 class MediaTypeSerializer(serializers.HyperlinkedModelSerializer):
 
-    consumer = relations.ResourceRelatedField(
+    accepting_endpoints = relations.ResourceRelatedField(
         queryset=EndPoint.objects, many=True, read_only=False,
         related_link_view_name='mediatype-related',
         related_link_url_kwarg='pk',
         self_link_view_name='mediatype-relationships',
     )
 
-    producer = relations.ResourceRelatedField(
+    delivering_endpoints = relations.ResourceRelatedField(
         queryset=EndPoint.objects, many=True, read_only=False,
         related_link_view_name='mediatype-related',
         related_link_url_kwarg='pk',
@@ -327,13 +327,13 @@ class MediaTypeSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     included_serializers = {
-        'consumer': 'resolver.serializers.EndPointSerializer',
-        'producer': 'resolver.serializers.EndPointSerializer',
+        'accepting_endpoints': 'resolver.serializers.EndPointSerializer',
+        'delivering_endpoints': 'resolver.serializers.EndPointSerializer',
     }
 
     class Meta:
         model = MediaType
-        fields = ('url', 'name', 'description', 'consumer', 'producer', 'added', 'modified')
+        fields = ('url', 'name', 'description', 'accepting_endpoints', 'delivering_endpoints', 'added', 'modified')
         read_only_fields = ('added', 'modified')
         meta_fields = ('added', 'modified')
 
