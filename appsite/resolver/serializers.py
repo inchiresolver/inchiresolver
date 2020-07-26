@@ -35,8 +35,20 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
         meta_fields = ('added', 'modified')
 
     def create(self, validated_data: Dict):
-        inchi = Inchi.create(**validated_data)
-        inchi.save()
+        entrypoints = validated_data.pop('entrypoints', None)
+
+        self.is_valid(raise_exception=True)
+
+        try:
+            inchi = Inchi.objects.get(**validated_data)
+        except Inchi.DoesNotExist:
+            inchi = inchi.create(**validated_data)
+            try:
+                inchi.save()
+            except IntegrityError as e:
+                raise ResourceExistsError("inchi resource already exists", code=409)
+            if entrypoints:
+                inchi.entrypoints.add(*entrypoints, bulk=True)
         return inchi
 
     def update(self, instance: Inchi, validated_data: Dict):
