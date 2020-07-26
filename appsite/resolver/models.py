@@ -65,10 +65,13 @@ class Inchi(models.Model):
         inchi.block3 = k.element['block3']
         if s:
             inchi.string = s.element['well_formatted']
-        if url_prefix:
-            inchi.id = uuid.uuid5(uuid.NAMESPACE_URL, urljoin(url_prefix, inchi.key))
-        else:
-            inchi.id = uuid.uuid5(uuid.NAMESPACE_URL, inchi.key)
+        #if url_prefix:
+        #    inchi.id = uuid.uuid5(uuid.NAMESPACE_URL, urljoin(url_prefix, inchi.key))
+        #else:
+        inchi.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
+            inchi.key,
+            str(kwargs.get('safe_options', None)),
+        ]))
 
         return inchi
 
@@ -118,8 +121,8 @@ class Organization(models.Model):
 
 class Publisher(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', related_name='children', on_delete=models.CASCADE, null=True)
-    organization = models.ForeignKey('Organization', related_name='publishers', on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', related_name='children', on_delete=models.SET_NULL, null=True)
+    organization = models.ForeignKey('Organization', related_name='publishers', on_delete=models.SET_NULL, null=True)
     category = models.CharField(max_length=16, choices=(
         ('entity', 'Entity'),
         ('service', 'Service'),
@@ -142,7 +145,7 @@ class Publisher(models.Model):
         resource_name = 'publishers'
 
     class Meta:
-        unique_together = ('organization', 'category', 'name', 'href', 'orcid')
+        unique_together = ('organization', 'parent', 'name', 'href', 'orcid')
 
     @classmethod
     def create(cls, *args, **kwargs):
@@ -169,7 +172,7 @@ class EntryPoint(models.Model):
         ('api', 'API'),
         ('resolver', 'Resolver'),
     ), default='site')
-    publisher = models.ForeignKey("Publisher", related_name="entrypoints", on_delete=models.CASCADE, null=True)
+    publisher = models.ForeignKey("Publisher", related_name="entrypoints", on_delete=models.SET_NULL, null=True)
     href = models.URLField(max_length=4096)
     entrypoint_href = models.URLField(max_length=4096, blank=True, null=True)
     name = models.CharField(max_length=255, blank=True, null=True)
@@ -181,14 +184,13 @@ class EntryPoint(models.Model):
         resource_name = 'entrypoints'
 
     class Meta:
-        unique_together = ('parent', 'publisher', 'href', 'category')
+        unique_together = ('parent', 'publisher', 'href')
 
     @classmethod
     def create(cls, *args, **kwargs):
         entrypoint = cls(*args, **kwargs)
         entrypoint.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('parent', None)),
-            str(kwargs.get('category')),
             str(kwargs.get('publisher')),
             kwargs.get('href'),
         ]))
@@ -200,14 +202,14 @@ class EntryPoint(models.Model):
 
 class EndPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    entrypoint = models.ForeignKey('EntryPoint', related_name='endpoints', on_delete=models.CASCADE, null=True)
+    entrypoint = models.ForeignKey('EntryPoint', related_name='endpoints', on_delete=models.SET_NULL, null=True)
     accept_header_mediatypes = models.ManyToManyField('MediaType', related_name='accepting_endpoints')
     content_mediatypes = models.ManyToManyField('MediaType', related_name='delivering_endpoints')
+    uri = models.CharField(max_length=32768)
     category = models.CharField(max_length=16, choices=(
         ('schema', 'Schema'),
         ('uritemplate', 'URI Template (RFC6570)')
     ), default='uritemplate')
-    uri = models.CharField(max_length=32768)
     request_methods = MultiSelectField(choices=defaults.http_verbs, default=['GET'])
     description = models.TextField(max_length=32768, blank=True, null=True)
     added = models.DateTimeField(auto_now_add=True)
@@ -224,7 +226,6 @@ class EndPoint(models.Model):
         endpoint = cls(*args, **kwargs)
         endpoint.id = uuid.uuid5(uuid.NAMESPACE_URL, "/".join([
             str(kwargs.get('entrypoint')),
-            str(kwargs.get('category')),
             kwargs.get('uri'),
         ]))
         return endpoint

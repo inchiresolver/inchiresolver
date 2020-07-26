@@ -242,7 +242,6 @@ class EntryPointViewSet(ResourceModelViewSet):
         serializer = self.get_serializer(queryset, many=False)
         return Response(serializer.data)
 
-
     filterset_fields = {
         'id': ('exact', 'in'),
         'category': ('exact', 'in'),
@@ -258,7 +257,6 @@ class EntryPointViewSet(ResourceModelViewSet):
         'endpoints__description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
         'endpoints__category': ('exact', 'in'),
         'endpoints__uri': ('icontains', 'iexact', 'contains', 'exact', 'in'),
-        #'endpoints__content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
     }
     search_fields = ('category', 'href', 'name', 'description')
 

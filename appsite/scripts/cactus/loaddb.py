@@ -25,10 +25,9 @@ def run():
 
     m2 = MediaType.create(
         name="image/gif",
-        description = "GIF image",
+        description="GIF image",
     )
     m2.save()
-
 
     o1 = Organization.create(
         name="National Institutes of Health",
@@ -65,18 +64,6 @@ def run():
     )
     p2.save()
 
-    # p3 = Publisher.create(
-    #     name="John Doe",
-    #     category="person",
-    #     email="john.doe@email.com",
-    #     address="Frederick, MD 21702-1201, USA",
-    #     href="https://ccr2.cancer.gov/resources/CBL/Scientists/Nicklaus.aspx",
-    #     orcid="https://orcid.org/xyz",
-    #     organization=o2,
-    #     parent=p1
-    # )
-    # p3.save()
-
     e0 = EntryPoint.create(
         name="NCI/CADD InChI Resolver",
         description="Demonstration InChI Resolver of the NCI/CADD group",
@@ -112,7 +99,6 @@ def run():
         category="uritemplate",
         uri="{+stdinchi|+stdinchikey}/smiles",
         description="Standard InChI to SMILES conversion",
-        #content_media_type="text/plain",
         request_methods=['GET','POST']
     )
     x1.save()
@@ -124,7 +110,6 @@ def run():
         category="uritemplate",
         uri="{+stdinchi,+stdinchikey}/iupac_name",
         description="Standard InChI to IUPAC name conversion",
-        #content_media_type="text/plain",
         request_methods=['GET']
     )
     x2.save()
@@ -136,7 +121,6 @@ def run():
         category="uritemplate",
         uri="{+stdinchi,+stdinchikey}/image",
         description="InChI to SMILES conversion",
-        #content_media_type="image/gif",
         request_methods=['POST', 'GET']
     )
     x3.save()
@@ -148,7 +132,6 @@ def run():
         category="uritemplate",
         uri="{+smiles}/stdinchi",
         description="SMILES to stdinchi conversion",
-        #content_media_type="text/plain",
     )
     x4.save()
     x4.accept_header_mediatypes.add(m1)
@@ -159,14 +142,10 @@ def run():
         category="uritemplate",
         uri="{+smiles}/stdinchikey",
         description="SMILES to stdinchikey conversion",
-        #content_media_type="text/plain",
     )
     x5.save()
     x5.accept_header_mediatypes.add(m1)
     x5.content_mediatypes.add(m1)
-
-
-
 
     for j in range(1, 10):
 
