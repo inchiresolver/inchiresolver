@@ -342,34 +342,36 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
 
 class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 
-    accept_header_mediatypes = relations.ResourceRelatedField(
+    accept_header_media_types = relations.ResourceRelatedField(
         queryset=MediaType.objects, many=True, read_only=False,
         related_link_view_name='endpoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='endpoint-relationships',
     )
 
-    content_mediatypes = relations.ResourceRelatedField(
+    content_media_types = relations.ResourceRelatedField(
         queryset=MediaType.objects, many=True, read_only=False,
         related_link_view_name='endpoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='endpoint-relationships',
     )
+
+    full_path_uri = serializers.CharField()
 
     included_serializers = {
         'entrypoint': 'resolver.serializers.EntryPointSerializer',
-        'accept_header_mediatypes': 'resolver.serializers.MediaTypeSerializer',
-        'content_mediatypes': 'resolver.serializers.MediaTypeSerializer',
+        'accept_header_media_types': 'resolver.serializers.MediaTypeSerializer',
+        'content_media_types': 'resolver.serializers.MediaTypeSerializer',
     }
 
     request_methods = MultipleChoiceField(choices=defaults.http_verbs, default=['GET'])
 
     class Meta:
         model = EndPoint
-        fields = ('url', 'entrypoint', 'description', 'category', 'uri', 'request_methods', 'accept_header_mediatypes',
-                  'content_mediatypes', 'added', 'modified')
-        read_only_fields = ('added', 'modified')
-        meta_fields = ('added', 'modified')
+        fields = ('url', 'entrypoint', 'description', 'category', 'uri', 'request_methods', 'accept_header_media_types',
+                  'content_media_types', 'full_path_uri', 'added', 'modified')
+        read_only_fields = ('full_path_uri', 'added', 'modified')
+        meta_fields = ('full_path_uri', 'added', 'modified')
 
     def create(self, validated_data: Dict):
         accept_header_mediatypes = validated_data.pop('accept_header_mediatypes', None)

@@ -165,7 +165,7 @@ class Publisher(models.Model):
 
 class EntryPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='children', null=True)
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='children', null=True)
     category = models.CharField(max_length=16, choices=(
         ('self', 'Self'),
         ('site', 'Site'),
@@ -203,8 +203,8 @@ class EntryPoint(models.Model):
 class EndPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     entrypoint = models.ForeignKey('EntryPoint', related_name='endpoints', on_delete=models.SET_NULL, null=True)
-    accept_header_mediatypes = models.ManyToManyField('MediaType', related_name='accepting_endpoints')
-    content_mediatypes = models.ManyToManyField('MediaType', related_name='delivering_endpoints')
+    accept_header_media_types = models.ManyToManyField('MediaType', related_name='accepting_endpoints')
+    content_media_types = models.ManyToManyField('MediaType', related_name='delivering_endpoints')
     uri = models.CharField(max_length=32768)
     category = models.CharField(max_length=16, choices=(
         ('schema', 'Schema'),
@@ -220,6 +220,12 @@ class EndPoint(models.Model):
 
     class Meta:
         unique_together = ('entrypoint', 'uri')
+
+    def full_path_uri(self):
+        if self.entrypoint:
+            return self.entrypoint.href + "/" + self.uri
+        else:
+            return self.uri
 
     @classmethod
     def create(cls, *args, **kwargs):

@@ -99,11 +99,11 @@ def run():
         category="uritemplate",
         uri="{+stdinchi|+stdinchikey}/smiles",
         description="Standard InChI to SMILES conversion",
-        request_methods=['GET','POST']
+        request_methods=['GET', 'POST']
     )
     x1.save()
-    x1.accept_header_mediatypes.add(m1)
-    x1.content_mediatypes.add(m1)
+    x1.accept_header_media_types.add(m1)
+    x1.content_media_types.add(m1)
 
     x2 = EndPoint.create(
         entrypoint=e1,
@@ -113,8 +113,8 @@ def run():
         request_methods=['GET']
     )
     x2.save()
-    x2.accept_header_mediatypes.add(m1)
-    x2.content_mediatypes.add(m1)
+    x2.accept_header_media_types.add(m1)
+    x2.content_media_types.add(m1)
 
     x3 = EndPoint.create(
         entrypoint=e1,
@@ -124,8 +124,8 @@ def run():
         request_methods=['POST', 'GET']
     )
     x3.save()
-    x3.accept_header_mediatypes.add(m1)
-    x3.content_mediatypes.add(m1,m2)
+    x3.accept_header_media_types.add(m1)
+    x3.content_media_types.add(m1)
 
     x4 = EndPoint.create(
         entrypoint=e1,
@@ -134,18 +134,18 @@ def run():
         description="SMILES to stdinchi conversion",
     )
     x4.save()
-    x4.accept_header_mediatypes.add(m1)
-    x4.content_mediatypes.add(m1)
+    x4.accept_header_media_types.add(m1)
+    x4.content_media_types.add(m1)
 
-    x5 = EndPoint.create(
-        entrypoint=e1,
-        category="uritemplate",
-        uri="{+smiles}/stdinchikey",
-        description="SMILES to stdinchikey conversion",
-    )
-    x5.save()
-    x5.accept_header_mediatypes.add(m1)
-    x5.content_mediatypes.add(m1)
+    # x5 = EndPoint.create(
+    #     entrypoint=e1,
+    #     category="uritemplate",
+    #     uri="{+smiles}/stdinchikey",
+    #     description="SMILES to stdinchikey conversion",
+    # )
+    # x5.save()
+    # x5.accept_header_media_types.add(m1)
+    # x5.content_media_types.add(m1)
 
     for j in range(1, 10):
 
