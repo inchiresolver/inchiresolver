@@ -13,6 +13,7 @@ def run():
     Inchi.objects.all().delete()
     Publisher.objects.all().delete()
     EntryPoint.objects.all().delete()
+    EndPoint.objects.all().delete()
     MediaType.objects.all().delete()
 
     client = CactusClient()
@@ -33,6 +34,7 @@ def run():
         name="National Institutes of Health",
         abbreviation="NIH",
         href="https://www.nih.gov",
+        category="government",
         parent=None
     )
     o1.save()
@@ -41,6 +43,7 @@ def run():
         name="National Cancer Institute",
         abbreviation="NCI",
         href="https://www.cancer.gov",
+        category="government",
         parent=o1
     )
     o2.save()
@@ -121,7 +124,7 @@ def run():
         category="uritemplate",
         uri="{+stdinchi,+stdinchikey}/image",
         description="InChI to SMILES conversion",
-        request_methods=['POST', 'GET']
+        request_methods=['GET']
     )
     x3.save()
     x3.accept_header_media_types.add(m1)

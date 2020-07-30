@@ -42,7 +42,7 @@ class InchiSerializer(serializers.HyperlinkedModelSerializer):
         try:
             inchi = Inchi.objects.get(**validated_data)
         except Inchi.DoesNotExist:
-            inchi = inchi.create(**validated_data)
+            inchi = Inchi.create(**validated_data)
             try:
                 inchi.save()
             except IntegrityError as e:
@@ -356,26 +356,45 @@ class EndPointSerializer(serializers.HyperlinkedModelSerializer):
         self_link_view_name='endpoint-relationships',
     )
 
+    request_schema_endpoint = relations.ResourceRelatedField(
+        queryset=MediaType.objects, many=False, read_only=False,
+        related_link_view_name='endpoint-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='endpoint-relationships',
+    )
+
+    response_schema_endpoint = relations.ResourceRelatedField(
+        queryset=MediaType.objects, many=False, read_only=False,
+        related_link_view_name='endpoint-related',
+        related_link_url_kwarg='pk',
+        self_link_view_name='endpoint-relationships',
+    )
+
     full_path_uri = serializers.CharField()
 
     included_serializers = {
         'entrypoint': 'resolver.serializers.EntryPointSerializer',
         'accept_header_media_types': 'resolver.serializers.MediaTypeSerializer',
         'content_media_types': 'resolver.serializers.MediaTypeSerializer',
+        'request_schema_endpoint': 'resolver.serializers.EndPointSerializer',
+        'response_schema_endpoint': 'resolver.serializers.EndPointSerializer',
     }
 
     request_methods = MultipleChoiceField(choices=defaults.http_verbs, default=['GET'])
 
     class Meta:
         model = EndPoint
-        fields = ('url', 'entrypoint', 'description', 'category', 'uri', 'request_methods', 'accept_header_media_types',
-                  'content_media_types', 'full_path_uri', 'added', 'modified')
+        fields = ('url', 'entrypoint', 'uri', 'full_path_uri', 'description', 'category', 'request_methods', 'accept_header_media_types',
+                  'content_media_types', 'request_schema_endpoint','response_schema_endpoint', 'full_path_uri',
+                  'added', 'modified')
         read_only_fields = ('full_path_uri', 'added', 'modified')
-        meta_fields = ('full_path_uri', 'added', 'modified')
+        meta_fields = ('added', 'modified')
 
     def create(self, validated_data: Dict):
         accept_header_mediatypes = validated_data.pop('accept_header_mediatypes', None)
         content_mediatypes = validated_data.pop('content_mediatypes', None)
+        request_schema_endpoint = validated_data.pop('request_schema_endpoint', None)
+        response_schema_endpoint = validated_data.pop('response_schema_endpoint', None)
 
         self.is_valid(raise_exception=True)
 
@@ -391,6 +410,10 @@ class EndPointSerializer(serializers.HyperlinkedModelSerializer):
                 endpoint.accept_header_mediatypes.add(*accept_header_mediatypes, bulk=True)
             if content_mediatypes:
                 endpoint.content_mediatypes.add(*content_mediatypes, bulk=True)
+            if request_schema_endpoint:
+                endpoint.request_schema_endpoint.add(*request_schema_endpoint, bulk=True)
+            if response_schema_endpoint:
+                endpoint.response_schema_endpoint.add(*response_schema_endpoint, bulk=True)
         return endpoint
 
     def update(self, instance: EndPoint, validated_data: Dict):
@@ -398,23 +421,35 @@ class EndPointSerializer(serializers.HyperlinkedModelSerializer):
             raise IntegrityError("fields 'entrypoint', and 'uri' are immutable \
             for the endpoints resource")
 
-        accept_header_mediatypes = validated_data.pop('accept_header_mediatypes', None)
-        content_mediatypes = validated_data.pop('content_mediatypes', None)
+        accept_header_media_types = validated_data.pop('accept_header_mediatypes', None)
+        content_media_types = validated_data.pop('content_mediatypes', None)
+        request_schema_endpoint = validated_data.pop('request_schema_endpoint', None)
+        response_schema_endpoint = validated_data.pop('response_schema_endpoint', None)
 
         instance.category = validated_data.get('category', instance.category)
         instance.request_methods = validated_data.get('request_methods', instance.request_methods)
         instance.description = validated_data.get('description', instance.description)
         instance.save()
 
-        if accept_header_mediatypes:
-            instance.accept_header_mediatypes.bulk_update(accept_header_mediatypes, bulk=True, clear=True)
+        if accept_header_media_types:
+            instance.accept_header_media_types.bulk_update(accept_header_media_types, bulk=True, clear=True)
         else:
-            instance.accept_header_mediatypes.clear(bulk=True)
+            instance.accept_header_media_types.clear(bulk=True)
 
-        if content_mediatypes:
-            instance.content_mediatypes.bulk_update(content_mediatypes, bulk=True, clear=True)
+        if content_media_types:
+            instance.content_media_types.bulk_update(content_media_types, bulk=True, clear=True)
         else:
-            instance.content_mediatypes.clear(bulk=True)
+            instance.content_media_types.clear(bulk=True)
+
+        if request_schema_endpoint:
+            instance.request_schema_endpoint.bulk_update(request_schema_endpoint, bulk=True, clear=True)
+        else:
+            instance.request_schema_endpoint.clear(bulk=True)
+
+        if content_media_types:
+            instance.response_schema_endpoint.bulk_update(response_schema_endpoint, bulk=True, clear=True)
+        else:
+            instance.response_schema_endpoint.clear(bulk=True)
 
         return instance
 

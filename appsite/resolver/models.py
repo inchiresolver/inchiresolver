@@ -203,12 +203,17 @@ class EntryPoint(models.Model):
 class EndPoint(models.Model):
     id = models.UUIDField(primary_key=True, editable=False)
     entrypoint = models.ForeignKey('EntryPoint', related_name='endpoints', on_delete=models.SET_NULL, null=True)
+    uri = models.CharField(max_length=32768)
     accept_header_media_types = models.ManyToManyField('MediaType', related_name='accepting_endpoints')
     content_media_types = models.ManyToManyField('MediaType', related_name='delivering_endpoints')
-    uri = models.CharField(max_length=32768)
+    request_schema_endpoint = models.ForeignKey('EndPoint', related_name='schema_requesting_endpoints',
+                                                on_delete=models.SET_NULL, null=True)
+    response_schema_endpoint = models.ForeignKey('EndPoint', related_name='schema_responding_endpoints',
+                                                 on_delete=models.SET_NULL, null=True)
     category = models.CharField(max_length=16, choices=(
         ('schema', 'Schema'),
-        ('uritemplate', 'URI Template (RFC6570)')
+        ('uritemplate', 'URI Template (RFC6570)'),
+        ('documentation', 'Documentation (HTML)'),
     ), default='uritemplate')
     request_methods = MultiSelectField(choices=defaults.http_verbs, default=['GET'])
     description = models.TextField(max_length=32768, blank=True, null=True)
