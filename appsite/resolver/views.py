@@ -78,9 +78,10 @@ class ResourceRelationshipView(RelationshipView):
 
 class InchiViewSet(ResourceModelViewSet):
     """
-        This resource of the InChI Resolver API may provide a browsable index of all InChI structure identifiers
-        available at this InChI resolver instance. For each InChI instance a related resource link to a service API
-        entrypoint resource may be given linking  service API entrypoints at where the InChI instance is available.
+        The InChI resource of the InChI Resolver API may provide a browsable index of all InChI structure identifiers
+        available at this InChI resolver instance. For each InChI instance a related resource link to a web service API
+        entrypoint resource may be given refering to any service API entrypoints at which the InChI instance is
+        available.
     """
     def __init__(self, *args, **kwargs):
         self.name = "InChI"
@@ -115,9 +116,12 @@ class InchiRelationshipView(ResourceRelationshipView):
 
 class OrganizationViewSet(ResourceModelViewSet):
     """
-        This resource of the InChI Resolver API provides access to all organizations that publish either InChI resolver
-        or service API entrypoints known by this InChI resolver instance. For each organization related resource links
-        either to a parent organization resources or publisher resources at this InChI resolver instance are given."
+        The organization resource of the InChI Resolver API lists all organizations that publish either InChI resolver
+        API entrypoints known by this InChI resolver instance, or lists any API entrypoints for web services of the
+        organization that make data accessible by or about InChI. For each organization related resource either links
+        to parent or subordinated (children) organization resources or publisher resources at this InChI resolver
+        instance may be given. A organization resource can be categorized as 'regulatory', 'government', 'academia',
+        'company', 'vendor', 'research', 'publishing', 'provider', 'public', 'society', 'charity', 'other', or 'none'."
     """
     def __init__(self, *args, **kwargs):
         self.name = "Organization"
@@ -160,10 +164,11 @@ class OrganizationRelationshipView(ResourceRelationshipView):
 
 class PublisherViewSet(ResourceModelViewSet):
     """
-        This resource of the InChI Resolver API provides access to all publishers/groups that make InChI related service
-        API entrypoints available and are known by this InChI Resolver instance. For each publisher/group related
-        resource links to a parent publisher resource, the organization they belong to, and the entrypoints published
-        by the specific publisher/group are given.
+        The publisher resource of the InChI Resolver API lists all publishing entities that make InChI related
+        web service API entrypoints available and are part or member of a organization known by this InChI Resolver
+        instance. For each publisher resource all parent or subordinated (children) publisher resources, the
+        organization they belong to, and the entrypoint resources they publish may linked linked. A organization
+        resource can be categorized as 'entity', 'service', 'network', 'division', 'group', 'person', or 'none'."
     """
     def __init__(self, *args, **kwargs):
         self.name = "Publisher"
@@ -213,20 +218,26 @@ class PublisherRelationshipView(ResourceRelationshipView):
 
 class EntryPointViewSet(ResourceModelViewSet):
     """
-        This resource of the InChI Resolver API provides access to all entrypoint resources known by this InChI resolver
-        instance. Each entrypoint resource specifies an URL (attribute 'href') linking to a Web resource which
-        is external to the current InChI resolver instance and makes information/data available based on/indexed by
-        InChI.
+        The entrypoint resource of the InChI Resolver API lists all entrypoint resources known by this InChI resolver
+        instance. Each entrypoint resource specifies an URL (attribute 'href') and in combination with related
+        endpoint resources of the same InChI resolver instance links to  Web service resource that make data
+        accessible by or about InChI.
 
-        There are three entrypoint categories available which classify what type of external resource is to be expected
-        at the specified URL:
-        (1) 'site': a general HTML web page, usually accessed by a HTTP GET request,
-        (2) 'service': a Web API, commonly allowing access by the HTTP verbs GET, POST, etc. and returning data using
-        a specific media type (see 'endpoint' resource), and
-        (3) 'resolver' which links to another (external) InChI
-        resolver instance adhering to the same InChI resolver protocol like the current InChI resolver instance. For
-        each entrypoint related resource links to the publisher resoure of the entrypoint and the available endpoint
-        resources are given."
+        There are four entrypoint categories available which classify what type of resource is to be expected
+        at the specified entrypoint URL. The two first categories 'site' and 'service' are used for entrypoint URLs
+        which are (usually) pointing to resources or web services that are provided by one of the organizations and
+        publisher listed by this InChI resolver instance (but are external to the InChI resolver itself). The third
+        category 'resolver' can be applied for referencing InChI resolver instances  offered elsewhere by other
+        organizations or publishers. The final category 'self' allows for self-referencing the URL entrypoint of the
+        current InChI resolver instance which is useful for offering linkage to the publisher and organisation
+        API resource of this InChI resolver instance.
+        (1) 'site': a general HTML web page, usually accessed by a HTTP GET request (might be just an entry point with
+        no content at all)
+        (2) 'service': a web API, commonly allowing access by the HTTP verbs GET, POST, etc. and returning data using
+        a specific media type (see 'endpoint' resource).
+        (3) 'resolver': links to an (external) InChI resolver instance of another organization or publisher
+        (4) 'self': references the current InChI resolver instance itself (for systematic access of, e.g. the
+        publisher or organization resource).
     """
     def __init__(self, *args, **kwargs):
         self.name = "Entrypoint"
