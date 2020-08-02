@@ -213,7 +213,7 @@ class EndPoint(models.Model):
     category = models.CharField(max_length=16, choices=(
         ('schema', 'Schema'),
         ('uritemplate', 'URI Template (RFC6570)'),
-        ('documentation', 'Documentation (HTML)'),
+        ('documentation', 'Documentation (HTML, PDF)'),
     ), default='uritemplate')
     request_methods = MultiSelectField(choices=defaults.http_verbs, default=['GET'])
     description = models.TextField(max_length=32768, blank=True, null=True)

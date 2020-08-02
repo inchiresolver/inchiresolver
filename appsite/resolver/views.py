@@ -80,7 +80,7 @@ class InchiViewSet(ResourceModelViewSet):
     """
         The InChI resource of the InChI Resolver API may provide a browsable index of all InChI structure identifiers
         available at this InChI resolver instance. For each InChI instance a related resource link to a web service API
-        entrypoint resource may be given refering to any service API entrypoints at which the InChI instance is
+        entrypoint resource may be given referring to any service API entrypoints at which the InChI instance is
         available.
     """
     def __init__(self, *args, **kwargs):
@@ -119,7 +119,7 @@ class OrganizationViewSet(ResourceModelViewSet):
     """
         The organization resource of the InChI Resolver API lists all organizations that publish either InChI resolver
         API entrypoints known by this InChI resolver instance, or lists any API entrypoints for web services of the
-        organization that make data accessible by or about InChI. For each organization related resource either links
+        organization that make data accessible by InChI. For each organization related resource either links
         to parent or subordinated (children) organization resources or publisher resources at this InChI resolver
         instance may be given. A organization resource can be categorized as 'regulatory', 'government', 'academia',
         'company', 'vendor', 'research', 'publishing', 'provider', 'public', 'society', 'charity', 'other', or 'none'."
@@ -297,13 +297,15 @@ class EndPointViewSet(ResourceModelViewSet):
         InChI resolver instance. Each endpoint resource provides an URI (pattern) which, in combination with the
         parent entrypoint resource, specifies an URL path pointing to a web resources making data available indexed
         by InChI. The type of URI (pattern) can be stated using the "category" attribute which can take the values
-        'schema', 'uritemplate', and 'documentation'. If 'schema' is given as value, the endpoint refers to a
-        schema file (e.g. XSD). The type of schema can be specified by meas of the 'accept_header_media_types'
-
-
-         (attribute 'href') linking to a Web resource
-        which is external to the current InChI resolver instance and makes information/data available based on/indexed
-        by InChI.
+        'schema', 'uritemplate', and 'documentation'. If 'schema' is specified as value, the endpoint refers to a
+        schema file (e.g. XSD).  If 'uritemplate' is set as category the uri attribute provides a URL template
+        according to RFC6570 which allows the description of a range of URIs through variable expansion. If
+        'documentation' is set for attribute 'category', the URL path points to some kind of human-readable
+        documentation (e.g. html or pdf file). The exact types of accepted header media types, content media types,
+        or the schema files how a request has to look like and what kind of schema an endpoint uses for its response
+        can be specified with the endpoint resource attributes  'acceptHeaderMediaTypes',  'contentMediaTypes',
+        'requestSchemaEndpoint' or 'responseSchemaEndpoint'. Attribute 'requestMethods' lists all HTTP verbs
+        (GET, POST, etc.) an endpoint accepts.
     """
     def __init__(self, *args, **kwargs):
         self.name = "Endpoint"
@@ -347,6 +349,8 @@ class EndPointRelationshipView(ResourceRelationshipView):
 
 class MediaTypeViewSet(ResourceModelViewSet):
     """
+        The media type resource of the InChI Resolver API provides access of all media types available this InChI
+        resolver instance.
     """
     def __init__(self, *args, **kwargs):
         self.name = "Mediatype"
