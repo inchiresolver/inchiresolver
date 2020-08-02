@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join("/home/app", "static/")
 
 MEDIA_ROOT = os.path.join("/home/app", "media/")
-MEDIA_URL = "/media/"
+MEDIA_URL = "/files/"
 
 BACKUP_ROOT = os.path.join("/home/app", 'backup')
 
