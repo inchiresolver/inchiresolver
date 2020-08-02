@@ -202,6 +202,6 @@ def run():
                 )
                 print('{} {}'.format(inchi, inchi.added))
                 inchi.save()
-                inchi.entrypoints.add(e1)
+                inchi.entrypoints.add(e2)
             except Exception as e:
                 print(e)

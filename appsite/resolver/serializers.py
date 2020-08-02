@@ -1,8 +1,5 @@
 from django.db import IntegrityError
-from rest_framework import status
-from rest_framework.exceptions import bad_request, ValidationError
 from rest_framework.fields import MultipleChoiceField
-from rest_framework.validators import UniqueTogetherValidator
 from rest_framework_json_api import serializers
 from rest_framework_json_api import relations
 from typing import Dict
@@ -500,7 +497,6 @@ class MediaTypeSerializer(serializers.HyperlinkedModelSerializer):
             if delivering_endpoints:
                 mediatype.delivering_endpoints.add(*delivering_endpoints, bulk=True)
         return mediatype
-
 
     def update(self, instance: MediaType, validated_data: Dict):
         if 'name' in validated_data:

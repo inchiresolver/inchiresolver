@@ -12,7 +12,6 @@ def run():
     Publisher.objects.all().delete()
     EntryPoint.objects.all().delete()
 
-
     o1 = Organization.create(
         name="InChI Trust",
         abbreviation="",

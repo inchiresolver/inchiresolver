@@ -97,6 +97,7 @@ class InchiViewSet(ResourceModelViewSet):
         'string': ('icontains', 'iexact', 'contains', 'exact'),
         'version': ('exact', 'in', 'gt', 'gte', 'lt', 'lte',),
         'safe_options': ('icontains', 'iexact', 'contains', 'exact'),
+        'entrypoints__category': ('exact', 'in'),
     }
     search_fields = ('string', 'key',)
 
@@ -143,6 +144,8 @@ class OrganizationViewSet(ResourceModelViewSet):
         'children': ('exact', 'in'),
         'children__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
         'children__abbreviation': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'publishers__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'publishers__category': ('icontains', 'iexact', 'contains', 'exact', 'in'),
     }
     search_fields = ('name', 'abbreviation', 'category', 'href')
 
@@ -198,6 +201,9 @@ class PublisherViewSet(ResourceModelViewSet):
         'children__address': ('icontains', 'iexact', 'contains', 'exact', 'in'),
         'children__href': ('icontains', 'iexact', 'contains', 'exact', 'in'),
         'children__orcid': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'organizations__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'organizations__avvreviation': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'organizations__category': ('icontains', 'iexact', 'contains', 'exact', 'in'),
     }
     search_fields = ('name', 'category', 'email', 'address', 'href', 'orcid')
 
@@ -287,9 +293,17 @@ class EntryPointRelationshipView(ResourceRelationshipView):
 
 class EndPointViewSet(ResourceModelViewSet):
     """
-        This resource of the InChI Resolver API provides access to all endpoint resources known by this InChI resolver
-        instance. Each endpoint resource specifies an URL (attribute 'href') linking to a Web resource which is external to
-        the current InChI resolver instance and makes information/data available based on/indexed by InChI.
+        The endpoint resource of the InChI Resolver API provides access to all endpoint resources known by this
+        InChI resolver instance. Each endpoint resource provides an URI (pattern) which, in combination with the
+        parent entrypoint resource, specifies an URL path pointing to a web resources making data available indexed
+        by InChI. The type of URI (pattern) can be stated using the "category" attribute which can take the values
+        'schema', 'uritemplate', and 'documentation'. If 'schema' is given as value, the endpoint refers to a
+        schema file (e.g. XSD). The type of schema can be specified by meas of the 'accept_header_media_types'
+
+
+         (attribute 'href') linking to a Web resource
+        which is external to the current InChI resolver instance and makes information/data available based on/indexed
+        by InChI.
     """
     def __init__(self, *args, **kwargs):
         self.name = "Endpoint"
@@ -304,7 +318,16 @@ class EndPointViewSet(ResourceModelViewSet):
         'description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
         'category': ('exact', 'in'),
         'uri': ('icontains', 'iexact', 'contains', 'exact', 'in'),
-        #'content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'entrypoint__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'entrypoint__category': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'accept_header_media_types__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'content_media_types__name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'request_schema_endpoint__description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'request_schema_endpoint__category': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'request_schema_endpoint__uri': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'response_schema_endpoint__description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'response_schema_endpoint__category': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'response_schema_endpoint__uri': ('icontains', 'iexact', 'contains', 'exact', 'in'),
     }
     search_fields = ('category', 'uri', 'description',)
 
@@ -320,9 +343,7 @@ class EndPointRelationshipView(ResourceRelationshipView):
     self_link_view_name = 'endpoint-relationships'
 
 
-#/////
-
-### MEDIA  tYPE ###
+### MEDIA  TYPE ###
 
 class MediaTypeViewSet(ResourceModelViewSet):
     """
@@ -339,7 +360,8 @@ class MediaTypeViewSet(ResourceModelViewSet):
         'id': ('exact', 'in'),
         'name': ('icontains', 'iexact', 'contains', 'exact', 'in'),
         'description': ('icontains', 'iexact', 'contains', 'exact', 'in'),
-        #'content_media_type': ('icontains', 'iexact', 'contains', 'exact', 'in'),
+        'accepting_endpoints': ('exact', 'in'),
+        'delivering_endpoints': ('exact', 'in'),
     }
     search_fields = ('name', 'description',)
 

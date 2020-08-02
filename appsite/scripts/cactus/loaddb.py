@@ -1,4 +1,4 @@
-from os import sys, path, environ
+from os import sys, path
 
 from resolver.models import *
 
