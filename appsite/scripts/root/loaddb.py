@@ -11,6 +11,8 @@ def run():
     Inchi.objects.all().delete()
     Publisher.objects.all().delete()
     EntryPoint.objects.all().delete()
+    EndPoint.objects.all().delete()
+    MediaType.objects.all().delete()
 
     o1 = Organization.create(
         name="InChI Trust",
@@ -52,7 +54,7 @@ def run():
     e1 = EntryPoint.create(
         name="NCI/CADD InChI Resolver",
         description="Demonstration InChI Resolver of the NCI/CADD group",
-        category="inchiresolver",
+        category="resolver",
         href="http://cactus.inchi-resolver.org",
         entrypoint_href="http://cactus.inchi-resolver.org/_self",
         publisher=None,
@@ -63,7 +65,7 @@ def run():
     e2 = EntryPoint.create(
         name="PubChem InChI Resolver",
         description="Demonstration InChI Resolver for PubChem",
-        category="inchiresolver",
+        category="resolver",
         href="http://pubchem.inchi-resolver.org",
         entrypoint_href="http://pubchem.inchi-resolver.org/_self",
         publisher=None,
