@@ -54,10 +54,9 @@ Example: `PubChem Demonstration InChI Resolver [Top level at https://pubchem.inc
 InChI Resource
 ^^^^^^^^^^^^^^
 
-The InChI resource of the InChI Resolver API may provide a browsable index of all InChI structure identifiers
-available at this InChI resolver instance. For each InChI instance a related resource link to a web service API
-entrypoint resource may be given referring to any service API entrypoints at which the InChI instance is
-available.
+The InChI resource may provide a browsable index of all InChI structure identifiers available at a InChI resolver
+instance. For each InChI instance a related resource link to a entrypoint_ resource may be given referring to any
+service API entrypoints at which the InChI instance is available.
 
 Example: `PubChem Demonstration InChI Resolver [InChI Resource object https://pubchem.inchi-resolver.org/inchis/36d8eb2e-aa7e-5c6e-8961-d9e8ead14f92] <https://pubchem.inchi-resolver.org/inchis/36d8eb2e-aa7e-5c6e-8961-d9e8ead14f92>`_
 
@@ -260,6 +259,8 @@ resource can be categorized as 'entity', 'service', 'network', 'division', 'grou
             }
         }
     }
+
+.. _entrypoint:
 
 Entrypoint Resource
 ^^^^^^^^^^^^^^^^^^^
