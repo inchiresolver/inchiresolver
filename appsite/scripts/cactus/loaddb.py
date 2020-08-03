@@ -102,7 +102,7 @@ def run():
         category="uritemplate",
         uri="{+stdinchi|+stdinchikey}/smiles",
         description="Standard InChI to SMILES conversion",
-        request_methods=['GET', 'POST']
+        request_methods=['GET']
     )
     x1.save()
     x1.accept_header_media_types.add(m1)
