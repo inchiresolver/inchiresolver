@@ -2,4 +2,4 @@
 Example
 =======
 
-.. image:: docs/images/example.svg
+.. image:: docs/images/example.png
