@@ -38,7 +38,7 @@ the interaction of different InChI Resolver instances based on the official prot
 2) the PubChem InChI Resolver Instance at `<https://pubchem.inchi-resolver.org>`_
 3) the InChI Resolver Instance of the NCI/CADD group, respectively the Chemical Structure Resolver at `<https://cactus.inchi-resolver.org>`_
 
-For more details about the prototype system `please read here <docs/prototype.rst>`_
+For more information about the prototype system `please read here <docs/prototype.rst>`_.
 
 Official InChI Resolver web page: `<https://inchi-resolver.org>`_
 
