@@ -11,35 +11,44 @@ InChI Resolver
    :target: https://img.shields.io/github/license/inchiresolver/inchiresolver.svg
 
 
-Repository of the InChI Resolver project. The goal of this project is to provide the implementation of an InChI resolver prototype as well as the the specifiation of a common InChI Resolver API protocol which allows a client communicating with any InChI Resolver instance in a well-defined manner.
-
-The Docker images required for running the InChI Resolver prototype are available from `DockerHub <https://cloud.docker.com/u/inchiresolver/repository/list>`_.
+This is the official repository of the InChI Resolver project. The goal of this project is to make a reference
+implementation of an InChI resolver available and provide the specification of a common InChI Resolver API protocol.
 
 InChI Resolver Protocol
 -----------------------
 
-The InChI Resolver protocol is the specification of a common API protocol format any InChI Resolver instance should adhere to. The goal of using a common InChI Resolver protocol is making web resources which provide information based on/indexed by InChI findable and browsable for an (automated) client system in a systematic manner.
+The InChI Resolver protocol is the specification of a common API protocol format which any InChI Resolver instance
+has adhere to. By following the shared conventions of the protocol any InChI-based web resources and services
+should be easily findable and browsable for an (automated) client system in a systematic, predefined manner.
 
-The InChI Resolver protocol is based on the IANA-registered JSON:API v1.0 specification (`<https://jsonapi.org/>`_) as media type format.
-JSON:API delineates how clients should request or edit data from a server, and how the server should respond to any requests. A main goal of the specification is to optimize HTTP requests; both in terms of the number of requests and the size of data packages exchanged between clients and servers.
+The InChI Resolver protocol has been based on the IANA-registered JSON:API v1.0 specification (`<https://jsonapi.org/>`_)
+as media type format. JSON:API delineates how clients should request or edit data from a server, and how the server
+should respond to any requests. The format is optimized for HTTP requests to a web API; both in terms of the
+number of requests and the size of data packages exchanged between clients and servers.
 
-For more details read `here <docs/inchi_resolver_protocol.rst>`_.
+For more information about the InChI Resolver Protocol read the `InChI Resolver Protocol page <docs/inchi_resolver_protocol.rst>`_.
 
 Links & Resources
 -----------------
 
-InChI Resolver web page: `<https://inchi-resolver.org>`_
-
-Currently there are three Prototype InChI Resolver APIs in development which should act as a demonstration system for the interaction of several InChI Resolver instances based on the InChI Resolver Protocol:
+A prototype system of three InChI Resolver APIs has been implemented in order to demonstrate
+the interaction of different InChI Resolver instances based on the official protocol. They are available at:
 
 1) the (InChI Trust) Root InChI Resolver at `<https://root.inchi-resolver.org>`_
-2) the InChI Resolver Instance of the NCI/CADD group, respectively the Chemical Structure Resolver at `<https://cactus.inchi-resolver.org>`_
-3) the PubChem InChI Resolver Instance at `<https://pubchem.inchi-resolver.org>`_
+2) the PubChem InChI Resolver Instance at `<https://pubchem.inchi-resolver.org>`_
+3) the InChI Resolver Instance of the NCI/CADD group, respectively the Chemical Structure Resolver at `<https://cactus.inchi-resolver.org>`_
+
+For more details about the prototype system `please read here <docs/prototype.rst>`_
+
+Official InChI Resolver web page: `<https://inchi-resolver.org>`_
 
 The development of the InChI Resolver project created `Chembience <https://chembience.com/>`_
 (`GitHub repository <https://github.com/chembience/chembience>`_) as spin-off open-source project. As a Python-based
-platform integrating RDKit (`<http://rdkit.org/>`_), Chembience provides all infrastructure-related components (modern software delivery mechanism, web server, and database server) for the development of web-based cheminformatics services. Chembience has been first
-released publicly in March 2018 and has since seen more than ten releases. The InChI Resolver prototypes have been implemented on basis of Chembience: `<https://chembience.com>`_; some slides about the concepts in Chembience: `SlideShare Link <https://www.slideshare.net/sitzmann/chembience>`_
+platform integrating RDKit (`<http://rdkit.org/>`_), Chembience provides all infrastructure-related components
+(modern software delivery mechanism, web server, and database server) for the development of web-based cheminformatics
+services. Chembience has been first released publicly in March 2018 and has since seen more than ten releases. The
+InChI Resolver prototypes have been implemented on basis of Chembience: `<https://chembience.com>`_; some slides
+about the concepts in Chembience: `SlideShare Link <https://www.slideshare.net/sitzmann/chembience>`_
 
 
 Requirements
@@ -47,6 +56,8 @@ Requirements
 
 Please have at least `Docker CE 17.09 <https://docs.docker.com/engine/installation/>`_ and `Docker Compose 1.17 <https://docs.docker.com/compose/install/>`_ installed on your system.
 
+The Docker images required for running the InChI Resolver reference implementation are available from
+`DockerHub <https://cloud.docker.com/u/inchiresolver/repository/list>`_.
 
 Installation of the InChI Resolver Prototype
 --------------------------------------------
@@ -105,6 +116,6 @@ all life-circle commands should work as expected, in fact, ``up`` and  ``down`` 
 Since the InChI Resolver App is based on Chembience's Django Template App, please take also a look at the `Chembience GitHub repository <https://github.com/chembience/chembience>`_ pages.
 
 
-Markus Sitzmann 2020-03-12
+Markus Sitzmann 2020-08-04
 
     

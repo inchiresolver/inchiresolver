@@ -477,9 +477,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="304.45619"
-     inkscape:cy="238.99056"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="886.70824"
+     inkscape:cy="605.28613"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -494,7 +494,7 @@
        type="xygrid"
        id="grid6418" />
     <sodipodi:guide
-       position="1.0690781,174.66063"
+       position="5.8799296,237.33534"
        orientation="1,0"
        id="guide7080"
        inkscape:locked="false" />
@@ -537,6 +537,11 @@
        position="287.9161,78.376789"
        orientation="1,0"
        id="guide17073"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="157.15448,216.48832"
+       orientation="0,1"
+       id="guide18588"
        inkscape:locked="false" />
   </sodipodi:namedview>
   <metadata
@@ -1442,5 +1447,48 @@
        d="m 24.807215,164.41891 5.48067,-6.3311"
        id="path18511-1-4-6"
        inkscape:connector-curvature="0" />
-  </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:1.25;font-family:'Liberation Sans', Arial, sans-serif;-inkscape-font-specification:'Liberation Sans, Arial, sans-serif';letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       x="6.2808347"
+       y="80.645317"
+       id="text18592"><tspan
+         sodipodi:role="line"
+         id="tspan18590"
+         x="6.2808347"
+         y="80.645317"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93888903px;font-family:'Liberation Sans', Arial, sans-serif;-inkscape-font-specification:'Liberation Sans, Arial, sans-serif Bold Italic';stroke-width:0.26458332;fill:#666666;">resolver (entrypoints, publisher, and organizations)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:1.25;font-family:'Liberation Sans', Arial, sans-serif;-inkscape-font-specification:'Liberation Sans, Arial, sans-serif';letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       x="151.39969"
+       y="80.91259"
+       id="text18596"><tspan
+         sodipodi:role="line"
+         id="tspan18594"
+         x="151.39969"
+         y="80.91259"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93888903px;font-family:'Liberation Sans', Arial, sans-serif;-inkscape-font-specification:'Liberation Sans, Arial, sans-serif Bold Italic';stroke-width:0.26458332;fill:#666666;">entrypoints</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.93888903px;line-height:1.25;font-family:'Liberation Sans', Arial, sans-serif;-inkscape-font-specification:'Liberation Sans, Arial, sans-serif';letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       x="228.91127"
+       y="80.91259"
+       id="text18600"><tspan
+         sodipodi:role="line"
+         id="tspan18598"
+         x="228.91127"
+         y="80.91259"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93888903px;font-family:'Liberation Sans', Arial, sans-serif;-inkscape-font-specification:'Liberation Sans, Arial, sans-serif Bold Italic';stroke-width:0.26458332;fill:#666666;">endpoints</tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot18602"
+       style="fill:black;fill-opacity:1;stroke:none;font-family:'Liberation Sans', Arial, sans-serif;font-style:normal;font-weight:normal;font-size:13.33333333px;line-height:1.25;letter-spacing:0px;word-spacing:0px;-inkscape-font-specification:'Liberation Sans, Arial, sans-serif';font-stretch:normal;font-variant:normal"><flowRegion
+         id="flowRegion18604"><rect
+           id="rect18606"
+           width="175.76654"
+           height="79.802086"
+           x="-77.781746"
+           y="-102.3045" /></flowRegion><flowPara
+         id="flowPara18608"></flowPara></flowRoot>  </g>
 </svg>
