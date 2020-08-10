@@ -1,7 +1,7 @@
 InChI Resolver Protocol
 =======================
 
-:Version: 0.3.0 of 2020-08-03
+:Version: 0.3.1 of 2020-08-11
 :Authors:
     Markus Sitzmann
 

@@ -150,28 +150,28 @@ class OrganizationSerializer(serializers.HyperlinkedModelSerializer):
 class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 
     parent = relations.ResourceRelatedField(
-        queryset=Publisher.objects, many=False, read_only=False, required=False,
+        queryset=Publisher.objects, many=False, read_only=False, required=False, default=None,
         related_link_view_name='publisher-related',
         related_link_url_kwarg='pk',
         self_link_view_name='publisher-relationships',
     )
 
     organization = relations.ResourceRelatedField(
-        queryset=Organization.objects, many=False, read_only=False, required=False,
+        queryset=Organization.objects, many=False, read_only=False, required=False, default=None,
         related_link_view_name='publisher-related',
         related_link_url_kwarg='pk',
         self_link_view_name='publisher-relationships',
     )
 
     children = relations.ResourceRelatedField(
-        queryset=Publisher.objects, many=True, read_only=False, required=False,
+        queryset=Publisher.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='publisher-related',
         related_link_url_kwarg='pk',
         self_link_view_name='publisher-relationships',
     )
 
     entrypoints = relations.ResourceRelatedField(
-        queryset=EntryPoint.objects, many=True, read_only=False, required=False,
+        queryset=EntryPoint.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='publisher-related',
         related_link_url_kwarg='pk',
         self_link_view_name='publisher-relationships',
@@ -242,28 +242,28 @@ class PublisherSerializer(serializers.HyperlinkedModelSerializer):
 class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
 
     parent = relations.ResourceRelatedField(
-        queryset=EntryPoint.objects, many=False, read_only=False, required=False,
+        queryset=EntryPoint.objects, many=False, read_only=False, required=False, default=None,
         related_link_view_name='entrypoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='entrypoint-relationships',
     )
 
     publisher = relations.ResourceRelatedField(
-        queryset=Publisher.objects, many=False, read_only=False, required=False,
+        queryset=Publisher.objects, many=False, read_only=False, required=False, default=None,
         related_link_view_name='entrypoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='entrypoint-relationships',
     )
 
     children = relations.ResourceRelatedField(
-        queryset=EntryPoint.objects, many=True, read_only=False, required=False,
+        queryset=EntryPoint.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='entrypoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='entrypoint-relationships',
     )
 
     endpoints = relations.ResourceRelatedField(
-        queryset=EndPoint.objects, many=True, read_only=False, required=False,
+        queryset=EndPoint.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='entrypoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='entrypoint-relationships',
@@ -340,28 +340,28 @@ class EntryPointSerializer(serializers.HyperlinkedModelSerializer):
 class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 
     accept_header_media_types = relations.ResourceRelatedField(
-        queryset=MediaType.objects, many=True, read_only=False,
+        queryset=MediaType.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='endpoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='endpoint-relationships',
     )
 
     content_media_types = relations.ResourceRelatedField(
-        queryset=MediaType.objects, many=True, read_only=False,
+        queryset=MediaType.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='endpoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='endpoint-relationships',
     )
 
     request_schema_endpoint = relations.ResourceRelatedField(
-        queryset=MediaType.objects, many=False, read_only=False,
+        queryset=MediaType.objects, many=False, read_only=False, required=False, default=None,
         related_link_view_name='endpoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='endpoint-relationships',
     )
 
     response_schema_endpoint = relations.ResourceRelatedField(
-        queryset=MediaType.objects, many=False, read_only=False,
+        queryset=MediaType.objects, many=False, read_only=False, required=False, default=None,
         related_link_view_name='endpoint-related',
         related_link_url_kwarg='pk',
         self_link_view_name='endpoint-relationships',
@@ -454,14 +454,14 @@ class EndPointSerializer(serializers.HyperlinkedModelSerializer):
 class MediaTypeSerializer(serializers.HyperlinkedModelSerializer):
 
     accepting_endpoints = relations.ResourceRelatedField(
-        queryset=EndPoint.objects, many=True, read_only=False,
+        queryset=EndPoint.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='mediatype-related',
         related_link_url_kwarg='pk',
         self_link_view_name='mediatype-relationships',
     )
 
     delivering_endpoints = relations.ResourceRelatedField(
-        queryset=EndPoint.objects, many=True, read_only=False,
+        queryset=EndPoint.objects, many=True, read_only=False, required=False, default=None,
         related_link_view_name='mediatype-related',
         related_link_url_kwarg='pk',
         self_link_view_name='mediatype-relationships',
