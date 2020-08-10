@@ -21,7 +21,7 @@ The root entry point or top level of a InChI Resolver instance has to be accessi
 from there a InChI Resolver instance has to reply by fully supporting the JSON:API media type
 `application/vnd.api+json <https://jsonapi.org/>`_.
 
-At the current level of implementation of the InChI Resolver Protocol the following top level resource objects have to be made accessible:
+At the current level of implementation of the InChI Resolver Protocol the following top level resource objects have to be made accessible::
 
     * **inchis** (browsable index of all InChI instances available at a InChI resolver instance)
     * **organizations** (list of all organizations known by this InChI resolver instance publishing InChI related data)
@@ -45,11 +45,11 @@ Example: `PubChem Demonstration InChI Resolver [Top level at https://pubchem.inc
         }
     }
 
-**Note**: For future versions of the InChI Resolver Protocol the following top level resource objects are planned to be added:
+**Note**: For future versions of the InChI Resolver Protocol the following top level resource objects are planned to be added::
 
-    + **structures** (list of structure representations linked to a specific InChI at the InChI resource of a InChI resolver instance)
-    + **rinchi** (browsable index of all RInChI instances available at a InChI resolver instance)
-    + **reactions** (list of reaction representations linked to a specific InChI at the InChI resource of a InChI resolver instance)
+    * **structures** (list of structure representations linked to a specific InChI at the InChI resource of a InChI resolver instance)
+    * **rinchi** (browsable index of all RInChI instances available at a InChI resolver instance)
+    * **reactions** (list of reaction representations linked to a specific InChI at the InChI resource of a InChI resolver instance)
 
 InChI Resource
 ^^^^^^^^^^^^^^
