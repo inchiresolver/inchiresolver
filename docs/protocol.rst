@@ -21,14 +21,14 @@ The root entry point or top level of a InChI Resolver instance has to be accessi
 from there a InChI Resolver instance has to reply by fully supporting the JSON:API media type
 `application/vnd.api+json <https://jsonapi.org/>`_.
 
-At the current level of implementation of the InChI Resolver Protocol the following top level resource objects have to be made accessible::
+At the current level of implementation of the InChI Resolver Protocol the following top level resource objects have to be made accessible:
 
-    * **inchis** (browsable index of all InChI instances available at a InChI resolver instance)
-    * **organizations** (list of all organizations known by this InChI resolver instance publishing InChI related data)
-    * **publishers** (list of all publishers known by this InChI resolver instance publishing InChI related entry points [see next point])
-    * **entrypoints** (list of all web resource entry points known by this InChI resolver instance providing InChI related web resource end points [see next point])
-    * **endpoints** (list of all web resource/schema/documentation end points known by this InChI resolver instance providing data with or about InChI)
-    * **mediatypes** (list of all media types listed by end point resources at this InChI resolver instance)
+- **inchis** (browsable index of all InChI instances available at a InChI resolver instance)
+- **organizations** (list of all organizations known by this InChI resolver instance publishing InChI related data)
+- **publishers** (list of all publishers known by this InChI resolver instance publishing InChI related entry points [see next point])
+- **entrypoints** (list of all web resource entry points known by this InChI resolver instance providing InChI related web resource end points [see next point])
+- **endpoints** (list of all web resource/schema/documentation end points known by this InChI resolver instance providing data with or about InChI)
+- **mediatypes** (list of all media types listed by end point resources at this InChI resolver instance)
 
 Example: `PubChem Demonstration InChI Resolver [Top level at https://pubchem.inchi-resolver.org/] <https://pubchem.inchi-resolver.org/>`_
 
@@ -45,11 +45,11 @@ Example: `PubChem Demonstration InChI Resolver [Top level at https://pubchem.inc
         }
     }
 
-**Note**: For future versions of the InChI Resolver Protocol the following top level resource objects are planned to be added::
+**Note**: For future versions of the InChI Resolver Protocol the following top level resource objects are planned to be added:
 
-    * **structures** (list of structure representations linked to a specific InChI at the InChI resource of a InChI resolver instance)
-    * **rinchi** (browsable index of all RInChI instances available at a InChI resolver instance)
-    * **reactions** (list of reaction representations linked to a specific InChI at the InChI resource of a InChI resolver instance)
+- **structures** (list of structure representations linked to a specific InChI at the InChI resource of a InChI resolver instance)
+- **rinchi** (browsable index of all RInChI instances available at a InChI resolver instance)
+- **reactions** (list of reaction representations linked to a specific InChI at the InChI resource of a InChI resolver instance)
 
 InChI Resource
 ^^^^^^^^^^^^^^
