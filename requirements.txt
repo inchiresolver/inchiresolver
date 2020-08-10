@@ -1,5 +1,5 @@
 requests
-django==2.2.11
+django==2.2.13
 djangorestframework==3.11.0
 django-filter
 django-crispy-forms
