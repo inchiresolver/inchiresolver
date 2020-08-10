@@ -26,7 +26,7 @@ as media type format. JSON:API delineates how clients should request or edit dat
 should respond to any requests. The format is optimized for HTTP requests to a web API; both in terms of the
 number of requests and the size of data packages exchanged between clients and servers.
 
-For more information about the InChI Resolver Protocol read the `InChI Resolver Protocol page <docs/inchi_resolver_protocol.rst>`_.
+For more information about the InChI Resolver Protocol read the `InChI Resolver Protocol page <docs/protocol.rst>`_.
 
 Links & Resources
 -----------------
