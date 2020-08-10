@@ -23,7 +23,7 @@ from there a InChI Resolver instance has to reply by fully supporting the JSON:A
 
 At the current level of implementation of the InChI Resolver Protocol the following top level resource objects have to be made accessible:
 
-    + **inchis** (browsable index of all InChI instances available at a InChI resolver instance)
+    * **inchis** (browsable index of all InChI instances available at a InChI resolver instance)
     + **organizations** (list of all organizations known by this InChI resolver instance publishing InChI related data)
     + **publishers** (list of all publishers known by this InChI resolver instance publishing InChI related entry points [see next point])
     + **entrypoints** (list of all web resource entry points known by this InChI resolver instance providing InChI related web resource end points [see next point])
