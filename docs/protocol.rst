@@ -394,17 +394,17 @@ Endpoint Resource
 
 The endpoint resource of the InChI Resolver API provides access to all endpoint resources known by this
 InChI resolver instance. Each endpoint resource provides an URI (pattern) which, in combination with the
-parent entrypoint resource, specifies an URL path pointing to a web resources making data available indexed
+parent `entrypoint resource`_, specifies an URL path pointing to a web resources making data available indexed
 by InChI. The type of URI (pattern) can be stated using the "category" attribute which can take the values
-'schema', 'uritemplate', and 'documentation'. If 'schema' is specified as value, the endpoint refers to a
-schema file (e.g. XSD).  If 'uritemplate' is set as category the uri attribute provides a URL template
+*schema*, *uritemplate*, and *documentation*. If *schema* is specified as value, the endpoint refers to a
+schema file (e.g. XSD).  If *uritemplate* is set as category the uri attribute provides a URL template
 according to RFC6570 which allows the description of a range of URIs through variable expansion. If
-'documentation' is set for attribute 'category', the URL path points to some kind of human-readable
+*documentation* is set for attribute *category*, the URL path points to some kind of human-readable
 documentation (e.g. html or pdf file). The exact types of accepted header media types, content media types,
 or the schema files how a request has to look like and what kind of schema an endpoint uses for its response
-can be specified with the endpoint resource attributes  'acceptHeaderMediaTypes',  'contentMediaTypes',
-'requestSchemaEndpoint' or 'responseSchemaEndpoint'. Attribute 'requestMethods' lists all HTTP verbs
-(GET, POST, etc.) an endpoint accepts.
+can be specified with the endpoint resource attributes  *acceptHeaderMediaTypes*,  *contentMediaTypes*,
+*requestSchemaEndpoint* or *responseSchemaEndpoint*. Attribute *requestMethods* lists all HTTP verbs
+(GET, POST, etc.) the corresponding endpoint will accept.
 
 **Example**: `PubChem Demonstration InChI Resolver [Endpoint instance object https://pubchem.inchi-resolver.org/endpoints/51369fbe-1933-5450-8a5e-0ca5b9924204] <https://pubchem.inchi-resolver.org/endpoints/51369fbe-1933-5450-8a5e-0ca5b9924204>`_
 
