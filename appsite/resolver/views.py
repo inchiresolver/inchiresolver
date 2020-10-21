@@ -31,7 +31,7 @@ class ResolverApiView(routers.APIRootView):
             title = 'InChI Resolver'
         else:
             title = os.environ.get('INCHI_RESOLVER_TITLE', 'InChI Resolver')
-        text = "**API Root** resource of the " + title.strip('"') + \
+        text = "API Root resource of the " + title.strip('"') + \
                ". It lists the top-level resources generally available at this and any InChI Resolver instance."
         if html:
             return mark_safe(f"<p>{text} For documentation <a href=\"https://github.com/inchiresolver/inchiresolver/blob/master/docs/protocol.rst\">please see here</a>.</p>")
