@@ -31,7 +31,7 @@ be made accessible:
 - **endpoints** (list of any web resource/schema/documentation end points known by this InChI resolver instance providing data with or about InChI)
 - **mediatypes** (list of any media types listed by end point resources at this InChI resolver instance)
 
-Example: `PubChem Demonstration InChI Resolver [Top level at https://pubchem.inchi-resolver.org/] <https://pubchem.inchi-resolver.org/>`_
+**Example**: `PubChem Demonstration InChI Resolver [Top level at https://pubchem.inchi-resolver.org/] <https://pubchem.inchi-resolver.org/>`_
 
 .. code-block:: json
 
@@ -57,7 +57,7 @@ InChI Resource
 ^^^^^^^^^^^^^^
 
 The InChI resource of the InChI Resolver API may provide a browsable index of all InChI structure identifiers available
-at this InChI resolver instance. For each InChI instance a related resource link to a `Entrypoint Resource`_ may be
+at this InChI resolver instance. For each InChI instance a related resource link to a `entrypoint resource`_ may be
 given, referring to any service API entrypoints at which the InChI instance is available.
 
 The current prototype implementation of the resolver accepts InChI strings as input and creates the corresponding
@@ -104,6 +104,8 @@ Example: `PubChem Demonstration InChI Resolver [InChI instance object https://pu
         }
     }
 
+.. _organization resources:
+.. _organization:
 
 Organization Resource
 ^^^^^^^^^^^^^^^^^^^^^
@@ -111,11 +113,11 @@ Organization Resource
 The organization resource of the InChI Resolver API may list all organizations which either publish other InChI resolver
 API entrypoints known by this InChI resolver instance or make any web services API entrypoints available providing data
 based on InChI also known by this InChI resolver instance. For each organization resource either links to related parent
-or subordinated (children) organization resources or `Publisher resources <Publisher resource>`_  at this InChI resolver instance may be
-provided. A organization resource can be categorized as *regulatory*, *government*, *academia*, *company*, *vendor*,
-*research*, *publishing*, *provider*, *public*, *society*, *charity*, *other*, or *none*.
+or subordinated (children) organization resources, and `publisher resources`_  at this InChI
+resolver instance may be provided. A organization resource can be categorized as *regulatory*, *government*, *academia*,
+*company*, *vendor*, *research*, *publishing*, *provider*, *public*, *society*, *charity*, *other*, or *none*.
 
-Example: `PubChem Demonstration InChI Resolver [Organization instance object https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b] <https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b>`_
+**Example**: `PubChem Demonstration InChI Resolver [Organization instance object https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b] <https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b>`_
 
 .. code-block:: json
 
@@ -183,17 +185,19 @@ Example: `PubChem Demonstration InChI Resolver [Organization instance object htt
         }
     }
 
+.. _publisher resources:
 
 Publisher Resource
 ^^^^^^^^^^^^^^^^^^
 
 The publisher resource of the InChI Resolver API lists all publishing entities that make InChI related
-web service API entrypoints available and are part or member of a organization known by this InChI Resolver
-instance. For each publisher resource all parent or subordinated (children) publisher resources, the
-organization they belong to, and the entrypoint resources they publish may be linked. A organization
-resource can be categorized as 'entity', 'service', 'network', 'division', 'group', 'person', or 'none'."
+web service API entrypoints available propagated by this InChI resolver instance, and are part or member of a
+organization also known by this InChI Resolver instance. For each publisher resource all parent or subordinated
+(children) publisher resources, the `organization`_ they belong to, and the `entrypoint resources`_ they publish may be
+linked. A organization resource can be categorized as *entity*, *service*, *network*, *division*, *group*, *person*,
+or *none*.
 
-Example: `PubChem Demonstration InChI Resolver [Publisher instance object https://pubchem.inchi-resolver.org/publishers/fabfce20-45e2-5092-890b-b24ac7581cdd] <https://pubchem.inchi-resolver.org/publishers/fabfce20-45e2-5092-890b-b24ac7581cdd>`_
+**Example**: `PubChem Demonstration InChI Resolver [Publisher instance object https://pubchem.inchi-resolver.org/publishers/fabfce20-45e2-5092-890b-b24ac7581cdd] <https://pubchem.inchi-resolver.org/publishers/fabfce20-45e2-5092-890b-b24ac7581cdd>`_
 
 .. code-block:: json
 
@@ -278,31 +282,34 @@ Example: `PubChem Demonstration InChI Resolver [Publisher instance object https:
         }
     }
 
+.. _publisher resource:
+.. _entrypoint resources:
+
 Entrypoint Resource
 ^^^^^^^^^^^^^^^^^^^
 
 The entrypoint resource of the InChI Resolver API lists all entrypoint resources known by this InChI resolver
-instance. Each entrypoint resource specifies an URL (attribute 'href') and in combination with related
-endpoint resources of the same InChI resolver instance links to  Web service resource that make data
-accessible by or about InChI.
+instance. Each entrypoint resource specifies an URL (attribute *href*) which, in combination with related
+`endpoint resources`_ of the this InChI resolver instance, links to any Web service resources that should be
+propagated by this InChI resolver instance.
 
 There are four entrypoint categories available which classify what type of resource is to be expected
-at the specified entrypoint URL. The two first categories 'site' and 'service' are used for entrypoint URLs
-which are (usually) pointing to resources or web services that are provided by one of the organizations and
-publisher listed by this InChI resolver instance (but are external to the InChI resolver itself). The third
-category 'resolver' can be applied for referencing InChI resolver instances  offered elsewhere by other
-organizations or publishers. The final category 'self' allows for self-referencing the URL entrypoint of the
-current InChI resolver instance which is useful for offering linkage to the publisher and organisation
+at the specified entrypoint URL. The first two categories, *site* and *service*, are used for entrypoint URLs
+which are (usually) pointing to resources or services at the Web that are provided by one of the organizations and
+publishers listed by this InChI resolver instance (but are external to the InChI resolver itself). The third
+category *resolver* can be applied for referencing InChI resolver instances published elsewhere on the Web by another
+organization or publisher. The final category, *self*, allows for self-referencing the URL entrypoint of the
+current InChI resolver instance which is useful for referencing the publisher and organisation
 API resource of this InChI resolver instance.
-(1) 'site': a general HTML web page, usually accessed by a HTTP GET request (might be just an entry point with
-no content at all)
-(2) 'service': a web API, commonly allowing access by the HTTP verbs GET, POST, etc. and returning data using
-a specific media type (see 'endpoint' resource).
-(3) 'resolver': links to an (external) InChI resolver instance of another organization or publisher
-(4) 'self': references the current InChI resolver instance itself (for systematic access of, e.g. the
-publisher or organization resource).
 
-Example: `PubChem Demonstration InChI Resolver [Entrypoint instance object https://pubchem.inchi-resolver.org/entrypoints/aa5da239-0fe8-5f0e-a1f5-ee83b42e7386] <https://pubchem.inchi-resolver.org/entrypoints/aa5da239-0fe8-5f0e-a1f5-ee83b42e7386>`_
+**Entrypoint Category Overview:**
+
+1) *Site*: a general HTML web page, usually accessed by a HTTP GET request used for InChI related information or documentation of services (might be just an entry point with no content at all). Example: `link to the PubChem Documentation site <https://pubchem.inchi-resolver.org/entrypoints/a1e74f8e-6ba5-571d-b5a6-2f22bfaa89c8>`_
+2) *Service*: a web API, commonly allowing access by the HTTP verbs GET, POST, etc. and returning data using a specific media type (see 'endpoint' resource). Example: `the entry point to the PubChem PUG (Power User Gateway) service <https://pubchem.inchi-resolver.org/entrypoints/aa5da239-0fe8-5f0e-a1f5-ee83b42e7386>`_
+3) *Resolver*: links to an (external) InChI resolver instance of another organization or publisher. If this category is used, also the attribute *entrypointHref* should be set providing a direct link to the the *self* entrypoint of the referenced InChI resolver instance. A recommendation for the format of this link is [external InChI resolver URL]/_self is suggested which should be supported by any InChI resolver instance as a reference to the own (self) entrypoint. Example: `the PubChem Demonstration InChI Resolver references the InChI Trust Root Resolver <https://pubchem.inchi-resolver.org/entrypoints/42626518-a53d-56d5-8556-8efc586ed14f>`_
+4) *Self*: references the current InChI resolver instance itself (for systematic access of, e.g. the publisher or organization resource). If this category is used, also the attribute *entrypointHref* should be set providing a direct link to the the *self* entrypoint of the referenced InChI resolver instance. Example: `self reference to the entrypoint of the PubChem resolver <https://pubchem.inchi-resolver.org/entrypoints/2d7c119f-561d-5da1-99b6-18494a780da5>`_
+
+**Example**: `PubChem Demonstration InChI Resolver [Entrypoint instance object https://pubchem.inchi-resolver.org/entrypoints/aa5da239-0fe8-5f0e-a1f5-ee83b42e7386] <https://pubchem.inchi-resolver.org/entrypoints/aa5da239-0fe8-5f0e-a1f5-ee83b42e7386>`_
 
 .. code-block:: json
 
@@ -380,6 +387,7 @@ Example: `PubChem Demonstration InChI Resolver [Entrypoint instance object https
         }
     }
 
+.. _endpoint resources:
 
 Endpoint Resource
 ^^^^^^^^^^^^^^^^^
@@ -398,7 +406,7 @@ can be specified with the endpoint resource attributes  'acceptHeaderMediaTypes'
 'requestSchemaEndpoint' or 'responseSchemaEndpoint'. Attribute 'requestMethods' lists all HTTP verbs
 (GET, POST, etc.) an endpoint accepts.
 
-Example: `PubChem Demonstration InChI Resolver [Endpoint instance object https://pubchem.inchi-resolver.org/endpoints/51369fbe-1933-5450-8a5e-0ca5b9924204] <https://pubchem.inchi-resolver.org/endpoints/51369fbe-1933-5450-8a5e-0ca5b9924204>`_
+**Example**: `PubChem Demonstration InChI Resolver [Endpoint instance object https://pubchem.inchi-resolver.org/endpoints/51369fbe-1933-5450-8a5e-0ca5b9924204] <https://pubchem.inchi-resolver.org/endpoints/51369fbe-1933-5450-8a5e-0ca5b9924204>`_
 
 .. code-block:: json
 
@@ -482,7 +490,7 @@ Mediatype Resource
 The media type resource of the InChI Resolver API provides access of all media types available this InChI
 resolver instance.
 
-Example: `PubChem Demonstration InChI Resolver [Mediatype instance object https://pubchem.inchi-resolver.org/mediatypes/b28c3aeb-48ba-5b77-b26a-48aead52892d] <https://pubchem.inchi-resolver.org/mediatypes/b28c3aeb-48ba-5b77-b26a-48aead52892d>`_
+**Example**: `PubChem Demonstration InChI Resolver [Mediatype instance object https://pubchem.inchi-resolver.org/mediatypes/b28c3aeb-48ba-5b77-b26a-48aead52892d] <https://pubchem.inchi-resolver.org/mediatypes/b28c3aeb-48ba-5b77-b26a-48aead52892d>`_
 
 .. code-block:: json
 

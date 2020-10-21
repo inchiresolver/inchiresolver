@@ -116,6 +116,6 @@ all life-circle commands should work as expected, in fact, ``up`` and  ``down`` 
 Since the InChI Resolver App is based on Chembience's Django Template App, please take also a look at the `Chembience GitHub repository <https://github.com/chembience/chembience>`_ pages.
 
 
-Markus Sitzmann 2020-08-04
+Markus Sitzmann 2020-10-20
 
     
