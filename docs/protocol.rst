@@ -1,7 +1,7 @@
 InChI Resolver Protocol
 =======================
 
-:Version: 0.3.1 of 2020-08-11
+:Version: 0.3.2 of 2020-10-21
 :Authors:
     Markus Sitzmann
 
@@ -17,18 +17,19 @@ number of requests and the size of data packages exchanged between clients and s
 InChI Resolver API Resources
 ----------------------------
 
-The root entry point or top level of a InChI Resolver instance has to be accessible at a valid absolute URL path. Starting
-from there a InChI Resolver instance has to reply by fully supporting the JSON:API media type
+The root entry point or top level of a InChI Resolver instance has to be accessible at a valid absolute URL path.
+Starting from there a InChI Resolver instance has to reply by fully supporting the JSON:API media type
 `application/vnd.api+json <https://jsonapi.org/>`_.
 
-At the current level of implementation of the InChI Resolver Protocol the following top level resource objects have to be made accessible:
+At the current level of implementation of the InChI Resolver Protocol, the following top level resource objects have to
+be made accessible:
 
-- **inchis** (browsable index of all InChI instances available at a InChI resolver instance)
-- **organizations** (list of all organizations known by this InChI resolver instance publishing InChI related data)
-- **publishers** (list of all publishers known by this InChI resolver instance publishing InChI related entry points [see next point])
+- **inchis** (browsable index of all available InChI instances at this InChI resolver instance)
+- **organizations** (list of any organizations known by this InChI resolver instance publishing InChI related data)
+- **publishers** (list of any publishers known by this InChI resolver instance publishing InChI related entry points [see next point])
 - **entrypoints** (list of all web resource entry points known by this InChI resolver instance providing InChI related web resource end points [see next point])
-- **endpoints** (list of all web resource/schema/documentation end points known by this InChI resolver instance providing data with or about InChI)
-- **mediatypes** (list of all media types listed by end point resources at this InChI resolver instance)
+- **endpoints** (list of any web resource/schema/documentation end points known by this InChI resolver instance providing data with or about InChI)
+- **mediatypes** (list of any media types listed by end point resources at this InChI resolver instance)
 
 Example: `PubChem Demonstration InChI Resolver [Top level at https://pubchem.inchi-resolver.org/] <https://pubchem.inchi-resolver.org/>`_
 
@@ -45,7 +46,8 @@ Example: `PubChem Demonstration InChI Resolver [Top level at https://pubchem.inc
         }
     }
 
-**Note**: For future versions of the InChI Resolver Protocol the following top level resource objects are planned to be added:
+**Note**: For future versions of the InChI Resolver Protocol the following top level resource objects are planned to
+be included:
 
 - **structures** (list of structure representations linked to a specific InChI at the InChI resource of a InChI resolver instance)
 - **rinchi** (browsable index of all RInChI instances available at a InChI resolver instance)
@@ -54,9 +56,13 @@ Example: `PubChem Demonstration InChI Resolver [Top level at https://pubchem.inc
 InChI Resource
 ^^^^^^^^^^^^^^
 
-The InChI resource may provide a browsable index of all InChI structure identifiers available at a InChI resolver
-instance. For each InChI instance a related resource link to a `Entrypoint Resource`_ may be given, referring to any
-service API entrypoints at which the InChI instance is available.
+The InChI resource of the InChI Resolver API may provide a browsable index of all InChI structure identifiers available
+at this InChI resolver instance. For each InChI instance a related resource link to a `Entrypoint Resource`_ may be
+given, referring to any service API entrypoints at which the InChI instance is available.
+
+The current prototype implementation of the resolver accepts InChI strings as input and creates the corresponding
+InChIKey, version number and whether the InChI is a Standard InChI or not. The safeOptions used for the creation
+of the original InChI can be added.
 
 Example: `PubChem Demonstration InChI Resolver [InChI instance object https://pubchem.inchi-resolver.org/inchis/36d8eb2e-aa7e-5c6e-8961-d9e8ead14f92] <https://pubchem.inchi-resolver.org/inchis/36d8eb2e-aa7e-5c6e-8961-d9e8ead14f92>`_
 
@@ -102,33 +108,36 @@ Example: `PubChem Demonstration InChI Resolver [InChI instance object https://pu
 Organization Resource
 ^^^^^^^^^^^^^^^^^^^^^
 
-The organization resource of the InChI Resolver API lists all organizations that publish either InChI resolver
-API entrypoints known by this InChI resolver instance, or lists any API entrypoints for web services of the
-organization that make data accessible by InChI. For each organization related resource either links
-to parent or subordinated (children) organization resources or publisher resources at this InChI resolver
-instance may be given. A organization resource can be categorized as 'regulatory', 'government', 'academia',
-'company', 'vendor', 'research', 'publishing', 'provider', 'public', 'society', 'charity', 'other', or 'none'."
+The organization resource of the InChI Resolver API may list all organizations which either publish other InChI resolver
+API entrypoints known by this InChI resolver instance or make any web services API entrypoints available providing data
+based on InChI also known by this InChI resolver instance. For each organization resource either links to related parent
+or subordinated (children) organization resources or `Publisher resources <Publisher resource>`_  at this InChI resolver instance may be
+provided. A organization resource can be categorized as *regulatory*, *government*, *academia*, *company*, *vendor*,
+*research*, *publishing*, *provider*, *public*, *society*, *charity*, *other*, or *none*.
 
-Example: `PubChem Demonstration InChI Resolver [Organization instance object https://pubchem.inchi-resolver.org/organizations/6ca138a9-6b7e-5752-b6df-99df6971c445] <https://pubchem.inchi-resolver.org/organizations/6ca138a9-6b7e-5752-b6df-99df6971c445>`_
+Example: `PubChem Demonstration InChI Resolver [Organization instance object https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b] <https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b>`_
 
 .. code-block:: json
 
     {
         "type": "organizations",
-        "id": "6ca138a9-6b7e-5752-b6df-99df6971c445",
+        "id": "904a3dfd-7417-5e2a-ac98-377501d0ff9b",
         "attributes": {
-            "name": "U.S. National Institutes of Health",
-            "abbreviation": "NIH",
+            "name": "U.S. National Library of Medicine",
+            "abbreviation": "NLM",
             "category": "government",
-            "href": "https://www.nih.gov"
+            "href": "https://www.nlm.nih.gov"
         },
         "relationships": {
             "parent": {
                 "links": {
-                    "self": "https://pubchem.inchi-resolver.org/organizations/6ca138a9-6b7e-5752-b6df-99df6971c445/relationships/parent",
-                    "related": "https://pubchem.inchi-resolver.org/organizations/6ca138a9-6b7e-5752-b6df-99df6971c445/parent"
+                    "self": "https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b/relationships/parent",
+                    "related": "https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b/parent"
                 },
-                "data": null
+                "data": {
+                    "type": "organizations",
+                    "id": "6ca138a9-6b7e-5752-b6df-99df6971c445"
+                }
             },
             "children": {
                 "meta": {
@@ -137,31 +146,40 @@ Example: `PubChem Demonstration InChI Resolver [Organization instance object htt
                 "data": [
                     {
                         "type": "organizations",
-                        "id": "904a3dfd-7417-5e2a-ac98-377501d0ff9b"
+                        "id": "247ed733-8fe0-5a9f-bb26-c43acc0dd8c6"
                     }
                 ],
                 "links": {
-                    "self": "https://pubchem.inchi-resolver.org/organizations/6ca138a9-6b7e-5752-b6df-99df6971c445/relationships/children",
-                    "related": "https://pubchem.inchi-resolver.org/organizations/6ca138a9-6b7e-5752-b6df-99df6971c445/children"
+                    "self": "https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b/relationships/children",
+                    "related": "https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b/children"
                 }
             },
             "publishers": {
                 "meta": {
-                    "count": 0
+                    "count": 2
                 },
-                "data": [],
+                "data": [
+                    {
+                        "type": "publishers",
+                        "id": "baa3343a-111d-5893-9870-d78af85776c6"
+                    },
+                    {
+                        "type": "publishers",
+                        "id": "fabfce20-45e2-5092-890b-b24ac7581cdd"
+                    }
+                ],
                 "links": {
-                    "self": "https://pubchem.inchi-resolver.org/organizations/6ca138a9-6b7e-5752-b6df-99df6971c445/relationships/publishers",
-                    "related": "https://pubchem.inchi-resolver.org/organizations/6ca138a9-6b7e-5752-b6df-99df6971c445/publishers"
+                    "self": "https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b/relationships/publishers",
+                    "related": "https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b/publishers"
                 }
             }
         },
         "links": {
-            "self": "https://pubchem.inchi-resolver.org/organizations/6ca138a9-6b7e-5752-b6df-99df6971c445"
+            "self": "https://pubchem.inchi-resolver.org/organizations/904a3dfd-7417-5e2a-ac98-377501d0ff9b"
         },
         "meta": {
-            "added": "2020-08-02T23:33:13.055677Z",
-            "modified": "2020-08-02T23:33:13.055693Z"
+            "added": "2020-08-02T23:33:13.057681Z",
+            "modified": "2020-08-02T23:33:13.057694Z"
         }
     }
 
@@ -172,7 +190,7 @@ Publisher Resource
 The publisher resource of the InChI Resolver API lists all publishing entities that make InChI related
 web service API entrypoints available and are part or member of a organization known by this InChI Resolver
 instance. For each publisher resource all parent or subordinated (children) publisher resources, the
-organization they belong to, and the entrypoint resources they publish may linked linked. A organization
+organization they belong to, and the entrypoint resources they publish may be linked. A organization
 resource can be categorized as 'entity', 'service', 'network', 'division', 'group', 'person', or 'none'."
 
 Example: `PubChem Demonstration InChI Resolver [Publisher instance object https://pubchem.inchi-resolver.org/publishers/fabfce20-45e2-5092-890b-b24ac7581cdd] <https://pubchem.inchi-resolver.org/publishers/fabfce20-45e2-5092-890b-b24ac7581cdd>`_
