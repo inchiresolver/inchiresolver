@@ -36,25 +36,17 @@ services:
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
   inchiresolverdb:
-    image: chembience/db:${CHEMBIENCE_VERSION}
+    image: chembience/postgres-rdkit:postgres-13.rdkit-2020.09
     container_name: inchiresolverdb
     volumes:
       - inchiresolverdb_volume:/var/lib/postgresql
     networks:
       - sphere
     environment:
-      - DEBUG=false
       - CHEMBIENCE_UID
       - CHEMBIENCE_GID
-      - DB_USER=${CHEMBIENCE_DB_USER}
-      - DB_PASS=${CHEMBIENCE_DB_PASSWORD}
-      - DB_NAME=${CHEMBIENCE_DB_USER}
-      - DB_TEMPLATE=
-      - DB_EXTENSION=rdkit
-      - REPLICATION_MODE=
-      - REPLICATION_USER=
-      - REPLICATION_PASS=
-      - REPLICATION_SSLMODE=
+      - POSTGRES_USER=${CHEMBIENCE_DB_USER}
+      - POSTGRES_PASSWORD=${CHEMBIENCE_DB_PASSWORD}
 
 volumes:
   inchiresolverdb_volume:

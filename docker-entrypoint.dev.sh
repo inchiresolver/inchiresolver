@@ -11,5 +11,5 @@
 #export PYTHONPATH=/home/app:/home/app/scripts:/home/app/scripts/lib:/share:$PYTHONPATH
 
 #python /home/app/appsite/manage.py migrate
-python /home/app/appsite/manage.py runserver 0.0.0.0:8000
+#python /home/app/appsite/manage.py runserver 0.0.0.0:8000
 

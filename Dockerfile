@@ -3,7 +3,7 @@ FROM chembience/django:$build_tag
 LABEL maintainer="markus.sitzmann@gmail.com "
 
 ENV PATH /opt/conda/bin:$PATH
-ENV CONDA_PY 37
+ENV CONDA_PY 38
 
 COPY nginx /home/nginx
 COPY requirements.txt /
