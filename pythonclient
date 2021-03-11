@@ -1,8 +1,0 @@
-#!/bin/bash
-
-if [ $# -eq 0 ]
-  then
-    docker-compose -f docker-compose.client.yml run --rm client python -i
-  else
-    docker-compose -f docker-compose.client.yml run --rm client python -i $1
-fi
