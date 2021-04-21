@@ -1,28 +1,35 @@
 InChI Resolver Protocol
 =======================
 
-:Version: 0.3.2 of 2020-10-21
+:Version: 0.3.3 of 2021-04-21
 :Authors:
     Markus Sitzmann
 
-The InChI Resolver protocol is the specification of a common API protocol format which any InChI Resolver instance
-has adhere to. By following the shared conventions of the protocol any InChI-based web resources and services
-should be easily findable and browsable for an (automated) client system in a systematic, predefined manner.
+The InChI Resolver Protocol is the specification of a common API protocol format which any InChI Resolver instance
+should adhere to. By following the shared conventions of the protocol, any InChI-based web resources and services
+should be findable and browsable for an (automated) client system in a systematic, predefined manner.
 
-The InChI Resolver protocol has been based on the IANA-registered JSON:API v1.0 specification (`<https://jsonapi.org/>`_)
-as media type format. JSON:API delineates how clients should request or edit data from a server, and how the server
-should respond to any requests. The format is optimized for HTTP requests to a web API; both in terms of the
-number of requests and the size of data packages exchanged between clients and servers.
+The InChI Resolver protocol is based on the IANA-registered JSON:API v1.0 specification (`<https://jsonapi.org/>`_)
+as media type format. JSON:API has been specified on basis of `JSON schema <https://json-schema.org/>`_ and delineates
+how clients should request or edit data from a server, and how the server should respond to any requests. The format
+is optimized for HTTP requests to a web API; both in terms of the number of requests and the size of data packages
+exchanged between clients and servers.
+
+A first draft of a InChI Resolver Protocol schema specification is available here:
+`InChI Resolver Protocol Schema File <https://github.com/inchiresolver/inchiresolver/blob/master/schema/2021-04b1/schema.json>`_.
+It is an extension to the JSON:API specification and limits the usage of this specification to resources
+permissible to the InChI Resolver Protocol. The available InChI Resolver API resources are described in the following.
 
 InChI Resolver API Resources
 ----------------------------
 
-The root entry point or top level of a InChI Resolver instance has to be accessible at a valid absolute URL path.
-Starting from there a InChI Resolver instance has to reply by fully supporting the JSON:API media type
-`application/vnd.api+json <https://jsonapi.org/>`_.
+The root entry point or top level of a InChI Resolver instance has to be accessible at a valid, absolute URL path.
+Starting from there, a InChI Resolver instance should reply to any requests by fully supporting the JSON:API media type
+`application/vnd.api+json <https://jsonapi.org/>`_ and any responses may adhere to the
+`InChI Resolver Protocol Schema <https://github.com/inchiresolver/inchiresolver/blob/master/schema/2021-04b1/schema.json>`_.
 
 At the current level of implementation of the InChI Resolver Protocol, the following top level resource objects have to
-be made accessible:
+be made accessible (although some of them might be empty for a specific InChI Resolver instance):
 
 - **inchis** (browsable index of all available InChI instances at this InChI resolver instance)
 - **organizations** (list of any organizations known by this InChI resolver instance publishing InChI related data)

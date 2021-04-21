@@ -18,7 +18,7 @@ InChI Resolver Protocol
 -----------------------
 
 The InChI Resolver protocol is the specification of a common API protocol format which any InChI Resolver instance
-has adhere to. By following the shared conventions of the protocol any InChI-based web resources and services
+should adhere to. By following the shared conventions of the protocol any InChI-based web resources and services
 should be easily findable and browsable for an (automated) client system in a systematic, predefined manner.
 
 The InChI Resolver protocol has been based on the IANA-registered JSON:API v1.0 specification (`<https://jsonapi.org/>`_)
@@ -27,6 +27,14 @@ should respond to any requests. The format is optimized for HTTP requests to a w
 number of requests and the size of data packages exchanged between clients and servers.
 
 For more information about the InChI Resolver Protocol read the `InChI Resolver Protocol page <docs/protocol.rst>`_.
+
+InChI Resolver Schema
+---------------------
+
+A first draft of a InChI Resolver Protocol schema specification is available here:
+`InChI Resolver Protocol Schema File <https://github.com/inchiresolver/inchiresolver/blob/master/schema/2021-04b1/schema.json>`_.
+It is an extension to the JSON:API specification and limits the usage of this specification to resources
+permissible to the InChI Resolver Protocol.
 
 Links & Resources
 -----------------
