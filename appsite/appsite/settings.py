@@ -31,8 +31,8 @@ ALLOWED_HOSTS = os.environ['APP_VIRTUAL_HOSTNAME'].split(",")
 # Application definition
 
 INSTALLED_APPS = [
-    'resolver',
-    'inchi',
+    'resolver.apps.ResolverConfig',
+    #'inchi',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     'crispy_forms',
     'multiselectfield',
-    'dbbackup',
+    #'dbbackup',
 ]
 
 MIDDLEWARE = [

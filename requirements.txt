@@ -1,6 +1,6 @@
 requests
-django==2.2.13
-djangorestframework==3.11.1
+django>=4
+djangorestframework
 django-filter
 django-crispy-forms
 django-dbbackup>=3.2.0
