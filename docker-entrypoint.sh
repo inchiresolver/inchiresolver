@@ -6,7 +6,7 @@ if ! id "app" >/dev/null 2>&1; then
 fi
 
 mkdir -p /home/app/backup
-chown -R app.app /home/app/backup
+chown -R app.app /home/app
 
 export PYTHONPATH=/home/app:/home/app/scripts:/home/app/scripts/lib:/share:$PYTHONPATH
 
